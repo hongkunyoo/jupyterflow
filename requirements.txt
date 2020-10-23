@@ -1,0 +1,7 @@
+escapism
+PyYAML
+kubernetes
+Jinja2
+requests
+boto3
+smart_open

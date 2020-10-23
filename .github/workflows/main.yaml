@@ -1,0 +1,13 @@
+name: jupytermoon
+#on: push
+
+jobs:
+  build:
+    name: Hello world
+    runs-on: ubuntu-latest    
+    steps:
+    - name: checkout source code
+      uses: actions/checkout@main
+
+    - name: echo hello
+      run: echo hello
