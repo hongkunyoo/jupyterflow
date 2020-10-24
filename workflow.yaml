@@ -1,0 +1,8 @@
+jobs:
+- python main.py abc
+- python train.py abc 123
+
+
+
+dags:
+- 1 >> 2

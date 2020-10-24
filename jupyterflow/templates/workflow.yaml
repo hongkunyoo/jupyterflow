@@ -1,0 +1,59 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: {{ workflow.name }}
+spec:
+  entrypoint: dag
+  templates:
+  {% for job in workflow.jobs %}
+  - name: {{ job['name'] }}
+    container:
+      image: {{ singleuser['image'] }}
+      command: {{ job['command'] }}
+      workingDir: {{ workingDir }}
+      securityContext:
+        runAsUser: {{ singleuser.runAsUser }}
+        runAsGroup: {{ singleuser.runAsGroup }}
+        fsGroup: {{ singleuser.fsGid }}
+      env:
+      - name: JUPYTERHUB_USER
+        value: {{ username }}
+      - name: PATH
+        value: {{ PATH }}
+      {%- if singleuser.env -%}
+      {%- for k, v in singleuser.env.items() -%}
+      - name: {{ k }}
+        value: {{ v }}
+      {% endfor %}
+      {%- if singleuser.resources -%}
+      resources:
+        {%- if singleuser.resources.requests -%}
+        requests:
+          cpu: "{{ singleuser.resources.requests['cpu'] }}"
+          memory: "{{ singleuser.resources.requests['memory'] }}"
+        {% endif %}
+        {%- if singleuser.resources.limits -%}
+        limits:
+          cpu: "{{ singleuser.resources.limits['cpu'] }}"
+          memory: "{{ singleuser.resources.limits['memory'] }}"
+        {% endif %}
+      {% endif %}
+      volumeMounts:
+      - mountPath: {{ singleuser.storage.homeMountPath }}
+        name: home-pvc
+  {% endfor %}
+  - name: dag
+    dag:
+      tasks:
+      {% for job in workflow.jobs %}
+      - name: {{ job['name'] }}
+        template: {{ job['name'] }}
+        dependencies: {{ job['dependencies']}}
+      {% endfor %}
+  volumes:
+  - name: home-pvc
+    persistentVolumeClaim:
+      claimName: {{ singleuser.storage.homePvcName }}
+  {%- if nodeSelector -%}
+  {{ nodeSelector }}
+  {% endif %}

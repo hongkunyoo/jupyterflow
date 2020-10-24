@@ -1,4 +1,4 @@
-import os
+import os, re
 from setuptools import setup, find_packages
 
 # Utility function to read the README file.
@@ -18,27 +18,29 @@ requires = [
     'PyYAML',
     'kubernetes',
     'Jinja2',
-    'requests'
+    'requests',
+    'click'
 ]
 
 def get_version():
-    init = open(os.path.join(ROOT, 'jupytermoon', '__init__.py')).read()
+    init = open(os.path.join(ROOT, 'jupyterflow', '__init__.py')).read()
     return VERSION_RE.search(init).group(1)
 
 
 setup(
-    name="jupytermoon",
+    name="jupyterflow",
     version=get_version(),
     author="hongkunyoo",
     author_email="hongkunyoo@gmail.com",
-    description="Run your ML pipeline with jupytermoon",
+    description="Run your ML workflow with jupyterflow",
     long_description=read('README.md'),
     long_description_content_type="text/markdown",
-    url='https://github.com/hongkunyoo/jupytermoon',
+    url='https://github.com/hongkunyoo/jupyterflow',
     license="BSD 3-Clause",
     keywords="ctl, jupyterhub, pipeline, ML",
     packages=find_packages(),
+    # package_data={'jupyterflow': ['templates/*']},
     install_requires=requires,
     include_package_data=True,
-    scripts=['bin/jupytermoon']
+    scripts=['bin/jupyterflow']
 )

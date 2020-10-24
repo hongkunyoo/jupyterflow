@@ -1,15 +1,15 @@
-# jupytermoon
+# jupyterflow
 
-ML pipeline on JupyterHub
+Run workflow on JupyterHub
 
-## What is jupytermoon
+## What is jupyterflow
 
 Run [Argo Workflow](https://argoproj.github.io/argo) pipeline on JupyterHub with single command!
 
 #### For Users
 - No Kubernetes knowledge (YAML) need.
 - No container build & push or deploy.
-- Just run pipeline with single command `jupytermoon`!
+- Just run pipeline with single command `jupyterflow`!
 
 #### For MLOps Engineer
 
@@ -27,14 +27,22 @@ Although, You need to know Kubernetes to set its up, But it is...
 
 
 
-### Install jupytermoon
+### Install jupyterflow
 
 
 
-### Run Pipeline
+### Run Workflow
 
 ```bash
-jupytermoon run python train.py
+jupyterflow run python train.py
+```
+
+```bash
+jupyterflow create -c "python main.py >> python train.py"
+```
+
+```bash
+jupyterflow create -f workflow.yaml
 ```
 
 
@@ -47,15 +55,9 @@ dags:
 - 1 >> 2
 ```
 
-
-```bash
-jupytermoon run -f workflow.yaml
-```
-
 ### Go to Argo Workflow Web
 
 ![]()
-
 
 
 ## How does it work?

@@ -1,1 +1,2 @@
 include templates/*
+recursive-include jupytermoon/templates *
