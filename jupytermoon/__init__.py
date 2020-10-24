@@ -18,59 +18,39 @@ from jinja2 import BaseLoader
 from jinja2 import Environment
 
 
-CONFIG_FILE = '/home/jovyan/.isctl.yaml'
+__author__ = 'hongkunyoo'
+__version__ = '0.0.1'
 
-WF_TEMPLATE = \
-"""
-apiVersion: argoproj.io/v1alpha1
-kind: Workflow
-metadata:
-  generateName: wf-
-  namespace: notebook
-spec:
-  entrypoint: dag
-  templates:
-  {% for job in jobs %}
-  - name: {{ job['name'] }}
-    container:
-      image: cart.lge.com/lgebigdata/single-user:ssh
-      command: {{ job['command'] }}
-      workingDir: {{ workingDir }}
-      securityContext:
-        runAsUser: {{ runAsUser }}
-      env:
-      - name: JUPYTERHUB_USER
-        value: {{ username }}
-      - name: PATH
-        value: {{ PATH }}
-      resources:
-        limits:
-          cpu: "{{ limits['cpu'] }}"
-          memory: "{{ limits['memory'] }}"
-      volumeMounts:
-      - mountPath: /home/jovyan
-        name: home-vol
-      - mountPath: /nas001
-        name: nas001
-  {% endfor %}
-  - name: dag
-    dag:
-      tasks:
-      {% for job in jobs %}
-      - name: {{ job['name'] }}
-        template: {{ job['name'] }}
-        dependencies: {{ job['dependencies']}}
-      {% endfor %}
-  volumes:
-  - name: home-vol
-    persistentVolumeClaim:
-      claimName: claim-{{ escaped_name }}
-  - name: nas001
-    persistentVolumeClaim:
-      claimName: nas001
-  nodeSelector:
-   isctl: "true"
-"""
+# try:
+#     import importlib.resources as pkg_resources
+# except ImportError:
+#     # Try backported to PY<37 `importlib_resources`.
+#     import importlib_resources as pkg_resources
+
+# from . import templates
+
+
+
+
+# template = pkg_resources.read_text(templates, 'workflow.yaml')
+# print(template)
+
+# template = pkg_resources.open_text(templates, 'workflow.yaml')
+# print(template)
+
+
+
+import pkgutil
+
+data = pkgutil.get_data(__name__, "templates/workflow.yaml")
+
+print(type(data))
+print(data)
+
+
+# CONFIG_FILE = '/home/jovyan/.isctl.yaml'
+
+
 
 
 CRON_WF_TEMPLATE = \
@@ -457,10 +437,10 @@ def data_upload():
     default_config = _load_config()
 
     bucket = os.environ['JUPYTERHUB_USER']
-    dm_endpoint = default_config.get('datamart_endpoint', "https://minio.lgebigdata.com")
-    access_key = default_config.get('access_key', "splunk")
-    secret_key = default_config.get('secret_key', "!234qwer")
-    region_name = default_config.get('region_name', "ap-northeast-2")
+    dm_endpoint = default_config.get('datamart_endpoint', "")
+    access_key = default_config.get('access_key', "")
+    secret_key = default_config.get('secret_key', "")
+    region_name = default_config.get('region_name', "")
 
     client = boto3.client(service_name='s3', \
         region_name=region_name, \
@@ -489,7 +469,7 @@ def data_upload():
                     print(e)
 
 
-if __name__ == "__main__":
-    component = sys.argv[1]
-    func = sys.argv[2]
-    eval("%s_%s" % (component, func))()
+# if __name__ == "__main__":
+#     component = sys.argv[1]
+#     func = sys.argv[2]
+#     eval("%s_%s" % (component, func))()
