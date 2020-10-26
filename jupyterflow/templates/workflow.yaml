@@ -1,51 +1,70 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: {{ workflow.name }}
+  generateName: {{ workflow['name'] | default("jupyterflow", true) }}-
 spec:
   entrypoint: dag
   templates:
-  {% for job in workflow.jobs %}
+  {%- for job in workflow.jobs %}
   - name: {{ job['name'] }}
+    {% if singleuser['serviceAccountName'] -%}
+    serviceAccountName: {{ singleuser['serviceAccountName'] }}
+    {%- endif %}
     container:
-      image: {{ singleuser['image'] }}
+      image: {{ runtime['image'] }}
       command: {{ job['command'] }}
-      workingDir: {{ workingDir }}
+      workingDir: {{ runtime['workingDir'] }}
+      imagePullPolicy: {{ singleuser['image']['pullPolicy'] | default('Always', true)}}
+      {%- if singleuser['image']['secret'] -%}
+      imagePullSecret: 
+      - name: {{ singleuser['image']['secret'] }}
+      {%- endif %}
       securityContext:
-        runAsUser: {{ singleuser.runAsUser }}
-        runAsGroup: {{ singleuser.runAsGroup }}
-        fsGroup: {{ singleuser.fsGid }}
+        runAsUser: {{ runtime['runAsUser'] }}
+        runAsGroup: {{ runtime['runAsGroup'] }}
       env:
       - name: JUPYTERHUB_USER
-        value: {{ username }}
+        value: {{ runtime['env']['JUPYTERHUB_USER'] }}
+      - name: NB_USER
+        value: {{ runtime['env']['NB_USER'] }}
       - name: PATH
-        value: {{ PATH }}
-      {%- if singleuser.env -%}
-      {%- for k, v in singleuser.env.items() -%}
+        value: {{ runtime['env']['PATH'] }}
+      - name: HOME
+        value: {{ runtime['env']['HOME'] }}
+      {%- if singleuser['env'] -%}
+      {%- for k, v in singleuser['env'].items() %}
       - name: {{ k }}
-        value: {{ v }}
-      {% endfor %}
-      {%- if singleuser.resources -%}
-      resources:
-        {%- if singleuser.resources.requests -%}
-        requests:
-          cpu: "{{ singleuser.resources.requests['cpu'] }}"
-          memory: "{{ singleuser.resources.requests['memory'] }}"
-        {% endif %}
-        {%- if singleuser.resources.limits -%}
-        limits:
-          cpu: "{{ singleuser.resources.limits['cpu'] }}"
-          memory: "{{ singleuser.resources.limits['memory'] }}"
-        {% endif %}
+        value: "{{ v }}"
+      {%- endfor %}
       {% endif %}
+      {%- if singleuser['resources'] -%}
+      resources:
+        {%- if singleuser['resources']['requests'] %}
+        requests:
+          cpu: "{{ singleuser['resources']['requests']['cpu'] }}"
+          memory: "{{ singleuser['resources']['requests']['memory'] }}"
+        {%- endif -%}
+        {%- if singleuser['resources']['limits'] %}
+        limits:
+          cpu: "{{ singleuser['resources']['limits']['cpu'] }}"
+          memory: "{{ singleuser['resources']['limits']['memory'] }}"
+        {%- endif -%}
+      {%- endif %}
       volumeMounts:
-      - mountPath: {{ singleuser.storage.homeMountPath }}
+      - mountPath: "{{ runtime['env']['HOME'] }}"
         name: home-pvc
+      {%- if singleuser['volume']['extraVolumeMounts'] %}
+      {%- for v in singleuser['volume']['extraVolumeMounts'] %}
+      - name: {{ v['name'] }}
+        mountPath: {{ v['mountPath'] }}
+      {%- endfor %}
+      {%- endif %}
+      
   {% endfor %}
   - name: dag
     dag:
       tasks:
-      {% for job in workflow.jobs %}
+      {% for job in workflow['jobs'] %}
       - name: {{ job['name'] }}
         template: {{ job['name'] }}
         dependencies: {{ job['dependencies']}}
@@ -53,7 +72,15 @@ spec:
   volumes:
   - name: home-pvc
     persistentVolumeClaim:
-      claimName: {{ singleuser.storage.homePvcName }}
-  {%- if nodeSelector -%}
-  {{ nodeSelector }}
+      claimName: {{ singleuser['volume']['homePvcName'] | default('claim-{username}', true) }}
+  {%- if singleuser['volume']['extraVolumeMounts'] %}
+  {%- for v in singleuser['volume']['extraVolumes'] %}
+  - {{ v | to_nice_yaml | indent }}
+  {%- endfor %}
+  {%- endif %}
+  {%- if singleuser['nodeSelector'] %}
+  nodeSelector:
+  {%- for k, v in singleuser['nodeSelector'].items() %}
+    {{ k }}: "{{ v }}"
+  {%- endfor %}
   {% endif %}

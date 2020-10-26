@@ -1,11 +1,13 @@
 
-
 import pkgutil
-# def main():
-#     print('load driver')
-#     data = pkgutil.get_data(__name__, "templates/workflow.yaml")
 
-#     print(data)
+from jinja2 import Template
+from jinja2 import Environment, BaseLoader, PackageLoader
+
+
+def get_template(name):
+    env = Environment(loader=PackageLoader('jupyterflow', 'templates'), extensions=['jinja2_ansible_filters.AnsibleCoreFiltersExtension'])
+    return env.get_template(name)
 
 
 

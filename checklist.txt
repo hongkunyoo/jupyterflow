@@ -1,0 +1,3 @@
+1. jupyterHub에 serviceAccount 추가
+2. Argo workflow가 jh와 동일한 NS에 설치되어야 함.
+3. 해보니깐 꼭 ReadWriteMany 아니여도 됨

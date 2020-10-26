@@ -1,0 +1,83 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: jupyterflow-
+spec:
+  entrypoint: dag
+  templates:
+  - name: job-1
+    serviceAccountName: default
+    container:
+      image: jupyter/datascience-notebook:latest
+      command: ['python', 'main.py', 'abc']
+      workingDir: /home/jovyan/jupyterflow
+      imagePullPolicy: Always
+      securityContext:
+        runAsUser: 2000
+        runAsGroup: 100
+        fsGroup: 100
+      env:
+      - name: JUPYTERHUB_USER
+        value: admin
+      - name: NB_USER
+        value: jovyan
+      - name: PATH
+        value: /home/jovyan/.local/bin:/home/jovyan/miniconda3/bin:/home/jovyan/miniconda3/condabin:/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      - name: HOME
+        value: /home/jovyan
+      - name: hello
+        value: "work"
+      - name: GRANT_SUDO
+        value: "yes"
+      
+      volumeMounts:
+      - mountPath: "/home/jovyan"
+        name: home-pvc
+      
+  
+  - name: job-2
+    serviceAccountName: default
+    container:
+      image: jupyter/datascience-notebook:latest
+      command: ['python', 'train.py', 'abc']
+      workingDir: /home/jovyan/jupyterflow
+      imagePullPolicy: Always
+      securityContext:
+        runAsUser: 2000
+        runAsGroup: 100
+        fsGroup: 100
+      env:
+      - name: JUPYTERHUB_USER
+        value: admin
+      - name: NB_USER
+        value: jovyan
+      - name: PATH
+        value: /home/jovyan/.local/bin:/home/jovyan/miniconda3/bin:/home/jovyan/miniconda3/condabin:/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      - name: HOME
+        value: /home/jovyan
+      - name: hello
+        value: "work"
+      - name: GRANT_SUDO
+        value: "yes"
+      
+      volumeMounts:
+      - mountPath: "/home/jovyan"
+        name: home-pvc
+      
+  
+  - name: dag
+    dag:
+      tasks:
+      
+      - name: job-1
+        template: job-1
+        dependencies: []
+      
+      - name: job-2
+        template: job-2
+        dependencies: ['job-1']
+      
+  volumes:
+  - name: home-pvc
+    persistentVolumeClaim:
+      claimName: claim-admin

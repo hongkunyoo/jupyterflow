@@ -1,0 +1,43 @@
+# singleuser:
+#   tolerations: []
+#   nodeSelector: {}
+#   nodeAffinity:
+#     required: []
+#     preferred: []
+#   podAffinity:
+#     required: []
+#     preferred: []
+#   podAntiAffinity:
+#     required: []
+#     preferred: []
+#   annotations: {}
+#   labels:
+#     username: "{username}"
+#   env:
+#     ENV_KEY1: "ENV_VALUE1"
+#     GRANT_SUDO: "yes"
+#   runAsUser: 1000
+#   runAsGroup: 100
+#   fsGroup: 100
+#   serviceAccountName: default
+#   storage:
+#     homePvcName: claim-{username}--{servername}
+#     extraVolumes:
+#     - name: nas001
+#       persistentVolumeClaim:
+#         claimName: nas001
+#     extraVolumeMounts:
+#     - name: nas001
+#       mountPath: /nas001
+#   image:
+#     name: jupyter/datascience-notebook:latest
+#     pullPolicy: Always
+#   imagePullSecret:
+#     name: "default"
+#   resources:
+#     requests:
+#       cpu: 500m
+#       memory: 500Mi
+#     limits:
+#       cpu: 500m
+#       memory: 500Mi

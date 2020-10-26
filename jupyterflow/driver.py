@@ -2,38 +2,60 @@ import os
 import click
 import yaml
 import jinja2
+
+import pwd
+import pkgutil
+
 from . import config_loader
+from . import utils
+from . import render
 
 @click.group()
 def main():
     pass
 
-@main.command()
-@click.argument('command', nargs=-1)
-def run(command):
-    print(command)
-    
 
 @main.command()
-@click.option('-f', help='workflow.yaml', default=None)
-@click.option('-c', help='python train.py', default=None)
-def create(f, c):
+@click.option('--generate-config/--no', help='Generate config', default=False)
+def config(generate_config):
+    data = pkgutil.get_data(__name__, "templates/jupyterflow.yaml")
+    home = os.environ['HOME']
+    path = os.path.join(home, '.jupyterflow.yaml')
+    with open(path, 'wt') as f:
+        f.write(data.decode('utf-8'))
+
+
+
+@main.command()
+@click.option('-f', help='Path for workflow.yaml file', default=None)
+@click.option('-c', help="Command to run workflow ex) jupyterflow create -c 'python main.py >> python next.py'", default=None)
+@click.option('--dry-run/--', help='Only print Argo Workflow object, without accually sending it', default=False)
+def run(f, c, dry_run):
     if f is None and c is None:
         raise Exception()
 
     if not os.path.isfile(f):
         raise Exception("No such file %s" % f)
 
-    with open(f) as f:
-        user_workflow = yaml.safe_load(f)
+    with open(f) as ff:
+        user_workflow = yaml.safe_load(ff)
 
-    default_config = config_loader.load_config()
-    wf = build_workflow(user_workflow, default_config)
-    _run_workflow(wf)
+    workingDir = os.path.dirname(os.path.abspath(f))
+
+    # load config
+    config = config_loader.load_config()
+
+    wf = build_workflow(user_workflow, config, workingDir)
+    # os.system("cat << EOF | kubectl create -f -\n%s\nEOF" % wf)
+    if dry_run:
+        print('dry_run!')
+
+    print(wf)
+    # _run_workflow(wf)
 
 
 
-def build_workflow(wf, config):
+def build_workflow(wf, config, workingDir):
     jobs = wf['jobs']
     d = dict(zip(range(1,len(jobs)+1), jobs))
     dags = wf.get('dags', [])
@@ -46,10 +68,6 @@ def build_workflow(wf, config):
         pre, pro = dag.replace(' ', '').split('>>')
         resolve_tree['job-' + pro].append('job-' + pre)
 
-    username = os.environ['JUPYTERHUB_USER']
-    import utils
-    escaped_username = utils.get_escaped_user(username)
-    
     wf_jobs = []
     for i, j in enumerate(jobs):
         job = {}
@@ -62,23 +80,67 @@ def build_workflow(wf, config):
             job['dependencies'] = []
         wf_jobs.append(job)
 
-    runAsUser = os.getuid()
 
-    wf = {}
-    wf['jobs'] = wf_jobs
-    wf['name'] = 'plz'
+    runtime = get_runtime_informations()
+    runtime['workingDir'] = workingDir
+
+
+    workflow = {}
+    workflow['jobs'] = wf_jobs
+    # workflow['name'] = 'plz-'
 
     singleuser = config['singleuser']
-    username = 'hongkun.yoo'
-    workingDir = 'MYWORKDIR'
-    PATH = os.environ['PATH']
     
-    templateLoader = jinja2.FileSystemLoader(searchpath="templates")
-    templateEnv = jinja2.Environment(loader=templateLoader)
-    TEMPLATE_FILE = "workflow.yaml"
-    template = templateEnv.get_template(TEMPLATE_FILE)
-    # template = Environment(loader=BaseLoader).from_string(WF_TEMPLATE)
-    print(template.render(**wf))
+    escaped_username = utils.get_escaped_user(os.environ['JUPYTERHUB_USER'])
+    NB_USER = os.environ['NB_USER']
+
+
+    # override runtime by configs
+    if 'name' in wf:
+        workflow['name'] = wf['name']
+    
+    if 'image' in singleuser:
+        if 'name' in singleuser['image']:
+            runtime['image'] = singleuser['image']['name']
+    if 'runAsUser' in singleuser:
+        runtime['runAsUser'] = singleuser['runAsUser']
+    if 'runAsGroup' in singleuser:
+        runtime['runAsGroup'] = singleuser['runAsGroup']
+    if 'workingDir' in singleuser:
+        runtime['workingDir'] = singleuser['workingDir']
+
+    template = render.get_template('workflow.yaml')
+    rendered = template.render(workflow=workflow, \
+                                singleuser=singleuser, \
+                                runtime=runtime, \
+                            ).format(username=escaped_username, nb_user=NB_USER)
+    return rendered
+
+
+
+def get_runtime_informations():
+    NB_USER = os.environ['NB_USER']
+    JUPYTERHUB_USER = os.environ['JUPYTERHUB_USER']
+    PATH = os.environ['PATH']
+    JUPYTER_IMAGE_SPEC = os.environ['JUPYTER_IMAGE_SPEC']
+    HOME = os.environ['HOME']
+    
+    nb_user_pwd = pwd.getpwnam(NB_USER)
+    runAsUser = nb_user_pwd.pw_uid
+    runAsGroup = nb_user_pwd.pw_gid
+
+    runtime = {}
+    runtime['env'] = {}
+    runtime['env']['JUPYTERHUB_USER'] = JUPYTERHUB_USER
+    runtime['env']['PATH'] = PATH
+    runtime['env']['NB_USER'] = NB_USER
+    runtime['env']['HOME'] = HOME
+
+    runtime['image'] = JUPYTER_IMAGE_SPEC
+    runtime['runAsUser'] = runAsUser
+    runtime['runAsGroup'] = runAsGroup
+
+    return runtime
 
 
 
