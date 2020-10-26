@@ -14,10 +14,10 @@ spec:
       image: {{ runtime['image'] }}
       command: {{ job['command'] }}
       workingDir: {{ runtime['workingDir'] }}
-      imagePullPolicy: {{ singleuser['image']['pullPolicy'] | default('Always', true)}}
-      {%- if singleuser['image']['secret'] -%}
+      imagePullPolicy: {{ singleuser.get('image', {})['pullPolicy'] | default('Always', true) }}
+      {%- if singleuser.get('image', {})['secret'] -%}
       imagePullSecret: 
-      - name: {{ singleuser['image']['secret'] }}
+      - name: {{ singleuser.get('image',{})['secret'] }}
       {%- endif %}
       securityContext:
         runAsUser: {{ runtime['runAsUser'] }}
@@ -53,7 +53,7 @@ spec:
       volumeMounts:
       - mountPath: "{{ runtime['env']['HOME'] }}"
         name: home-pvc
-      {%- if singleuser['volume']['extraVolumeMounts'] %}
+      {%- if singleuser.get('volume', {})['extraVolumeMounts'] %}
       {%- for v in singleuser['volume']['extraVolumeMounts'] %}
       - name: {{ v['name'] }}
         mountPath: {{ v['mountPath'] }}
@@ -72,8 +72,8 @@ spec:
   volumes:
   - name: home-pvc
     persistentVolumeClaim:
-      claimName: {{ singleuser['volume']['homePvcName'] | default('claim-{username}', true) }}
-  {%- if singleuser['volume']['extraVolumeMounts'] %}
+      claimName: {{ singleuser.get('volume', {})['homePvcName'] | default('claim-{username}', true) }}
+  {%- if singleuser.get('volume', {})['extraVolumeMounts'] %}
   {%- for v in singleuser['volume']['extraVolumes'] %}
   - {{ v | to_nice_yaml | indent }}
   {%- endfor %}

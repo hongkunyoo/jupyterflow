@@ -3,12 +3,16 @@ import click
 import yaml
 import jinja2
 
+from click import ClickException
+
 import pwd
 import pkgutil
 
 from . import config_loader
 from . import utils
 from . import render
+from . import k8s_client
+
 
 @click.group()
 def main():
@@ -32,26 +36,37 @@ def config(generate_config):
 @click.option('--dry-run/--', help='Only print Argo Workflow object, without accually sending it', default=False)
 def run(f, c, dry_run):
     if f is None and c is None:
-        raise Exception()
+        raise ClickException("Provide either `-f` or `-c` option")
 
-    if not os.path.isfile(f):
-        raise Exception("No such file %s" % f)
+    if c is not None:
+        jobs = list(map(lambda s: s.strip(), c.split('>>')))
+        dags = []
+        for i, j in enumerate(jobs):
+            if i == len(jobs) -1:
+                break
+            dags.append(">>".join([str(i+1), str(i+2)]))
+        user_workflow = {}
+        user_workflow['jobs'] = jobs
+        user_workflow['dags'] = dags
+        workingDir = os.getcwd()
+    else:
+        if not os.path.isfile(f):
+            raise ClickException("No such file %s" % f)
 
-    with open(f) as ff:
-        user_workflow = yaml.safe_load(ff)
-
-    workingDir = os.path.dirname(os.path.abspath(f))
-
+        with open(f) as ff:
+            user_workflow = yaml.safe_load(ff)
+        workingDir = os.path.dirname(os.path.abspath(f))
+    
     # load config
     config = config_loader.load_config()
 
     wf = build_workflow(user_workflow, config, workingDir)
     # os.system("cat << EOF | kubectl create -f -\n%s\nEOF" % wf)
     if dry_run:
-        print('dry_run!')
-
-    print(wf)
-    # _run_workflow(wf)
+        print(wf)
+    else:  
+        response = _run_workflow(wf)
+        print(response['metadata']['name'])
 
 
 
@@ -89,7 +104,7 @@ def build_workflow(wf, config, workingDir):
     workflow['jobs'] = wf_jobs
     # workflow['name'] = 'plz-'
 
-    singleuser = config['singleuser']
+    singleuser = config.get('singleuser', {})
     
     escaped_username = utils.get_escaped_user(os.environ['JUPYTERHUB_USER'])
     NB_USER = os.environ['NB_USER']
@@ -117,7 +132,6 @@ def build_workflow(wf, config, workingDir):
     return rendered
 
 
-
 def get_runtime_informations():
     NB_USER = os.environ['NB_USER']
     JUPYTERHUB_USER = os.environ['JUPYTERHUB_USER']
@@ -143,11 +157,9 @@ def get_runtime_informations():
     return runtime
 
 
-
-
 def _run_workflow(workflow):
-    wf = config_loader.load_config(workflow)
-    rendered = render.render(wf)
-    yaml_body = yaml.safe_load(rendered)
-    response = k8s_client.create_object('workflows', yaml_body)
-    print(response)
+    with open('/var/run/secrets/kubernetes.io/serviceaccount/namespace') as f:
+        ns = f.read()
+    
+    yaml_body = yaml.safe_load(workflow)
+    return k8s_client.create_object('workflows', yaml_body, ns)
