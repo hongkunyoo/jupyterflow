@@ -3,5 +3,7 @@ PyYAML
 kubernetes
 Jinja2
 requests
-boto3
-smart_open
+click
+jinja2-ansible-filters
+jsonpath-ng
+mkdocs

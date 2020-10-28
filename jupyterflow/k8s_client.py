@@ -1,11 +1,12 @@
+import json
+import yaml
 
 from kubernetes import config
-import kubernetes.client
-from kubernetes import client, config
-from kubernetes.client import Configuration
+from kubernetes import client
 
 
-def create_object(plural, body, namespace):
+def create_object(plural, wf, namespace):
+    body = yaml.safe_load(wf)
     group, version = body['apiVersion'].split('/')
 
     config.load_incluster_config()
@@ -13,3 +14,12 @@ def create_object(plural, body, namespace):
     response = api_instance.create_namespaced_custom_object(group, version, namespace, plural, body)
     
     return response
+
+
+def get_notebook_pod(escaped_username, namespace):
+    config.load_incluster_config()
+    api_instance = client.CoreV1Api()
+    label_selector = 'jupyterflow/username=%s' % escaped_username
+    response = api_instance.list_namespaced_pod(namespace, label_selector=label_selector, _preload_content=False)
+    
+    return json.loads(response.data)['items'][0]

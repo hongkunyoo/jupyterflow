@@ -19,7 +19,9 @@ requires = [
     'kubernetes',
     'Jinja2',
     'requests',
-    'click'
+    'click',
+    'jinja2-ansible-filters',
+    'jsonpath-ng'
 ]
 
 def get_version():
@@ -32,7 +34,7 @@ setup(
     version=get_version(),
     author="hongkunyoo",
     author_email="hongkunyoo@gmail.com",
-    description="Run your ML workflow with jupyterflow",
+    description="Run your workflow on JupyterHub",
     long_description=read('README.md'),
     long_description_content_type="text/markdown",
     url='https://github.com/hongkunyoo/jupyterflow',

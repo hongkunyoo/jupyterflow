@@ -1,147 +1,227 @@
 # jupyterflow
 
-Run workflow on JupyterHub
+Run your workflow on JupyterHub!
 
-## What is jupyterflow
+## What is jupyterflow?
 
-Run [Argo Workflow](https://argoproj.github.io/argo) pipeline on JupyterHub with single command!
+Run [Argo Workflow](https://argoproj.github.io/argo) pipeline on [JupyterHub.](https://jupyter.org/hub)
 
-#### For Users
-- No Kubernetes knowledge (YAML) need.
+- No Kubernetes knowledge (YAML) needed to run.
 - No container build & push or deploy.
-- Just run pipeline with single command `jupyterflow`!
+- Just run workflow with single command `jupyterflow`!
 
-#### For MLOps Engineer
+`jupyterflow` is a command that helps user utilize Argo Workflow engine without making YAML files or building containers on JupyterHub.
 
-Although, You need to know Kubernetes to set its up, But it is...
+The `jupyterflow` command will make following sequence workflow.
 
-- Easy to deploy ML jobs.
-- 
+```bash
+jupyterflow run -c "python input.py >> python train.py"
+```
 
-
+![docs/images/intro.png]
 
 ## Get Started
 
-### Prerequisite
+Although using `jupyterflow` does not require Kubernetes knowledge, you need to know Kubernetes to `jupyterflow` to work. If you're familiar with Kubernetes, it will not be too hard. 
 
+This project only works on [JupyterHub for Kubernetes.](https://zero-to-jupyterhub.readthedocs.io/en/latest)
 
+### Install Kubernetes
 
+Any Kubernetes distributions will work. `Zero to JupyterHub` has a wonderful [guide for setting up Kubernetes.](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-kubernetes) 
+
+### Install JupyterHub
+
+Also Follow the `Zero to JupyterHub` [guideline to set up JupyterHub.](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub)
+
+There is one thing you should configure to use jupyterflow.
+
+#### Specify serviceAccoutName
+
+You need to specify `serviceAccoutName` in `singleuser`. This serviceAccount will be used to create  Argo `Workflow` object on behalf of you.
+For example, use `default` service account.
+
+```yaml
+singleuser:
+  serviceAccountName: default
+```
+
+### Install Argo Workflow
+
+Install Argo workflow with this [page](https://argoproj.github.io/argo/quick-start)
+
+:warning:
+> WARNING: You need to install Argo workflow in the same Kubernetes namespace where JupyterHub is installed!
+
+For example, 
+
+```bash
+# create namespace jupyterflow
+kubectl create ns jupyterflow
+
+# install jupyterhub in jupyterflow
+helm install jh jupyterhub/jupyterhub --namespace jupyterflow
+
+# install argo workflow in jupyterflow
+kubectl apply --namespace jupyterflow -f https://raw.githubusercontent.com/argoproj/argo/stable/manifests/quick-start-postgres.yaml
+```
+
+### Expose Argo Workflow UI
+
+Expose Web UI for Argo Workflow: https://argoproj.github.io/argo/argo-server/
+
+### Grant Kubernetes ServiceAccount RBAC
+
+Grant serviceaccount the ability to create Argo Workflow objects.
+
+#### Options 1)
+
+The simplest way to grant service account is to bind `cluster-admin` role. For example, if you deployed JupyterHub in `jupyterflow` namespace and specify service account as `default`
+
+```bash
+# --serviceaccount=<NAMESPACE>:<SERVICE_ACCOUNT>
+kubectl create clusterrolebinding jupyterflow-admin --clusterrole=cluster-admin --serviceaccount=jupyterflow:default
+```
+
+#### Options 2)
+
+First, Create Workflow Role in the namespace where JupyterHub is installed.
+
+```bash
+cat << EOF | kubectl create -n jupyterflow -f -
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: workflow-role
+rules:
+# pod get/watch is used to identify the container IDs of the current pod
+# pod patch is used to annotate the step's outputs back to controller (e.g. artifact location)
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - watch
+  - patch
+# logs get/watch are used to get the pods logs for script outputs, and for log archival
+- apiGroups:
+  - ""
+  resources:
+  - pods/log
+  verbs:
+  - get
+  - watch
+EOF
+```
+
+Then, bind Role to serviceAccount. For example, `default` service account in `jupyterflow` namespace.
+
+```bash
+kubectl create rolebinding workflow-rb --role=workflow-role --serviceaccount=jupyterflow:default -n jupyterflow
+```
+
+You might want to look at [https://argoproj.github.io/argo/service-accounts](https://argoproj.github.io/argo/service-accounts)
 
 ### Install jupyterflow
 
+Finally, install `jupyterflow` using pip.
 
+```bash
+pip install jupyterflow
+```
 
 ### Run Workflow
 
-```bash
-jupyterflow create -c "python main.py >> python train.py"
+### Run by command
+
+Go to JupyterHub, launch notebook server. Write your own code.
+
+```python
+# input.py
+print('hello')
+
+# train.py
+print('world')
 ```
 
+Run following command for sequence workflow.
+
 ```bash
-jupyterflow create -f workflow.yaml
+jupyterflow run -c "python input.py >> python train.py"
 ```
 
+Go to Argo Web UI and check out the output workflow.
+
+![](docs/images/intro.png)
+
+
+### Run by workflow.yaml
+
+if you want to run more sophisticated workflow, such as DAG (Directed Acyclic Graph), write your workflow on file (for example, `workflow.yaml`, the name doen't matter)
+
+```python
+# output.py
+print('again!')
+```
 
 ```yaml
 # workflow.yaml
 jobs:
 - python input.py 
 - python train.py
+- python train.py
+- python output.py
 
 dags:
 - 1 >> 2
+- 1 >> 3
+- 2 >> 4
+- 3 >> 4
 ```
 
-### Go to Argo Workflow Web
+```bash
+jupyterflow run -f workflow.yaml
+```
 
-![]()
+![](docs/images/dag.png)
+
 
 
 ## How does it work?
 
-그럼 넣기
+![](docs/images/architecture.png)
+
+`jupyterflow` simply reads jupyter server `Pod` object to get all kinds of metadata, and reconstruct to `Workflow` object.
+
+`jupyterflow` uses following metadata from `Pod`
+- Container image
+- Environment variables
+- Home directory (home `PersistentVolumeClaim`)
+- Extra volume mount points
+- Resource management (`requests`, `limits`)
+- UID, GUID
 
 
-
-
-
-## Configuration
+## `workflow.yaml` file Configuration
 
 ```yaml
-# $HOME/.jupyterflow.yaml
-workflow:
-  name: jupyterflow
-singleuser:
-  image:
-    name: jupyter/datascience-notebook:latest
-    pullPolicy: Always
-    secret: "default"
-  resources:
-    requests:
-      cpu: 400m
-      memory: 400Mi
-    limits:
-      cpu: 400m
-      memory: 400Mi
-  env:
-    CUSTOM_ENV: "value"
-  runAsUser: 1000
-  runAsGroup: 100
-  fsGroup: 100
-  nodeSelector: {}
-  serviceAccountName: default
-  storage:
-    homePvcName: claim-{username}
-    homeMountPath: /home/jovyan
-    extraVolumes:
-    - name: nas001
-      persistentVolumeClaim:
-        claimName: nas001
-    extraVolumeMounts:
-    - name: nas001
-      mountPath: /nas001
+# workflow.yaml
+name: workflow-name
+
+jobs:
+- python input.py
+- python train.py
+
+dags:
+- 1 >> 2
+
+schedule: '*/2 * * * *'
 ```
 
-
-### `workflow`
-
-- `name`: jupyterflow
-
-### `singlueuser`
-
-
-ethod | HTTP request | Description
-------------- | ------------- | -------------
-[**create_cluster_custom_object**](CustomObjectsApi.md#create_cluster_custom_object) | **POST** /apis/{group}/{version}/{plural} | 
-[**create_namespaced_custom_object**](CustomObjectsApi.md#create_namespaced_custom_object) | **POST** /apis/{group}/{version}/namespaces/{namespace}/{plural} | 
-[**delete_cluster_custom_object**](CustomObjectsApi.md#delete_cluster_custom_object) | **DELETE** /apis/{group}/{version}/{plural}/{name} | 
-[**delete_collection_cluster_custom_object**](CustomObjectsApi.md#delete_collection_cluster_custom_object) | **DELETE** /apis/{group}/{version}/{plural} | 
-[**delete_collection_namespaced_custom_object**](CustomObjectsApi.md#delete_collection_namespaced_custom_object) | **DELETE** /apis/{group}/{version}/namespaces/{namespace}/{plural} | 
-[**delete_namespaced_custom_object**](CustomObjectsApi.md#delete_namespaced_custom_object) | **DELETE** /apis/{group}/{version}/namespaces/{namespace}/{plural}/{name} | 
-[**get_cluster_custom_object**](CustomObjectsApi.md#get_cluster_custom_object) | **GET** /apis/{group}/{version}/{plural}/{name} | 
-[**get_cluster_custom_object_scale**](CustomObjectsApi.md#get_cluster_custom_object_scale) | **GET** /apis/{group}/{version}/{plural}/{name}/scale | 
-[**get_cluster_custom_object_status**](CustomObjectsApi.md#get_cluster_custom_object_status) | **GET** /apis/{group}/{version}/{plural}/{name}/status | 
-
-
-
-- `image.name`: current JupyterHub Server image
-- `image.pullPolicy`: Always
-- `image.secret`: default
-- `resources.requests`: None
-- `resources.limits`: None
-- `storage.homePvcName`: `claim-{username}`
-- `storage.homeMountPath`: `/home/jovyan`
-- `storage.extraVolumes`: 
-    - `Pod` Volumes Spec
-- `storage.extraVolumeMounts`: 
-    - `name`:
-    - `mountPath`: 
-- `env`: 
-    - `name`:
-    - `value`:
-- `nodeSelector`: {}
-- `runAsUser`: 1000
-- `runAsGroup`: 100
-- `fsGroup`: 100
-- `serviceAccountName`: default
-
+| Property  | Description                                                                | Optional  | Default                           |
+|-----------|----------------------------------------------------------------------------|-----------|-----------------------------------|
+|`name`     | Name of the workflow. This name will used for Argo `Workflow` object name. | Optional  | jupyterflow                       |
+|`jobs`     | Jobs to run. Any kinds of command will work. (Not just Python)             | Required  |                                   |
+|`dags`     | Job dependencies. Index starts at 1. (`$PREVIOUS_INDEX` >> `$NEXT_INDEX`)  | Optional  | All jobs parallel (No dependency) |
+|`schedule` | When to execute this workflow. Follows cron format.                        | Optional  | No schedule                       |
