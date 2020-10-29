@@ -415,19 +415,20 @@ ls -alh
 <span class="nb">echo</span> <span class="s2">&quot;Hello </span><span class="nv">$1</span><span class="s2">&quot;</span>
 </code></pre></div>
 
-<p>Run <code>jupyterflow</code> with <code>-c</code> option for simple command.</p>
+<p>Run <code>jupyterflow</code> with <code>-c</code> option for simple execution.</p>
 <div class="codehilite"><pre><span></span><code>jupyterflow run -c <span class="s2">&quot;bash hello.sh world &gt;&gt; echo &#39;good bye&#39;&quot;</span>
 </code></pre></div>
 
 <p>Go to Argo Web UI and check out the output of launched workflow.</p>
-<h2 id="run-by-workflowyaml">Run by workflow.yaml<a class="headerlink" href="#run-by-workflowyaml" title="Permanent link">&para;</a></h2>
+<p><img alt="" src="../../images/basic-seq.png" /></p>
+<h2 id="run-by-workflowyaml">Run by <code>workflow.yaml</code><a class="headerlink" href="#run-by-workflowyaml" title="Permanent link">&para;</a></h2>
 <p>Write <code>workflow.yaml</code> for parallel execution.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># workflow.yaml</span>
 <span class="nt">jobs</span><span class="p">:</span>
 <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">bash hello.sh world</span>
 <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">bash hello.sh bob</span>
 <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">bash hello.sh foo</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pwd</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ls</span>
 <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo &#39;jupyterflow is the best!&#39;</span>
 
 <span class="c1"># Job index starts at 1.</span>
@@ -443,6 +444,7 @@ ls -alh
 </code></pre></div>
 
 <p>Check out the result.</p>
+<p><img alt="" src="../../images/basic-wf.png" /></p>
                 
               
               

@@ -338,7 +338,7 @@
                 <h1 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h1>
 <p><img alt="" src="../images/architecture.png" /></p>
 <p><code>jupyterflow</code> has a strict constraint that it only works on <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest">JupyterHub for Kubernetes</a>.
-Because of this constraint, <code>jupyterflow</code> can easily collect current environment information (meta data).
+Because of this constraint, <code>jupyterflow</code> can easily collect current environment information (meta data) using given service account.
 With this information, <code>jupyterflow</code> constructs Argo <code>Workflow</code> object on behalf of you.</p>
 <p><code>jupyterflow</code> uses following metadata from jupyter notebook <code>Pod</code>.</p>
 <ul>
@@ -349,14 +349,14 @@ With this information, <code>jupyterflow</code> constructs Argo <code>Workflow</
 <li>Resource management (<code>requests</code>, <code>limits</code>)</li>
 <li>UID, GUID</li>
 </ul>
-<p>Following pseudo code helps you understand how <code>jupyterflow</code> works.</p>
+<p>Following pseudo code might help you understand how <code>jupyterflow</code> works.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># collect meta data of current environment.</span>
-<span class="n">pod_spec</span> <span class="o">=</span> <span class="n">get_current_pod_spec_from_k8s</span><span class="p">(</span><span class="n">pod_name</span><span class="p">,</span> <span class="n">service_account</span><span class="p">)</span>
+<span class="n">notebook_pod_spec</span> <span class="o">=</span> <span class="n">get_current_pod_spec_from_k8s</span><span class="p">(</span><span class="n">pod_name</span><span class="p">,</span> <span class="n">service_account</span><span class="p">)</span>
 
-<span class="c1"># build Workflow based on meta data and user workflow information</span>
-<span class="n">workflow_spec</span> <span class="o">=</span> <span class="n">build_workflow</span><span class="p">(</span><span class="n">pod_spec</span><span class="p">,</span> <span class="n">user_workflow_file</span><span class="p">)</span>
+<span class="c1"># build workflow based on meta data and user workflow information.</span>
+<span class="n">workflow_spec</span> <span class="o">=</span> <span class="n">build_workflow</span><span class="p">(</span><span class="n">notebook_pod_spec</span><span class="p">,</span> <span class="n">user_workflow_file</span><span class="p">)</span>
 
-<span class="c1"># create new workflow</span>
+<span class="c1"># create Argo workflow.</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">request_for_new_workflow_to_k8s</span><span class="p">(</span><span class="n">workflow_spec</span><span class="p">,</span> <span class="n">service_account</span><span class="p">)</span>
 </code></pre></div>
                 
