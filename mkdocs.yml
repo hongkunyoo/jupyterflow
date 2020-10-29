@@ -7,12 +7,12 @@ theme:
     primary: blue
   font:
     text: Work Sans
-google_analytics: []
+# google_analytics: []
 markdown_extensions:
   - codehilite
   - admonition
-  - pymdownx.superfences
-  - pymdownx.details
+  # - pymdownx.superfences
+  # - pymdownx.details
   - toc:
       permalink: true
 nav:
@@ -20,7 +20,7 @@ nav:
   - get-started.md
   - how-it-works.md
   - Examples:
-    - get-started.md
-    - ml-pipeline.md
+    - examples/basic.md
+    - examples/ml-pipeline.md
   - configuration.md
   - Releases ⧉: https://github.com/hongkunyoo/jupyterflow/releases
