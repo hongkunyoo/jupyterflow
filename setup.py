@@ -14,14 +14,13 @@ VERSION_RE = re.compile(r'''__version__ = ['"]([0-9.]+)['"]''')
 
 
 requires = [
-    'escapism',
-    'PyYAML',
-    'kubernetes',
-    'Jinja2',
-    'requests',
-    'click',
-    'jinja2-ansible-filters',
-    'jsonpath-ng'
+    'escapism>=1.0',
+    'PyYAML>=5.3',
+    'kubernetes>=12.0',
+    'Jinja2>=2.11',
+    'jinja2-ansible-filters>=1.3',
+    'click>=7.1',
+    'jsonpath-ng>=1.5'
 ]
 
 def get_version():
