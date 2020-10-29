@@ -13,7 +13,7 @@
     
     
       
-        <title>JupyterFlow - Run ML Pipeine on JupyterHub</title>
+        <title>JupyterFlow - Run your workflow on JupyterHub</title>
       
     
     
@@ -60,7 +60,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#jupyterflow-documentation" class="md-skip">
+        <a href="#jupyterflow" class="md-skip">
           Skip to content
         </a>
       
@@ -73,7 +73,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid" aria-label="Header">
-    <a href="." title="JupyterFlow - Run ML Pipeine on JupyterHub" class="md-header-nav__button md-logo" aria-label="JupyterFlow - Run ML Pipeine on JupyterHub">
+    <a href="." title="JupyterFlow - Run your workflow on JupyterHub" class="md-header-nav__button md-logo" aria-label="JupyterFlow - Run your workflow on JupyterHub">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -86,7 +86,7 @@
       
         <div class="md-header-nav__ellipsis">
           <span class="md-header-nav__topic md-ellipsis">
-            JupyterFlow - Run ML Pipeine on JupyterHub
+            JupyterFlow - Run your workflow on JupyterHub
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
@@ -160,13 +160,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="JupyterFlow - Run ML Pipeine on JupyterHub" class="md-nav__button md-logo" aria-label="JupyterFlow - Run ML Pipeine on JupyterHub">
+    <a href="." title="JupyterFlow - Run your workflow on JupyterHub" class="md-nav__button md-logo" aria-label="JupyterFlow - Run your workflow on JupyterHub">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
 
     </a>
-    JupyterFlow - Run ML Pipeine on JupyterHub
+    JupyterFlow - Run your workflow on JupyterHub
   </label>
   
     <div class="md-nav__source">
@@ -350,7 +350,7 @@
 
   <li class="md-nav__item">
     <a href="configuration/" class="md-nav__link">
-      Configuring workflow file
+      Configuring workflow
     </a>
   </li>
 
@@ -449,22 +449,25 @@
                   </a>
                 
                 
-                <h1 id="jupyterflow-documentation">JupyterFlow Documentation<a class="headerlink" href="#jupyterflow-documentation" title="Permanent link">&para;</a></h1>
+                <h1 id="jupyterflow">JupyterFlow<a class="headerlink" href="#jupyterflow" title="Permanent link">&para;</a></h1>
 <p>Run your workflow on JupyterHub!</p>
 <h2 id="what-is-jupyterflow">What is JupyterFlow?<a class="headerlink" href="#what-is-jupyterflow" title="Permanent link">&para;</a></h2>
-<p>Run <a href="https://argoproj.github.io/argo">Argo Workflow</a> pipeline on <a href="https://jupyter.org/hub">JupyterHub</a>.</p>
+<p>Run <a href="https://argoproj.github.io/argo">Argo Workflow</a> on <a href="https://jupyter.org/hub">JupyterHub</a> with single command.</p>
 <ul>
 <li>No Kubernetes knowledge (YAML) needed to run.</li>
-<li>No container build &amp; push or deploy.</li>
+<li>No container image build &amp; push or deploy.</li>
 <li>Just simply run your workflow with single command <code>jupyterflow</code>.</li>
 </ul>
 <p><code>jupyterflow</code> is a command that helps user utilize Argo Workflow engine without making any YAML files or building containers on JupyterHub.</p>
-<p>The following <code>jupyterflow</code> command will make sequence workflow.</p>
+<blockquote>
+<p>This project only works on <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest">JupyterHub for Kubernetes</a>.</p>
+</blockquote>
+<p>The following <code>jupyterflow</code> command will make sequence workflow. That's it!</p>
 <div class="codehilite"><pre><span></span><code>jupyterflow run -c <span class="s2">&quot;python hello.py &gt;&gt; python world.py&quot;</span>
 </code></pre></div>
 
-<p><img alt="" src="images/intro.png" /></p>
-<p>To make parallel workflow, write your own <a href="https://hongkunyoo.github.io/jupyterflow/configuration/"><code>workflow.yaml</code> file</a></p>
+<p><img alt="" src="https://raw.githubusercontent.com/hongkunyoo/jupyterflow/main/docs/images/intro.png" /></p>
+<p>To make parallel workflow, write your own <a href="https://hongkunyoo.github.io/jupyterflow/configuration/"><code>workflow.yaml</code></a> file.</p>
 <h2 id="problem-to-solve">Problem to solve<a class="headerlink" href="#problem-to-solve" title="Permanent link">&para;</a></h2>
 <ul>
 <li>I wanted to train multiple ML models efficiently.</li>
@@ -483,13 +486,13 @@
 </ul>
 <p><code>jupyterflow</code> aims to solve this problem.</p>
 <h2 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
-<p>To set up <code>jupyterflow</code> and start running your first workflow, follow the <a href="get-started/">Getting Started</a> guide.</p>
+<p>To set up <code>jupyterflow</code> and start running your first workflow, follow the <a href="https://hongkunyoo.github.io/jupyterflow/get-started">Getting Started</a> guide.</p>
 <h2 id="how-does-it-work">How does it work<a class="headerlink" href="#how-does-it-work" title="Permanent link">&para;</a></h2>
-<p>To learn how it works, go to <a href="how-it-works/">How it works</a> guide.</p>
+<p>To learn how it works, go to <a href="https://hongkunyoo.github.io/jupyterflow/how-it-works">How it works</a> guide.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
-<p>For examples how to use, please see <a href="examples/">Examples</a> page.</p>
+<p>For examples how to use, please see <a href="https://hongkunyoo.github.io/jupyterflow/examples">Examples</a> page.</p>
 <h2 id="workflow-file-configuration">Workflow file Configuration<a class="headerlink" href="#workflow-file-configuration" title="Permanent link">&para;</a></h2>
-<p>To find out more configuration, take a look at <a href="configuration/">Configuration</a> page.</p>
+<p>To find out more configuration, take a look at <a href="https://hongkunyoo.github.io/jupyterflow/configuration">Configuration</a> page.</p>
                 
               
               

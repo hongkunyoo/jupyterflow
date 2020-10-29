@@ -13,7 +13,7 @@
     
     
       
-        <title>Get Started - JupyterFlow - Run ML Pipeine on JupyterHub</title>
+        <title>Get Started - JupyterFlow - Run your workflow on JupyterHub</title>
       
     
     
@@ -73,7 +73,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid" aria-label="Header">
-    <a href=".." title="JupyterFlow - Run ML Pipeine on JupyterHub" class="md-header-nav__button md-logo" aria-label="JupyterFlow - Run ML Pipeine on JupyterHub">
+    <a href=".." title="JupyterFlow - Run your workflow on JupyterHub" class="md-header-nav__button md-logo" aria-label="JupyterFlow - Run your workflow on JupyterHub">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -86,7 +86,7 @@
       
         <div class="md-header-nav__ellipsis">
           <span class="md-header-nav__topic md-ellipsis">
-            JupyterFlow - Run ML Pipeine on JupyterHub
+            JupyterFlow - Run your workflow on JupyterHub
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
@@ -160,13 +160,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="JupyterFlow - Run ML Pipeine on JupyterHub" class="md-nav__button md-logo" aria-label="JupyterFlow - Run ML Pipeine on JupyterHub">
+    <a href=".." title="JupyterFlow - Run your workflow on JupyterHub" class="md-nav__button md-logo" aria-label="JupyterFlow - Run your workflow on JupyterHub">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
 
     </a>
-    JupyterFlow - Run ML Pipeine on JupyterHub
+    JupyterFlow - Run your workflow on JupyterHub
   </label>
   
     <div class="md-nav__source">
@@ -410,7 +410,7 @@
 
   <li class="md-nav__item">
     <a href="../configuration/" class="md-nav__link">
-      Configuring workflow file
+      Configuring workflow
     </a>
   </li>
 
@@ -674,8 +674,9 @@ kubectl create clusterrolebinding jupyterflow-admin <span class="se">\</span>
 
 <p>Go to Argo Web UI and check out the output of launched workflow.</p>
 <p><img alt="" src="../images/intro.png" /></p>
-<h3 id="run-by-workflowyaml">Run by workflow.yaml<a class="headerlink" href="#run-by-workflowyaml" title="Permanent link">&para;</a></h3>
-<p>If you want to run more sophisticated workflow, such as DAG (Directed Acyclic Graph), write your workflow on file (for example, <code>workflow.yaml</code>, the name doen't matter)</p>
+<h3 id="run-by-workflowyaml">Run by <code>workflow.yaml</code><a class="headerlink" href="#run-by-workflowyaml" title="Permanent link">&para;</a></h3>
+<p>If you want to run more sophisticated workflow, such as DAG (Directed Acyclic Graph), write your own workflow file (for example, <code>workflow.yaml</code>, the name doen't matter)</p>
+<p>For more information, check out <a href="../configuration/">Configuring workflow</a></p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># workflow.yaml</span>
 <span class="nt">jobs</span><span class="p">:</span>
 <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python job1.py</span> 
