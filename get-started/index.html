@@ -248,8 +248,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#specify-serviceaccoutname" class="md-nav__link">
-    Specify serviceAccoutName
+  <a href="#1-specify-serviceaccoutname" class="md-nav__link">
+    1) Specify serviceAccoutName
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-add-label" class="md-nav__link">
+    2) Add label
   </a>
   
 </li>
@@ -466,8 +473,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#specify-serviceaccoutname" class="md-nav__link">
-    Specify serviceAccoutName
+  <a href="#1-specify-serviceaccoutname" class="md-nav__link">
+    1) Specify serviceAccoutName
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-add-label" class="md-nav__link">
+    2) Add label
   </a>
   
 </li>
@@ -577,13 +591,21 @@
 <h2 id="1-install-kubernetes">1. Install Kubernetes<a class="headerlink" href="#1-install-kubernetes" title="Permanent link">&para;</a></h2>
 <p>Any Kubernetes distributions will work. <code>Zero to JupyterHub</code> has a wonderful <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-kubernetes">guide for setting up Kubernetes.</a> </p>
 <h2 id="2-install-jupyterhub">2. Install JupyterHub<a class="headerlink" href="#2-install-jupyterhub" title="Permanent link">&para;</a></h2>
-<p>Also, follow the <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub"><code>Zero to JupyterHub</code> instruction to set up JupyterHub.</a> There is one thing you should be aware of while installing jupyterflow.</p>
-<h3 id="specify-serviceaccoutname">Specify serviceAccoutName<a class="headerlink" href="#specify-serviceaccoutname" title="Permanent link">&para;</a></h3>
-<p>You need to specify <code>serviceAccoutName</code> in <code>config.yaml</code>. This service account will be used to create  Argo <code>Workflow</code> object on behalf of you.</p>
-<p>For example, use <code>default</code> service account. Later, you should grant this service account to create <code>Workflow</code> object.</p>
+<p>Also, follow the <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub"><code>Zero to JupyterHub</code> instruction to set up JupyterHub</a>. There is two things you should configure while installing jupyterflow.</p>
+<h3 id="1-specify-serviceaccoutname">1) Specify serviceAccoutName<a class="headerlink" href="#1-specify-serviceaccoutname" title="Permanent link">&para;</a></h3>
+<p>Find <code>singleuser</code> property and specify <code>serviceAccoutName</code> in <code>config.yaml</code>. This service account will be used to create  Argo <code>Workflow</code> object on behalf of you.</p>
+<p>For example, use <code>default</code> service account. Later, you should grant this service account a role to create <code>Workflow</code> object.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># config.yaml</span>
 <span class="nt">singleuser</span><span class="p">:</span>
   <span class="nt">serviceAccountName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+</code></pre></div>
+
+<h3 id="2-add-label">2) Add label<a class="headerlink" href="#2-add-label" title="Permanent link">&para;</a></h3>
+<p>Find <code>singleuser.extraLabels</code> property and add <code>jupyterflow/username: "{username}"</code> label in <code>config.yaml</code>. This label will be used to find my notebook server <code>Pod</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># config.yaml</span>
+<span class="nt">singleuser</span><span class="p">:</span>
+  <span class="nt">extraLabels</span><span class="p">:</span>
+    <span class="nt">jupyterflow/username</span><span class="p">:</span> <span class="s">&quot;{username}&quot;</span>
 </code></pre></div>
 
 <h2 id="3-install-argo-workflow">3. Install Argo Workflow<a class="headerlink" href="#3-install-argo-workflow" title="Permanent link">&para;</a></h2>
@@ -631,6 +653,7 @@ kubectl create clusterrolebinding jupyterflow-admin <span class="se">\</span>
 <span class="s">  - get</span>
 <span class="s">  - watch</span>
 <span class="s">  - patch</span>
+<span class="s">  - list</span>
 <span class="s"># logs get/watch are used to get the pods logs for script outputs, and for log archival</span>
 <span class="s">- apiGroups:</span>
 <span class="s">  - &quot;&quot;</span>
@@ -639,6 +662,16 @@ kubectl create clusterrolebinding jupyterflow-admin <span class="se">\</span>
 <span class="s">  verbs:</span>
 <span class="s">  - get</span>
 <span class="s">  - watch</span>
+<span class="s">- apiGroups:</span>
+<span class="s">  - &quot;argoproj.io&quot;</span>
+<span class="s">  resources:</span>
+<span class="s">  - workflows</span>
+<span class="s">  verbs:</span>
+<span class="s">  - get</span>
+<span class="s">  - watch</span>
+<span class="s">  - patch</span>
+<span class="s">  - list</span>
+<span class="s">  - create</span>
 <span class="s">EOF</span>
 </code></pre></div>
 
