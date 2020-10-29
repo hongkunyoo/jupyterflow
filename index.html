@@ -228,6 +228,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#problem-to-solve" class="md-nav__link">
+    Problem to solve
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#getting-started" class="md-nav__link">
     Getting Started
   </a>
@@ -249,8 +256,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#workflowyaml-configuration" class="md-nav__link">
-    workflow.yaml Configuration
+  <a href="#workflow-file-configuration" class="md-nav__link">
+    Workflow file Configuration
   </a>
   
 </li>
@@ -391,6 +398,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#problem-to-solve" class="md-nav__link">
+    Problem to solve
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#getting-started" class="md-nav__link">
     Getting Started
   </a>
@@ -412,8 +426,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#workflowyaml-configuration" class="md-nav__link">
-    workflow.yaml Configuration
+  <a href="#workflow-file-configuration" class="md-nav__link">
+    Workflow file Configuration
   </a>
   
 </li>
@@ -437,8 +451,8 @@
                 
                 <h1 id="jupyterflow-documentation">JupyterFlow Documentation<a class="headerlink" href="#jupyterflow-documentation" title="Permanent link">&para;</a></h1>
 <p>Run your workflow on JupyterHub!</p>
-<h3 id="what-is-jupyterflow">What is JupyterFlow?<a class="headerlink" href="#what-is-jupyterflow" title="Permanent link">&para;</a></h3>
-<p>Run <a href="https://argoproj.github.io/argo">Argo Workflow</a> pipeline on <a href="https://jupyter.org/hub">JupyterHub.</a></p>
+<h2 id="what-is-jupyterflow">What is JupyterFlow?<a class="headerlink" href="#what-is-jupyterflow" title="Permanent link">&para;</a></h2>
+<p>Run <a href="https://argoproj.github.io/argo">Argo Workflow</a> pipeline on <a href="https://jupyter.org/hub">JupyterHub</a>.</p>
 <ul>
 <li>No Kubernetes knowledge (YAML) needed to run.</li>
 <li>No container build &amp; push or deploy.</li>
@@ -450,14 +464,32 @@
 </code></pre></div>
 
 <p><img alt="" src="images/intro.png" /></p>
-<h3 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h3>
+<p>To make parallel workflow, write your own <a href="https://hongkunyoo.github.io/jupyterflow/configuration/"><code>workflow.yaml</code> file</a></p>
+<h2 id="problem-to-solve">Problem to solve<a class="headerlink" href="#problem-to-solve" title="Permanent link">&para;</a></h2>
+<ul>
+<li>I wanted to train multiple ML models efficiently.</li>
+<li>Using Kubernetes was a good idea, since<ul>
+<li>it is easy to make distributed jobs.</li>
+<li>it is easy to schedule ML jobs on multiple training server.</li>
+<li>it has native resource management mechanism.</li>
+<li>it has good monitoring system.</li>
+</ul>
+</li>
+<li>But there were some drawbacks.<ul>
+<li>I needed to re-build &amp; re-push image everytime I updated my model. This was painful.</li>
+<li>People who are not familiar with k8s had a hard time using this method.</li>
+</ul>
+</li>
+</ul>
+<p><code>jupyterflow</code> aims to solve this problem.</p>
+<h2 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
 <p>To set up <code>jupyterflow</code> and start running your first workflow, follow the <a href="get-started/">Getting Started</a> guide.</p>
-<h3 id="how-does-it-work">How does it work<a class="headerlink" href="#how-does-it-work" title="Permanent link">&para;</a></h3>
-<p>To learn how it works, see <a href="how-it-works/">How it works</a> guide.</p>
-<h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h3>
-<p>For examples how to use, please see <a href="/examples/README.md">Examples</a> page.</p>
-<h3 id="workflowyaml-configuration"><code>workflow.yaml</code> Configuration<a class="headerlink" href="#workflowyaml-configuration" title="Permanent link">&para;</a></h3>
-<p>To find out more detail configuration, look at <a href="configuration/">Configuration</a> page.</p>
+<h2 id="how-does-it-work">How does it work<a class="headerlink" href="#how-does-it-work" title="Permanent link">&para;</a></h2>
+<p>To learn how it works, go to <a href="how-it-works/">How it works</a> guide.</p>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<p>For examples how to use, please see <a href="examples/">Examples</a> page.</p>
+<h2 id="workflow-file-configuration">Workflow file Configuration<a class="headerlink" href="#workflow-file-configuration" title="Permanent link">&para;</a></h2>
+<p>To find out more configuration, take a look at <a href="configuration/">Configuration</a> page.</p>
                 
               
               

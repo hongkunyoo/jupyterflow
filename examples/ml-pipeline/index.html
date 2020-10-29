@@ -338,6 +338,7 @@
                 
                 
                 <h1 id="ml-pipeline">ML Pipeline<a class="headerlink" href="#ml-pipeline" title="Permanent link">&para;</a></h1>
+<p>Clone <code>jupyterflow</code> git repository and go to <a href="https://github.com/hongkunyoo/jupyterflow/tree/main/examples/ml-pipeline">examples/ml-pipeline</a>.</p>
 <div class="codehilite"><pre><span></span><code>git clone https://github.com/hongkunyoo/jupyterflow.git
 <span class="nb">cd</span> examples/ml-pipeline
 
@@ -350,24 +351,23 @@ ls -alh
 </code></pre></div>
 
 <ul>
-<li><code>input.py</code>: </li>
-<li><code>train.py</code>: </li>
-<li><code>output.py</code>: </li>
-<li><code>workflow.yaml</code>: </li>
-<li><code>requirements.txt</code>: </li>
+<li><code>input.py</code>: Script for preparing train data.</li>
+<li><code>train.py</code>: Model training experiments.</li>
+<li><code>output.py</code>: Scores trained models.</li>
+<li><code>workflow.yaml</code>: <code>jupyterflow</code> workflow file</li>
+<li><code>requirements.txt</code>: Pip packages for ML pipeline</li>
 </ul>
+<p>First, install required packages.</p>
 <div class="codehilite"><pre><span></span><code>pip install -r requirements.txt
 </code></pre></div>
 
+<p>Run each script in jupyter notebook for test.</p>
 <div class="codehilite"><pre><span></span><code>python input.py
+python train.py softmax <span class="m">0</span>.5
+python output.py
 </code></pre></div>
 
-<div class="codehilite"><pre><span></span><code>python train.py softmax <span class="m">0</span>.5
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code>python output.py
-</code></pre></div>
-
+<p>Write various training experiments to find the best performing model.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># workflow.yaml</span>
 <span class="nt">jobs</span><span class="p">:</span>
 <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python intput.py</span> 
@@ -389,8 +389,11 @@ ls -alh
 <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">5 &gt;&gt; 6</span>
 </code></pre></div>
 
+<p>Run your ML Pipeline.</p>
 <div class="codehilite"><pre><span></span><code>jupyterflow run -f workflow.yaml
 </code></pre></div>
+
+<p>Check out the result in Argo Web UI.</p>
                 
               
               

@@ -284,9 +284,45 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Configuring workflow file
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
     <a href="./" class="md-nav__link md-nav__link--active">
       Configuring workflow file
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#minimum-description" class="md-nav__link">
+    Minimum description
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-description" class="md-nav__link">
+    Full description
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -320,6 +356,28 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#minimum-description" class="md-nav__link">
+    Minimum description
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-description" class="md-nav__link">
+    Full description
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -336,17 +394,32 @@
                 
                 
                 <h1 id="configuring-workflow-file">Configuring workflow file<a class="headerlink" href="#configuring-workflow-file" title="Permanent link">&para;</a></h1>
+<p><code>workflow.yaml</code> is a description about how to run your jobs. You can asign a dependencies between jobs.</p>
+<h2 id="minimum-description">Minimum description<a class="headerlink" href="#minimum-description" title="Permanent link">&para;</a></h2>
+<p>Each job will run in parallel.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># workflow.yaml</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo hello</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo world</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo again</span>
+</code></pre></div>
+
+<h2 id="full-description">Full description<a class="headerlink" href="#full-description" title="Permanent link">&para;</a></h2>
+<p>Job dependencies will be resolved based on <code>dags</code> information.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># workflow.yaml</span>
 <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
 
 <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">workflow-name</span>
 
 <span class="nt">jobs</span><span class="p">:</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python job1.py</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python job2.py ARGS</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo hello</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo world</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo again</span>
 
 <span class="nt">dags</span><span class="p">:</span>
 <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1 &gt;&gt; 2</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1 &gt;&gt; 3</span>
 
 <span class="nt">schedule</span><span class="p">:</span> <span class="s">&#39;*/2</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*&#39;</span>
 </code></pre></div>
@@ -369,13 +442,13 @@
 </tr>
 <tr>
 <td><code>name</code></td>
-<td>Name of the workflow. This name will used for Argo <code>Workflow</code> object name.</td>
+<td>Name of the workflow. This name is used for Argo <code>Workflow</code> name.</td>
 <td>Optional</td>
 <td>{username} of JupyterHub</td>
 </tr>
 <tr>
 <td><code>jobs</code></td>
-<td>Jobs to run. Any kinds of command will work. (Not just Python)</td>
+<td>Jobs to run. Any kinds of command works.</td>
 <td>Required</td>
 <td></td>
 </tr>
