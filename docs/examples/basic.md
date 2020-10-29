@@ -23,7 +23,7 @@ ls -alh
 echo "Hello $1"
 ```
 
-Run `jupyterflow` with `-c` option for simple command.
+Run `jupyterflow` with `-c` option for simple execution.
 
 ```bash
 jupyterflow run -c "bash hello.sh world >> echo 'good bye'"
@@ -31,7 +31,9 @@ jupyterflow run -c "bash hello.sh world >> echo 'good bye'"
 
 Go to Argo Web UI and check out the output of launched workflow.
 
-## Run by workflow.yaml
+![](../images/basic-seq.png)
+
+## Run by `workflow.yaml`
 
 Write `workflow.yaml` for parallel execution.
 
@@ -41,7 +43,7 @@ jobs:
 - bash hello.sh world
 - bash hello.sh bob
 - bash hello.sh foo
-- pwd
+- ls
 - echo 'jupyterflow is the best!'
 
 # Job index starts at 1.
@@ -59,3 +61,5 @@ jupyterflow run -f workflow.yaml
 ```
 
 Check out the result.
+
+![](../images/basic-wf.png)

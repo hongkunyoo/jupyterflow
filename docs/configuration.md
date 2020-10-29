@@ -1,4 +1,4 @@
-# Configuring workflow file
+# Configuring workflow
 
 `workflow.yaml` is a description about how to run your jobs. You can asign a dependencies between jobs.
 

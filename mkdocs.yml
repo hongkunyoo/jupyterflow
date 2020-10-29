@@ -1,4 +1,4 @@
-site_name: JupyterFlow - Run ML Pipeine on JupyterHub
+site_name: JupyterFlow - Run your workflow on JupyterHub
 repo_url: https://github.com/hongkunyoo/jupyterflow
 strict: true
 theme:

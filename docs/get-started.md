@@ -26,7 +26,7 @@ singleuser:
 
 ## 3. Install Argo Workflow
 
-Install Argo workflow with this [page](https://argoproj.github.io/argo/quick-start) You need to install Argo workflow in the **same Kubernetes namespace** where JupyterHub is installed.
+Install Argo workflow with [this page](https://argoproj.github.io/argo/quick-start). You need to install Argo workflow in the **same Kubernetes namespace** where JupyterHub is installed.
 
 For example, using `jupyterflow` namespace for JupyterHub and Argo Workflow.
 
@@ -48,13 +48,13 @@ Expose Web UI for Argo Workflow: [https://argoproj.github.io/argo/argo-server/](
 
 You need to expose Argo Web UI to see the result of `jupyterflow`.
 
-## 5. Grant JupyterHub ServiceAccount RBAC
+## 5. Grant JupyterHub Service Account RBAC
 
-Grant service account used in JupyterHub the ability to create Argo Workflow objects.
+Grant the service account used in JupyterHub a role to create Argo Workflow objects.
 
 ### Options 1)
 
-The simplest way to grant service account is to bind `cluster-admin` role. For example, if you deployed JupyterHub in `jupyterflow` namespace and specify service account as `default`
+The simplest way to grant service account is to bind `cluster-admin` role. For example, if you deployed JupyterHub in `jupyterflow` namespace and specify service account as `default`, run
 
 ```bash
 # --serviceaccount=<NAMESPACE>:<SERVICE_ACCOUNT>
@@ -95,7 +95,7 @@ rules:
 EOF
 ```
 
-Then, bind Role with your service account. For example, binding `default` service account in `jupyterflow` namespace.
+Then, bind Role with your service account. For example, bind `default` service account with worflow role in `jupyterflow` namespace.
 
 ```bash
 kubectl create rolebinding workflow-rb \
@@ -104,11 +104,13 @@ kubectl create rolebinding workflow-rb \
                       -n jupyterflow
 ```
 
-You might want to look at [https://argoproj.github.io/argo/service-accounts](https://argoproj.github.io/argo/service-accounts)
+You might want to look at [https://argoproj.github.io/argo/service-accounts](https://argoproj.github.io/argo/service-accounts).
 
 ## 6. Install jupyterflow
 
 Finally, launch a JupyterHub notebook server and install `jupyterflow` using pip.
+
+In jupyter notebook Terminal, run
 
 ```bash
 pip install jupyterflow
@@ -118,7 +120,7 @@ pip install jupyterflow
 
 Refer to [examples/get-started](https://github.com/hongkunyoo/jupyterflow/tree/main/examples/get-started)
 
-### Run by command
+### by command
 
 Write your own code in notebook server.
 
@@ -144,9 +146,11 @@ Go to Argo Web UI and check out the output of launched workflow.
 ![](images/intro.png)
 
 
-### Run by workflow.yaml
+### by `workflow.yaml`
 
-If you want to run more sophisticated workflow, such as DAG (Directed Acyclic Graph), write your workflow on file (for example, `workflow.yaml`, the name doen't matter)
+If you want to run more sophisticated workflow, such as DAG (Directed Acyclic Graph), write your own workflow file (for example, `workflow.yaml`, the name doen't matter)
+
+For more information, check out [Configuring workflow](configuration.md)
 
 ```yaml
 # workflow.yaml

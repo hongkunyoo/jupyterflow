@@ -26,7 +26,7 @@ First, install required packages.
 pip install -r requirements.txt
 ```
 
-Run each script in jupyter notebook for test.
+Run each script in jupyter notebook for testing purpose.
 
 ```bash
 python input.py
@@ -39,7 +39,7 @@ Write various training experiments to find the best performing model.
 ```yaml
 # workflow.yaml
 jobs:
-- python intput.py 
+- python input.py 
 - python train.py softmax 0.5
 - python train.py softmax 0.9
 - python train.py relu 0.5
@@ -65,3 +65,5 @@ jupyterflow run -f workflow.yaml
 ```
 
 Check out the result in Argo Web UI.
+
+![](../images/ml-pipeline.png)

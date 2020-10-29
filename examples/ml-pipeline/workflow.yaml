@@ -1,6 +1,6 @@
 # workflow.yaml
 jobs:
-- python intput.py 
+- python input.py 
 - python train.py softmax 0.5
 - python train.py softmax 0.9
 - python train.py relu 0.5

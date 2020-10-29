@@ -3,7 +3,7 @@ jobs:
 - bash hello.sh world
 - bash hello.sh bob
 - bash hello.sh foo
-- pwd
+- ls
 - echo 'jupyterflow is the best!'
 
 # Job index starts at 1.
