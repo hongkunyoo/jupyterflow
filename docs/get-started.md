@@ -114,9 +114,9 @@ Finally, launch a JupyterHub notebook server and install `jupyterflow` using pip
 pip install jupyterflow
 ```
 
-## 7. Run Workflow
+## 7. Run my first workflow
 
-Refer to [examples/get-started](/examples/get-started)
+Refer to [examples/get-started](https://github.com/hongkunyoo/jupyterflow/tree/main/examples/get-started)
 
 ### Run by command
 
@@ -169,7 +169,7 @@ dags:
 print('again!')
 ```
 
-Run `jupyteflow` with `-f` option
+Run `jupyteflow` with `-f` option.
 
 ```bash
 jupyterflow run -f workflow.yaml

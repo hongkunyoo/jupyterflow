@@ -1,0 +1,14 @@
+# workflow.yaml
+jobs:
+- bash hello.sh world
+- bash hello.sh bob
+- bash hello.sh foo
+- pwd
+- echo 'jupyterflow is the best!'
+
+# Job index starts at 1.
+dags:
+- 1 >> 4
+- 2 >> 4
+- 3 >> 4
+- 4 >> 5
