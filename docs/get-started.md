@@ -10,18 +10,29 @@ Any Kubernetes distributions will work. `Zero to JupyterHub` has a wonderful [gu
 
 ## 2. Install JupyterHub
 
-Also, follow the [`Zero to JupyterHub` instruction to set up JupyterHub.](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub) There is one thing you should be aware of while installing jupyterflow.
+Also, follow the [`Zero to JupyterHub` instruction to set up JupyterHub](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub). There is two things you should configure while installing jupyterflow.
 
-### Specify serviceAccoutName
+### 1) Specify serviceAccoutName
 
-You need to specify `serviceAccoutName` in `config.yaml`. This service account will be used to create  Argo `Workflow` object on behalf of you.
+Find `singleuser` property and specify `serviceAccoutName` in `config.yaml`. This service account will be used to create  Argo `Workflow` object on behalf of you.
 
-For example, use `default` service account. Later, you should grant this service account to create `Workflow` object.
+For example, use `default` service account. Later, you should grant this service account a role to create `Workflow` object.
 
 ```yaml
 # config.yaml
 singleuser:
   serviceAccountName: default
+```
+
+### 2) Add label
+
+Find `singleuser.extraLabels` property and add `jupyterflow/username: "{username}"` label in `config.yaml`. This label will be used to find my notebook server `Pod`.
+
+```yaml
+# config.yaml
+singleuser:
+  extraLabels:
+    jupyterflow/username: "{username}"
 ```
 
 ## 3. Install Argo Workflow
@@ -84,6 +95,7 @@ rules:
   - get
   - watch
   - patch
+  - list
 # logs get/watch are used to get the pods logs for script outputs, and for log archival
 - apiGroups:
   - ""
@@ -92,6 +104,16 @@ rules:
   verbs:
   - get
   - watch
+- apiGroups:
+  - "argoproj.io"
+  resources:
+  - workflows
+  verbs:
+  - get
+  - watch
+  - patch
+  - list
+  - create
 EOF
 ```
 
