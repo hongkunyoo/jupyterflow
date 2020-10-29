@@ -1,4 +1,4 @@
-# jupyterflow
+# JupyterFlow
 
 Run your workflow on JupyterHub!
 
@@ -8,9 +8,9 @@ Run [Argo Workflow](https://argoproj.github.io/argo) pipeline on [JupyterHub.](h
 
 - No Kubernetes knowledge (YAML) needed to run.
 - No container build & push or deploy.
-- Just run workflow with single command `jupyterflow`.
+- Just simply run your workflow with single command `jupyterflow`.
 
-`jupyterflow` is a command that helps user utilize Argo Workflow engine without making YAML files or building containers on JupyterHub.
+`jupyterflow` is a command that helps user utilize Argo Workflow engine without making any YAML files or building containers on JupyterHub.
 
 The following `jupyterflow` command will make sequence workflow.
 
@@ -22,9 +22,9 @@ jupyterflow run -c "python input.py >> python train.py"
 
 ## Get Started
 
-Although using `jupyterflow` does not require Kubernetes knowledge, you need to know Kubernetes to `jupyterflow` to work. If you're familiar with Kubernetes, it will not be too hard. 
+Although using `jupyterflow` does not require Kubernetes knowledge, Setting up `jupyterflow` requires Kubernetes knowledge(YAML, `helm`, `Service`). If you're familiar with Kubernetes, it will not be too hard. 
 
-This project only works on [JupyterHub for Kubernetes.](https://zero-to-jupyterhub.readthedocs.io/en/latest)
+> This project only works on [JupyterHub for Kubernetes.](https://zero-to-jupyterhub.readthedocs.io/en/latest)
 
 ### 1. Install Kubernetes
 
@@ -32,14 +32,12 @@ Any Kubernetes distributions will work. `Zero to JupyterHub` has a wonderful [gu
 
 ### 2. Install JupyterHub
 
-Also, follow the [`Zero to JupyterHub` instruction to set up JupyterHub.](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub)
-
-// There is one thing you should configure to use jupyterflow.
-There is one thing you should be aware of while installing jupyterflow.
+Also, follow the [`Zero to JupyterHub` instruction to set up JupyterHub.](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub) There is one thing you should be aware of while installing jupyterflow.
 
 #### Specify serviceAccoutName
 
 You need to specify `serviceAccoutName` in `config.yaml`. This service account will be used to create  Argo `Workflow` object on behalf of you.
+
 For example, use `default` service account. Later, you should grant this service account to create `Workflow` object.
 
 ```yaml
@@ -66,7 +64,7 @@ kubectl apply --namespace jupyterflow -f \
     https://raw.githubusercontent.com/argoproj/argo/stable/manifests/quick-start-postgres.yaml
 ```
 
-### 4. Expose Argo Workflow UI (Optional)
+### 4. Expose Argo Workflow UI
 
 Expose Web UI for Argo Workflow: https://argoproj.github.io/argo/argo-server/
 
@@ -130,19 +128,21 @@ kubectl create rolebinding workflow-rb \
 
 You might want to look at [https://argoproj.github.io/argo/service-accounts](https://argoproj.github.io/argo/service-accounts)
 
-### Install jupyterflow
+### 6. Install jupyterflow
 
-Finally, install `jupyterflow` using pip.
+Finally, launch a JupyterHub notebook server and install `jupyterflow` using pip.
 
 ```bash
 pip install jupyterflow
 ```
 
-### Run Workflow
+### 7. Run Workflow
+
+Refer to [examples/get-started](examples/get-started)
 
 ### Run by command
 
-Go to JupyterHub, launch notebook server. Write your own code.
+Write your own code in notebook server.
 
 ```python
 # input.py
@@ -151,7 +151,8 @@ print('hello')
 
 ```python
 # train.py
-print('world')
+import sys
+print('world %s!' % sys.argv[1])
 ```
 
 Run following command for sequence workflow.
@@ -173,10 +174,11 @@ If you want to run more sophisticated workflow, such as DAG (Directed Acyclic Gr
 # workflow.yaml
 jobs:
 - python input.py 
-- python train.py
-- python train.py
+- python train.py bob
+- python train.py john
 - python output.py
 
+# Job index starts at 1.
 dags:
 - 1 >> 2
 - 1 >> 3
@@ -206,7 +208,7 @@ Check out the result.
 
 `jupyterflow` simply reads jupyter server `Pod` object to get all kinds of metadata, and reconstruct to `Workflow` object.
 
-`jupyterflow` uses following metadata from `Pod`
+`jupyterflow` uses following metadata from `Pod`.
 - Container image
 - Environment variables
 - Home directory (home `PersistentVolumeClaim`)
@@ -219,6 +221,7 @@ Check out the result.
 
 ```yaml
 # workflow.yaml
+version: 1
 
 name: workflow-name
 
@@ -234,7 +237,8 @@ schedule: '*/2 * * * *'
 
 | Property  | Description                                                                | Optional  | Default                           |
 |-----------|----------------------------------------------------------------------------|-----------|-----------------------------------|
-|`name`     | Name of the workflow. This name will used for Argo `Workflow` object name. | Optional  | jupyterflow                       |
+|`version`  | Version of `workflow.yaml` file format.                                    | Optional  | 1                                 |
+|`name`     | Name of the workflow. This name will used for Argo `Workflow` object name. | Optional  | {username} of JupyterHub          |
 |`jobs`     | Jobs to run. Any kinds of command will work. (Not just Python)             | Required  |                                   |
-|`dags`     | Job dependencies. Index starts at 1. (`$PREVIOUS_INDEX` >> `$NEXT_INDEX`)  | Optional  | All jobs parallel (No dependency) |
+|`dags`     | Job dependencies. Index starts at 1. (`$PREVIOUS_JOB` >> `$NEXT_JOB`)      | Optional  | All jobs parallel (No dependency) |
 |`schedule` | When to execute this workflow. Follows cron format.                        | Optional  | No schedule                       |

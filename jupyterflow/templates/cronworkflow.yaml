@@ -1,0 +1,10 @@
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  generateName: {{ name }}
+spec:
+  schedule: "{{ schedule }}"
+  concurrencyPolicy: "Replace"
+  startingDeadlineSeconds: 0
+  workflowSpec:
+{{ workflow | to_nice_yaml | indent( width=4, indentfirst=True)}}

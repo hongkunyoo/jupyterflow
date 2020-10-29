@@ -1,6 +1,5 @@
 import os
 
-import yaml
 import click
 from click import ClickException
 
@@ -15,20 +14,20 @@ def main():
 
 
 @main.command()
-@click.option('-f', '--file', help='Path for workflow.yaml file. ex) \'jupyterflow run -f workflow.yaml\'', default=None)
+@click.option('-f', '--filename', help='Path for workflow.yaml file. ex) \'jupyterflow run -f workflow.yaml\'', default=None)
 @click.option('-c', '--command', help="Command to run workflow. ex) \'jupyterflow run -c \"python main.py >> python next.py\"\'", default=None)
 @click.option('-o', '--output', help='Output format. default is \'-o jsonpath="metadata.name"\'', default='jsonpath="metadata.name"')
 @click.option('--dry-run', help='Only print Argo Workflow object, without accually sending it', default=False, is_flag=True)
-def run(f, c, o, dry_run):
+def run(filename, command, output, dry_run):
 
-    if c is not None:
-        user_workflow = workflow.load_from_command(c)
+    if command is not None:
+        user_workflow = workflow.load_from_command(command)
         workingDir = os.getcwd()
-    elif f is not None:
-        if not os.path.isfile(f):
-            raise ClickException("No such file %s" % f)
-        user_workflow = workflow.load_from_file(f)
-        workingDir = os.path.dirname(os.path.abspath(f))
+    elif filename is not None:
+        if not os.path.isfile(filename):
+            raise ClickException("No such file %s" % filename)
+        user_workflow = workflow.load_from_file(filename)
+        workingDir = os.path.dirname(os.path.abspath(filename))
     else:
         raise ClickException("Provide either `-f` or `-c` option")
 
@@ -38,12 +37,12 @@ def run(f, c, o, dry_run):
     wf = workflow.build(user_workflow, namespace, runtime)
     
     if dry_run:
-        response = yaml.safe_load(wf)
-        o = 'yaml'
+        response = wf
+        output = 'yaml'
     else:
         response = workflow.run(wf, namespace)
 
-    printer.format(response, o)
+    printer.format(response, output)
 
 
 

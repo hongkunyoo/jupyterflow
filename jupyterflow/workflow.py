@@ -59,15 +59,22 @@ def build(wf, namespace, runtime):
     ###########################
     # render workflow
     ###########################
-    return render.workflow(
+    rendered_wf = render.workflow(
             workflow=workflow, \
             pod=pod, \
             runtime=runtime, \
             username=escaped_username
     )
+    workflow_yaml = yaml.safe_load(rendered_wf)
+
+    if 'schedule' in wf:
+        rendered_wf = render.cronworkflow(workflow_yaml, wf['schedule'])
+        workflow_yaml = yaml.safe_load(rendered_wf)
+    return workflow_yaml
+        
 
 
 def run(wf, namespace):
-    response = k8s_client.create_object('workflows', wf, namespace)
+    response = k8s_client.create_object(wf, namespace)
     return response
     

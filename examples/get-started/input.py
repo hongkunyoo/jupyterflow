@@ -1,0 +1,2 @@
+# input.py
+print('hello')

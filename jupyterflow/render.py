@@ -1,4 +1,3 @@
-
 from jinja2 import Environment, BaseLoader, PackageLoader, Template
 
 
@@ -9,6 +8,13 @@ def workflow(workflow, pod, runtime, username):
                             pod=pod, \
                             runtime=runtime, \
                         ).format(username=username, nb_user=runtime['NB_USER'])
+
+
+def cronworkflow(workflow_yaml, schedule):
+    template = get_template('cronworkflow.yaml')
+    return template.render(name=workflow_yaml['metadata']['generateName'], \
+                            workflow=workflow_yaml['spec'], \
+                            schedule=schedule)
 
 
 def get_template(name):

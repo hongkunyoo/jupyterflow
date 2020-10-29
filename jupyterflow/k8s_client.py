@@ -5,9 +5,9 @@ from kubernetes import config
 from kubernetes import client
 
 
-def create_object(plural, wf, namespace):
-    body = yaml.safe_load(wf)
+def create_object(body, namespace):
     group, version = body['apiVersion'].split('/')
+    plural = body['kind'].lower() + 's'
 
     config.load_incluster_config()
     api_instance = client.CustomObjectsApi()
