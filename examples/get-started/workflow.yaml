@@ -1,9 +1,9 @@
 # workflow.yaml
 jobs:
-- python input.py 
-- python train.py bob
-- python train.py john
-- python output.py
+- python job1.py 
+- python job2.py foo
+- python job2.py bar
+- python job3.py
 
 # Job index starts at 1.
 dags:

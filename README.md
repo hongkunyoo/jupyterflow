@@ -15,7 +15,7 @@ Run [Argo Workflow](https://argoproj.github.io/argo) pipeline on [JupyterHub.](h
 The following `jupyterflow` command will make sequence workflow.
 
 ```bash
-jupyterflow run -c "python input.py >> python train.py"
+jupyterflow run -c "python hello.py >> python world.py"
 ```
 
 ![](docs/images/intro.png)
@@ -145,12 +145,12 @@ Refer to [examples/get-started](examples/get-started)
 Write your own code in notebook server.
 
 ```python
-# input.py
+# job1.py
 print('hello')
 ```
 
 ```python
-# train.py
+# job2.py
 import sys
 print('world %s!' % sys.argv[1])
 ```
@@ -158,7 +158,7 @@ print('world %s!' % sys.argv[1])
 Run following command for sequence workflow.
 
 ```bash
-jupyterflow run -c "python input.py >> python train.py"
+jupyterflow run -c "python job1.py >> python job2.py foo"
 ```
 
 Go to Argo Web UI and check out the output of launched workflow.
@@ -173,10 +173,10 @@ If you want to run more sophisticated workflow, such as DAG (Directed Acyclic Gr
 ```yaml
 # workflow.yaml
 jobs:
-- python input.py 
-- python train.py bob
-- python train.py john
-- python output.py
+- python job1.py 
+- python job2.py foo
+- python job2.py bar
+- python job3.py
 
 # Job index starts at 1.
 dags:
@@ -187,7 +187,7 @@ dags:
 ```
 
 ```python
-# output.py
+# job3.py
 print('again!')
 ```
 
@@ -226,8 +226,8 @@ version: 1
 name: workflow-name
 
 jobs:
-- python input.py
-- python train.py
+- python job1.py
+- python job2.py ARGS
 
 dags:
 - 1 >> 2
@@ -241,4 +241,4 @@ schedule: '*/2 * * * *'
 |`name`     | Name of the workflow. This name will used for Argo `Workflow` object name. | Optional  | {username} of JupyterHub          |
 |`jobs`     | Jobs to run. Any kinds of command will work. (Not just Python)             | Required  |                                   |
 |`dags`     | Job dependencies. Index starts at 1. (`$PREVIOUS_JOB` >> `$NEXT_JOB`)      | Optional  | All jobs parallel (No dependency) |
-|`schedule` | When to execute this workflow. Follows cron format.                        | Optional  | No schedule                       |
+|`schedule` | When to execute this workflow. Follows cron format.                        | Optional  | Run immediately                   |

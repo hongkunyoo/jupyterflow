@@ -1,8 +1,0 @@
-# name: mywf
-
-jobs:
-- python main.py abc
-- python train.py abc
-
-dags:
-- 1 >> 2
