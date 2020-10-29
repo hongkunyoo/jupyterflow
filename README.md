@@ -8,17 +8,17 @@ Run [Argo Workflow](https://argoproj.github.io/argo) pipeline on [JupyterHub.](h
 
 - No Kubernetes knowledge (YAML) needed to run.
 - No container build & push or deploy.
-- Just run workflow with single command `jupyterflow`!
+- Just run workflow with single command `jupyterflow`.
 
 `jupyterflow` is a command that helps user utilize Argo Workflow engine without making YAML files or building containers on JupyterHub.
 
-The `jupyterflow` command will make following sequence workflow.
+The following `jupyterflow` command will make sequence workflow.
 
 ```bash
 jupyterflow run -c "python input.py >> python train.py"
 ```
 
-![docs/images/intro.png]
+![](docs/images/intro.png)
 
 ## Get Started
 
@@ -26,53 +26,55 @@ Although using `jupyterflow` does not require Kubernetes knowledge, you need to 
 
 This project only works on [JupyterHub for Kubernetes.](https://zero-to-jupyterhub.readthedocs.io/en/latest)
 
-### Install Kubernetes
+### 1. Install Kubernetes
 
 Any Kubernetes distributions will work. `Zero to JupyterHub` has a wonderful [guide for setting up Kubernetes.](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-kubernetes) 
 
-### Install JupyterHub
+### 2. Install JupyterHub
 
-Also Follow the `Zero to JupyterHub` [guideline to set up JupyterHub.](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub)
+Also, follow the [`Zero to JupyterHub` instruction to set up JupyterHub.](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub)
 
-There is one thing you should configure to use jupyterflow.
+// There is one thing you should configure to use jupyterflow.
+There is one thing you should be aware of while installing jupyterflow.
 
 #### Specify serviceAccoutName
 
-You need to specify `serviceAccoutName` in `singleuser`. This serviceAccount will be used to create  Argo `Workflow` object on behalf of you.
-For example, use `default` service account.
+You need to specify `serviceAccoutName` in `config.yaml`. This service account will be used to create  Argo `Workflow` object on behalf of you.
+For example, use `default` service account. Later, you should grant this service account to create `Workflow` object.
 
 ```yaml
+# config.yaml
 singleuser:
   serviceAccountName: default
 ```
 
-### Install Argo Workflow
+### 3. Install Argo Workflow
 
-Install Argo workflow with this [page](https://argoproj.github.io/argo/quick-start)
+Install Argo workflow with this [page](https://argoproj.github.io/argo/quick-start) You need to install Argo workflow in the **same Kubernetes namespace** where JupyterHub is installed.
 
-:warning:
-> WARNING: You need to install Argo workflow in the same Kubernetes namespace where JupyterHub is installed!
-
-For example, 
+For example, using `jupyterflow` namespace for JupyterHub and Argo Workflow.
 
 ```bash
 # create namespace jupyterflow
 kubectl create ns jupyterflow
 
 # install jupyterhub in jupyterflow
-helm install jh jupyterhub/jupyterhub --namespace jupyterflow
+helm install jupyterhub jupyterhub/jupyterhub --namespace jupyterflow
 
 # install argo workflow in jupyterflow
-kubectl apply --namespace jupyterflow -f https://raw.githubusercontent.com/argoproj/argo/stable/manifests/quick-start-postgres.yaml
+kubectl apply --namespace jupyterflow -f \
+    https://raw.githubusercontent.com/argoproj/argo/stable/manifests/quick-start-postgres.yaml
 ```
 
-### Expose Argo Workflow UI
+### 4. Expose Argo Workflow UI (Optional)
 
 Expose Web UI for Argo Workflow: https://argoproj.github.io/argo/argo-server/
 
-### Grant Kubernetes ServiceAccount RBAC
+You need to expose Argo Web UI to see the result of `jupyterflow`.
 
-Grant serviceaccount the ability to create Argo Workflow objects.
+### 5. Grant JupyterHub ServiceAccount RBAC
+
+Grant service account used in JupyterHub the ability to create Argo Workflow objects.
 
 #### Options 1)
 
@@ -80,12 +82,14 @@ The simplest way to grant service account is to bind `cluster-admin` role. For e
 
 ```bash
 # --serviceaccount=<NAMESPACE>:<SERVICE_ACCOUNT>
-kubectl create clusterrolebinding jupyterflow-admin --clusterrole=cluster-admin --serviceaccount=jupyterflow:default
+kubectl create clusterrolebinding jupyterflow-admin \
+                        --clusterrole=cluster-admin \
+                        --serviceaccount=jupyterflow:default
 ```
 
 #### Options 2)
 
-First, Create Workflow Role in the namespace where JupyterHub is installed.
+For more fine-grained RBAC, create Workflow Role in the namespace where JupyterHub is installed.
 
 ```bash
 cat << EOF | kubectl create -n jupyterflow -f -
@@ -115,10 +119,13 @@ rules:
 EOF
 ```
 
-Then, bind Role to serviceAccount. For example, `default` service account in `jupyterflow` namespace.
+Then, bind Role with your service account. For example, binding `default` service account in `jupyterflow` namespace.
 
 ```bash
-kubectl create rolebinding workflow-rb --role=workflow-role --serviceaccount=jupyterflow:default -n jupyterflow
+kubectl create rolebinding workflow-rb \
+                      --role=workflow-role \
+                      --serviceaccount=jupyterflow:default \
+                      -n jupyterflow
 ```
 
 You might want to look at [https://argoproj.github.io/argo/service-accounts](https://argoproj.github.io/argo/service-accounts)
@@ -140,7 +147,9 @@ Go to JupyterHub, launch notebook server. Write your own code.
 ```python
 # input.py
 print('hello')
+```
 
+```python
 # train.py
 print('world')
 ```
@@ -151,19 +160,14 @@ Run following command for sequence workflow.
 jupyterflow run -c "python input.py >> python train.py"
 ```
 
-Go to Argo Web UI and check out the output workflow.
+Go to Argo Web UI and check out the output of launched workflow.
 
 ![](docs/images/intro.png)
 
 
 ### Run by workflow.yaml
 
-if you want to run more sophisticated workflow, such as DAG (Directed Acyclic Graph), write your workflow on file (for example, `workflow.yaml`, the name doen't matter)
-
-```python
-# output.py
-print('again!')
-```
+If you want to run more sophisticated workflow, such as DAG (Directed Acyclic Graph), write your workflow on file (for example, `workflow.yaml`, the name doen't matter)
 
 ```yaml
 # workflow.yaml
@@ -180,12 +184,20 @@ dags:
 - 3 >> 4
 ```
 
+```python
+# output.py
+print('again!')
+```
+
+Run `jupyteflow` with `-f` option
+
 ```bash
 jupyterflow run -f workflow.yaml
 ```
 
-![](docs/images/dag.png)
+Check out the result.
 
+![](docs/images/dag.png)
 
 
 ## How does it work?
@@ -207,6 +219,7 @@ jupyterflow run -f workflow.yaml
 
 ```yaml
 # workflow.yaml
+
 name: workflow-name
 
 jobs:

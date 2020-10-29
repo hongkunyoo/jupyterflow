@@ -15,9 +15,9 @@ def main():
 
 
 @main.command()
-@click.option('-f', help='Path for workflow.yaml file. ex) \'jupyterflow run -f workflow.yaml\'', default=None)
-@click.option('-c', help="Command to run workflow. ex) \'jupyterflow run -c \"python main.py >> python next.py\"\'", default=None)
-@click.option('-o', help='Output format. default is \'-o jsonpath="metadata.name"\'', default='jsonpath="metadata.name"')
+@click.option('-f', '--file', help='Path for workflow.yaml file. ex) \'jupyterflow run -f workflow.yaml\'', default=None)
+@click.option('-c', '--command', help="Command to run workflow. ex) \'jupyterflow run -c \"python main.py >> python next.py\"\'", default=None)
+@click.option('-o', '--output', help='Output format. default is \'-o jsonpath="metadata.name"\'', default='jsonpath="metadata.name"')
 @click.option('--dry-run', help='Only print Argo Workflow object, without accually sending it', default=False, is_flag=True)
 def run(f, c, o, dry_run):
 
