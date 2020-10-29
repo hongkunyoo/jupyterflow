@@ -338,6 +338,59 @@
                 
                 
                 <h1 id="ml-pipeline">ML Pipeline<a class="headerlink" href="#ml-pipeline" title="Permanent link">&para;</a></h1>
+<div class="codehilite"><pre><span></span><code>git clone https://github.com/hongkunyoo/jupyterflow.git
+<span class="nb">cd</span> examples/ml-pipeline
+
+ls -alh
+<span class="c1"># input.py</span>
+<span class="c1"># train.py</span>
+<span class="c1"># output.py</span>
+<span class="c1"># workflow.yaml</span>
+<span class="c1"># requirements.txt</span>
+</code></pre></div>
+
+<ul>
+<li><code>input.py</code>: </li>
+<li><code>train.py</code>: </li>
+<li><code>output.py</code>: </li>
+<li><code>workflow.yaml</code>: </li>
+<li><code>requirements.txt</code>: </li>
+</ul>
+<div class="codehilite"><pre><span></span><code>pip install -r requirements.txt
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>python input.py
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>python train.py softmax <span class="m">0</span>.5
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>python output.py
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># workflow.yaml</span>
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python intput.py</span> 
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python train.py softmax 0.5</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python train.py softmax 0.9</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python train.py relu 0.5</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python train.py relu 0.9</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python output.py</span>
+
+<span class="c1"># Job index starts at 1.</span>
+<span class="nt">dags</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1 &gt;&gt; 2</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1 &gt;&gt; 3</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1 &gt;&gt; 4</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1 &gt;&gt; 5</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">2 &gt;&gt; 6</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">3 &gt;&gt; 6</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">4 &gt;&gt; 6</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">5 &gt;&gt; 6</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>jupyterflow run -f workflow.yaml
+</code></pre></div>
                 
               
               

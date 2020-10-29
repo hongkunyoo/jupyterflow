@@ -336,6 +336,63 @@
                 
                 
                 <h1 id="configuring-workflow-file">Configuring workflow file<a class="headerlink" href="#configuring-workflow-file" title="Permanent link">&para;</a></h1>
+<div class="codehilite"><pre><span></span><code><span class="c1"># workflow.yaml</span>
+<span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">workflow-name</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python job1.py</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python job2.py ARGS</span>
+
+<span class="nt">dags</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1 &gt;&gt; 2</span>
+
+<span class="nt">schedule</span><span class="p">:</span> <span class="s">&#39;*/2</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*&#39;</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+<th>Optional</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>version</code></td>
+<td>Version of <code>workflow.yaml</code> file format.</td>
+<td>Optional</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>Name of the workflow. This name will used for Argo <code>Workflow</code> object name.</td>
+<td>Optional</td>
+<td>{username} of JupyterHub</td>
+</tr>
+<tr>
+<td><code>jobs</code></td>
+<td>Jobs to run. Any kinds of command will work. (Not just Python)</td>
+<td>Required</td>
+<td></td>
+</tr>
+<tr>
+<td><code>dags</code></td>
+<td>Job dependencies. Index starts at 1. (<code>$PREVIOUS_JOB</code> &gt;&gt; <code>$NEXT_JOB</code>)</td>
+<td>Optional</td>
+<td>All jobs parallel (No dependency)</td>
+</tr>
+<tr>
+<td><code>schedule</code></td>
+<td>When to execute this workflow. Follows cron format.</td>
+<td>Optional</td>
+<td>Run immediately</td>
+</tr>
+</tbody>
+</table>
                 
               
               

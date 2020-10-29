@@ -336,6 +336,15 @@
                 
                 
                 <h1 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h1>
+<p><img alt="" src="../images/architecture.png" /></p>
+<p><code>jupyterflow</code> simply reads jupyter server <code>Pod</code> object to get all kinds of metadata, and reconstruct to <code>Workflow</code> object.</p>
+<p><code>jupyterflow</code> uses following metadata from <code>Pod</code>.
+- Container image
+- Environment variables
+- Home directory (home <code>PersistentVolumeClaim</code>)
+- Extra volume mount points
+- Resource management (<code>requests</code>, <code>limits</code>)
+- UID, GUID</p>
                 
               
               
