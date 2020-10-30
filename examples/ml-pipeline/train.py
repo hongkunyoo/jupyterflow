@@ -15,7 +15,7 @@ dropout = float(sys.argv[2])
 print(sys.argv)
 #####################
 
-epochs, batch_size, num_classes, hidden = (5, 128, 10, 512)
+epochs, batch_size, num_classes, hidden = (2, 128, 10, 512)
 loss_func = "categorical_crossentropy"
 opt = RMSprop()
 

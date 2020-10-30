@@ -7,7 +7,7 @@ spec:
   templates:
   {%- for job in workflow.jobs %}
   - name: {{ job['name'] }}
-    {% if pod['spec']['serviceAccountName'] -%}
+    {%- if pod['spec']['serviceAccountName'] %}
     serviceAccountName: {{ pod['spec']['serviceAccountName'] }}
     {%- endif %}
     container:
@@ -15,10 +15,10 @@ spec:
       command: {{ job['command'] }}
       workingDir: {{ runtime['workingDir'] }}
       imagePullPolicy: {{ pod['spec']['containers'][0]['imagePullPolicy'] }}
-      {%- if pod['spec']['imagePullSecrets'] -%}
+      {%- if pod['spec']['imagePullSecrets'] %}
       imagePullSecret: 
       {%- for secret in pod['spec']['imagePullSecrets'] %}
-      - name: {{ secret }}
+      - {{ secret | to_nice_yaml }}
       {%- endfor %}
       {%- endif %}
       securityContext:
@@ -31,16 +31,16 @@ spec:
         value: {{ runtime['PATH'] }}
       - name: HOME
         value: {{ runtime['HOME'] }}
-      {%- if pod['spec']['containers'][0]['env'] -%}
+      {%- if pod['spec']['containers'][0]['env'] %}
       {%- for ev in pod['spec']['containers'][0]['env'] %}
       - name: {{ ev['name'] }}
         value: "{{ ev['value'] }}"
       {%- endfor %}
-      {% endif %}
-      {%- if pod['spec']['containers'][0]['env_from'] -%}
+      {%- endif %}
+      {%- if pod['spec']['containers'][0]['env_from'] %}
       envFrom: {{ pod['spec']['containers'][0]['env_from'] }}
-      {% endif %}
-      {%- if pod['spec']['containers'][0]['resources'] -%}
+      {%- endif %}
+      {%- if pod['spec']['containers'][0]['resources'] %}
       resources:
         {%- if pod['spec']['containers'][0]['resources']['requests'] %}
         requests:

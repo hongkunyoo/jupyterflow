@@ -38,7 +38,7 @@ To make parallel workflow, write your own [`workflow.yaml`](https://hongkunyoo.g
     - I needed to re-build & re-push image everytime I updated my model. This was painful.
     - People who were not familiar with k8s had a hard time using this method.
 
-`jupyterflow` aims to solve this problem. Run your workflow with single command without Kubernetes & container works on JupyterHub.
+`jupyterflow` aims to solve this problem. Run your workflow  on JupyterHub with single command without Kubernetes & container troublesome task.
 
 ## Getting Started
 
