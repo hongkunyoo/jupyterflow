@@ -41,6 +41,10 @@
     
     
       
+        
+<script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","G-Y2NB80X1WG","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){if(this.value){var e=document.location.pathname;ga("send","pageview",e+"?q="+this.value)}})}),document.addEventListener("DOMContentSwitch",function(){ga("send","pageview",document.location.pathname)})</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
     
     
   </head>
@@ -261,6 +265,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#3-setting-storage" class="md-nav__link">
+    3) Setting Storage
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -330,8 +341,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#by-workflowyaml" class="md-nav__link">
-    by workflow.yaml
+  <a href="#by-workflowyaml-file" class="md-nav__link">
+    by workflow.yaml file
   </a>
   
 </li>
@@ -486,6 +497,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#3-setting-storage" class="md-nav__link">
+    3) Setting Storage
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -555,8 +573,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#by-workflowyaml" class="md-nav__link">
-    by workflow.yaml
+  <a href="#by-workflowyaml-file" class="md-nav__link">
+    by workflow.yaml file
   </a>
   
 </li>
@@ -591,7 +609,7 @@
 <h2 id="1-install-kubernetes">1. Install Kubernetes<a class="headerlink" href="#1-install-kubernetes" title="Permanent link">&para;</a></h2>
 <p>Any Kubernetes distributions will work. <code>Zero to JupyterHub</code> has a wonderful <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-kubernetes">guide for setting up Kubernetes.</a> </p>
 <h2 id="2-install-jupyterhub">2. Install JupyterHub<a class="headerlink" href="#2-install-jupyterhub" title="Permanent link">&para;</a></h2>
-<p>Also, follow the <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub"><code>Zero to JupyterHub</code> instruction to set up JupyterHub</a>. There is two things you should configure while installing jupyterflow.</p>
+<p>Also, follow the <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub"><code>Zero to JupyterHub</code> instruction to set up JupyterHub</a>. There is three things you should configure while installing jupyterflow.</p>
 <h3 id="1-specify-serviceaccoutname">1) Specify serviceAccoutName<a class="headerlink" href="#1-specify-serviceaccoutname" title="Permanent link">&para;</a></h3>
 <p>Find <code>singleuser</code> property and specify <code>serviceAccoutName</code> in <code>config.yaml</code>. This service account will be used to create  Argo <code>Workflow</code> object on behalf of you.</p>
 <p>For example, use <code>default</code> service account. Later, you should grant this service account a role to create <code>Workflow</code> object.</p>
@@ -606,6 +624,23 @@
 <span class="nt">singleuser</span><span class="p">:</span>
   <span class="nt">extraLabels</span><span class="p">:</span>
     <span class="nt">jupyterflow/username</span><span class="p">:</span> <span class="s">&quot;{username}&quot;</span>
+</code></pre></div>
+
+<h3 id="3-setting-storage">3) Setting Storage<a class="headerlink" href="#3-setting-storage" title="Permanent link">&para;</a></h3>
+<p>To use the same JupyterHub home directory as in Argo Workflow, Configure <code>singleuser.storage</code> property. To run jobs on multiple different node, you should use <code>ReadWriteMany</code> access mode type storage, 
+such as <a href="https://github.com/helm/charts/tree/master/stable/nfs-server-provisioner">nfs-server-provisioner</a>. 
+If you're unfamiliar with storage access mode, take a look at <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes">Kubernetes persistent volume access mode</a>.</p>
+<p>Configuring <code>singleuser</code> storage access mode as <code>ReadWriteOnce</code> is perfectly fine, but bear in mind that your jobs will be run on only one node that your jupyter notebook is mounted.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># config.yaml</span>
+<span class="nt">singleuser</span><span class="p">:</span>
+  <span class="nt">storage</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dynamic</span>                           <span class="c1"># or static</span>
+    <span class="nt">dynamic</span><span class="p">:</span>
+      <span class="nt">storageClass</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nfs-server</span>              <span class="c1"># For example, nfs-server-provisioner</span>
+      <span class="nt">storageAccessModes</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">ReadWriteMany</span><span class="p p-Indicator">]</span>   <span class="c1"># Make sure your volume supports ReadWriteMany for running distributed jobs.</span>
+    <span class="nt">static</span><span class="p">:</span>
+      <span class="nt">pvcName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-static-pvc</span>                <span class="c1"># Static pvc also works fine. </span>
+                                            <span class="c1"># Also static pvc should support ReadWriteMany mode for distributed jobs.</span>
 </code></pre></div>
 
 <h2 id="3-install-argo-workflow">3. Install Argo Workflow<a class="headerlink" href="#3-install-argo-workflow" title="Permanent link">&para;</a></h2>
@@ -629,7 +664,7 @@ kubectl apply --namespace jupyterflow -f <span class="se">\</span>
 <p>Grant the service account used in JupyterHub a role to create Argo Workflow objects.</p>
 <h3 id="options-1">Options 1)<a class="headerlink" href="#options-1" title="Permanent link">&para;</a></h3>
 <p>The simplest way to grant service account is to bind <code>cluster-admin</code> role. For example, if you deployed JupyterHub in <code>jupyterflow</code> namespace and specify service account as <code>default</code>, run</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># --serviceaccount=&lt;NAMESPACE&gt;:&lt;SERVICE_ACCOUNT&gt;</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># binding cluster-admin role to jupyterflow:default</span>
 kubectl create clusterrolebinding jupyterflow-admin <span class="se">\</span>
                         --clusterrole<span class="o">=</span>cluster-admin <span class="se">\</span>
                         --serviceaccount<span class="o">=</span>jupyterflow:default
@@ -637,6 +672,7 @@ kubectl create clusterrolebinding jupyterflow-admin <span class="se">\</span>
 
 <h3 id="options-2">Options 2)<a class="headerlink" href="#options-2" title="Permanent link">&para;</a></h3>
 <p>For more fine-grained RBAC, create Workflow Role in the namespace where JupyterHub is installed.</p>
+<p>For example, create Workflow Role in <code>jupyterflow</code> namespace with following command.</p>
 <div class="codehilite"><pre><span></span><code>cat <span class="s">&lt;&lt; EOF | kubectl create -n jupyterflow -f -</span>
 <span class="s">apiVersion: rbac.authorization.k8s.io/v1</span>
 <span class="s">kind: Role</span>
@@ -676,7 +712,8 @@ kubectl create clusterrolebinding jupyterflow-admin <span class="se">\</span>
 </code></pre></div>
 
 <p>Then, bind Role with your service account. For example, bind <code>default</code> service account with worflow role in <code>jupyterflow</code> namespace.</p>
-<div class="codehilite"><pre><span></span><code>kubectl create rolebinding workflow-rb <span class="se">\</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># binding workflow role to jupyterflow:default</span>
+kubectl create rolebinding workflow-rb <span class="se">\</span>
                       --role<span class="o">=</span>workflow-role <span class="se">\</span>
                       --serviceaccount<span class="o">=</span>jupyterflow:default <span class="se">\</span>
                       -n jupyterflow
@@ -708,7 +745,7 @@ kubectl create clusterrolebinding jupyterflow-admin <span class="se">\</span>
 
 <p>Go to Argo Web UI and check out the output of launched workflow.</p>
 <p><img alt="" src="../images/intro.png" /></p>
-<h3 id="by-workflowyaml">by <code>workflow.yaml</code><a class="headerlink" href="#by-workflowyaml" title="Permanent link">&para;</a></h3>
+<h3 id="by-workflowyaml-file">by <code>workflow.yaml</code> file<a class="headerlink" href="#by-workflowyaml-file" title="Permanent link">&para;</a></h3>
 <p>If you want to run more sophisticated workflow, such as DAG (Directed Acyclic Graph), write your own workflow file (for example, <code>workflow.yaml</code>, the name doen't matter)</p>
 <p>For more information, check out <a href="../configuration/">Configuring workflow</a></p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># workflow.yaml</span>
