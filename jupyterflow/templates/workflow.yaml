@@ -7,23 +7,23 @@ spec:
   templates:
   {%- for job in workflow.jobs %}
   - name: {{ job['name'] }}
-    {%- if pod['spec']['serviceAccountName'] %}
-    serviceAccountName: {{ pod['spec']['serviceAccountName'] }}
+    {%- if workflow['spec']['serviceAccountName'] %}
+    serviceAccountName: {{ workflow['spec']['serviceAccountName'] }}
     {%- endif %}
     container:
-      image: {{ runtime['image'] }}
+      image: {{ workflow['spec']['image'] }}
       command: {{ job['command'] }}
       workingDir: {{ runtime['workingDir'] }}
-      imagePullPolicy: {{ pod['spec']['containers'][0]['imagePullPolicy'] }}
-      {%- if pod['spec']['imagePullSecrets'] %}
+      imagePullPolicy: {{ workflow['spec']['imagePullPolicy'] }}
+      {%- if workflow['spec']['imagePullSecrets'] %}
       imagePullSecret: 
-      {%- for secret in pod['spec']['imagePullSecrets'] %}
+      {%- for secret in workflow['spec']['imagePullSecrets'] %}
       - {{ secret | to_nice_yaml }}
       {%- endfor %}
       {%- endif %}
       securityContext:
-        runAsUser: {{ runtime['runAsUser'] }}
-        runAsGroup: {{ runtime['runAsGroup'] }}
+        runAsUser: {{ workflow['spec']['runAsUser'] }}
+        runAsGroup: {{ workflow['spec']['runAsGroup'] }}
       env:
       - name: NB_USER
         value: {{ runtime['NB_USER'] }}
@@ -31,39 +31,22 @@ spec:
         value: {{ runtime['PATH'] }}
       - name: HOME
         value: {{ runtime['HOME'] }}
-      {%- if pod['spec']['containers'][0]['env'] %}
-      {%- for ev in pod['spec']['containers'][0]['env'] %}
+      {%- if workflow['spec']['env'] %}
+      {%- for ev in workflow['spec']['env'] %}
       - name: {{ ev['name'] }}
         value: "{{ ev['value'] }}"
       {%- endfor %}
       {%- endif %}
-      {%- if pod['spec']['containers'][0]['env_from'] %}
-      envFrom: {{ pod['spec']['containers'][0]['env_from'] }}
+      {%- if workflow['spec']['env_from'] %}
+      envFrom: {{ workflow['spec']['env_from'] }}
       {%- endif %}
-      {%- if pod['spec']['containers'][0]['resources'] %}
+      {%- if workflow['spec']['resources'] %}
       resources:
-        {%- if pod['spec']['containers'][0]['resources']['requests'] %}
-        requests:
-          {%- if pod['spec']['containers'][0]['resources']['requests']['cpu'] %}
-          cpu: {{ pod['spec']['containers'][0]['resources']['requests']['cpu'] | int }}
-          {%- endif -%}  
-          {%- if pod['spec']['containers'][0]['resources']['requests']['memory'] %}
-          memory: {{ pod['spec']['containers'][0]['resources']['requests']['memory'] | int }}
-          {%- endif -%}  
-        {%- endif -%}
-        {%- if pod['spec']['containers'][0]['resources']['limits'] %}
-        limits:
-          {%- if pod['spec']['containers'][0]['resources']['limits']['cpu'] %}
-          cpu: {{ pod['spec']['containers'][0]['resources']['limits']['cpu'] | int }}
-          {%- endif -%}  
-          {%- if pod['spec']['containers'][0]['resources']['limits']['memory'] %}
-          memory: {{ pod['spec']['containers'][0]['resources']['limits']['memory'] | int }}
-          {%- endif -%}  
-        {%- endif -%}
+        {{ workflow['spec']['resources'] | to_nice_yaml | indent(8) }}
       {%- endif %}
-      {%- if pod['spec']['containers'][0]['volumeMounts'] %}
+      {%- if workflow['spec']['volumeMounts'] %}
       volumeMounts:
-      {%- for v in pod['spec']['containers'][0]['volumeMounts'] %}
+      {%- for v in workflow['spec']['volumeMounts'] %}
       - {{ v | to_nice_yaml | indent(8) }}
       {%- endfor -%}
       {%- endif -%}
@@ -77,10 +60,14 @@ spec:
         template: {{ job['name'] }}
         dependencies: {{ job['dependencies']}}
       {%- endfor %}
-  {%- if pod['spec']['volumes'] %}
+  {%- if workflow['spec']['volumes'] %}
   volumes:
-  {%- for vol in pod['spec']['volumes'] %}
+  {%- for vol in workflow['spec']['volumes'] %}
   - {{ vol | to_nice_yaml | indent }}
   {%- endfor %}
+  {%- endif %}
+  {%- if workflow['spec']['nodeSelector'] %}
+  nodeSelector:
+    {{ workflow['spec']['nodeSelector'] | to_nice_yaml | indent(4) }}
   {%- endif %}
   

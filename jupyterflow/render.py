@@ -1,11 +1,10 @@
 from jinja2 import Environment, BaseLoader, PackageLoader, Template
 
 
-def workflow(workflow, pod, runtime, username):
+def workflow(workflow, runtime, username):
 
     template = get_template('workflow.yaml')
     return template.render(workflow=workflow, \
-                            pod=pod, \
                             runtime=runtime, \
                         ).format(username=username, nb_user=runtime['NB_USER'])
 

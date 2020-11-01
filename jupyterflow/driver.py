@@ -5,6 +5,7 @@ from click import ClickException
 
 from . import workflow
 from . import printer
+from . import utils
 from .runtime import runtime
 
 
@@ -17,7 +18,7 @@ def main():
 @click.option('-f', '--filename', help='Path for workflow.yaml file. ex) \'jupyterflow run -f workflow.yaml\'', default=None)
 @click.option('-c', '--command', help="Command to run workflow. ex) \'jupyterflow run -c \"python main.py >> python next.py\"\'", default=None)
 @click.option('-o', '--output', help='Output format. default is \'-o jsonpath="metadata.name"\'', default='jsonpath="metadata.name"')
-@click.option('--dry-run', help='Only print Argo Workflow object, without accually sending it', default=False, is_flag=True)
+@click.option('--dry-run', help='Only prints Argo Workflow object, without accually sending it', default=False, is_flag=True)
 def run(filename, command, output, dry_run):
 
     if command is not None:
@@ -33,8 +34,8 @@ def run(filename, command, output, dry_run):
 
     runtime['workingDir'] = workingDir
     namespace = runtime['namespace']
-
-    wf = workflow.build(user_workflow, namespace, runtime)
+    conf = utils.load_config()
+    wf = workflow.build(user_workflow, namespace, runtime, conf)
     
     if dry_run:
         response = wf
@@ -45,15 +46,16 @@ def run(filename, command, output, dry_run):
     printer.format(response, output)
 
 
+@main.command()
+@click.option('--generate-config', help='Generate config file', default=False, is_flag=True)
+def config(generate_config):
+    if generate_config:
+        utils.create_config()
+    else:
+        conf = utils.load_config()
+        printer.format(conf, 'yaml')
+        
 
-# @main.command()
-# @click.option('--generate-config/--no', help='Generate config', default=False)
-# def config(generate_config):
-#     data = pkgutil.get_data(__name__, "templates/jupyterflow.yaml")
-#     home = os.environ['HOME']
-#     path = os.path.join(home, '.jupyterflow.yaml')
-#     with open(path, 'wt') as f:
-#         f.write(data.decode('utf-8'))
 
 # @main.command()
 # # @click.option('--generate-config/--no', help='Generate config', default=False)

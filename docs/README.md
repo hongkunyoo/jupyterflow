@@ -52,6 +52,10 @@ To learn how it works, go to [How it works](https://hongkunyoo.github.io/jupyter
 
 For examples how to use, please see [Examples](https://hongkunyoo.github.io/jupyterflow/examples) page.
 
-## Workflow file Configuration
+## Configuration
 
 To find out more configuration, take a look at [Configuration](https://hongkunyoo.github.io/jupyterflow/configuration) page.
+
+## CLI Reference
+
+For more detail usage of `jupyterflow` command line interface, find out more at [CLI Reference](https://hongkunyoo.github.io/jupyterflow/cli-ref) page.
