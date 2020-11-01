@@ -26,7 +26,7 @@ jupyterflow run [flags]
 ## jupyterflow config
 
 View or create JupyterFlow configuration file to override Argo `Workflow` object specification.
-For detail information, refer to [JupyterFlow Configuration](configuration#jupyterflow-configuration)
+For detail information, refer to [JupyterFlow Configuration](configuration.md#jupyterflow-configuration)
 
 ### Synopsis
 

@@ -25,4 +25,5 @@ nav:
     - examples/basic.md
     - examples/ml-pipeline.md
   - configuration.md
+  - cli-ref.md
   - Releases ⧉: https://github.com/hongkunyoo/jupyterflow/releases
