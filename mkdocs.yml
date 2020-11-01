@@ -7,7 +7,9 @@ theme:
     primary: blue
   font:
     text: Work Sans
-# google_analytics: []
+google_analytics:
+- G-Y2NB80X1WG
+- auto
 markdown_extensions:
   - codehilite
   - admonition

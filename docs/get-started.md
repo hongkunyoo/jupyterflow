@@ -10,7 +10,7 @@ Any Kubernetes distributions will work. `Zero to JupyterHub` has a wonderful [gu
 
 ## 2. Install JupyterHub
 
-Also, follow the [`Zero to JupyterHub` instruction to set up JupyterHub](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub). There is two things you should configure while installing jupyterflow.
+Also, follow the [`Zero to JupyterHub` instruction to set up JupyterHub](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub). There is three things you should configure while installing jupyterflow.
 
 ### 1) Specify serviceAccoutName
 
@@ -33,6 +33,27 @@ Find `singleuser.extraLabels` property and add `jupyterflow/username: "{username
 singleuser:
   extraLabels:
     jupyterflow/username: "{username}"
+```
+
+### 3) Setting Storage
+
+To use the same JupyterHub home directory as in Argo Workflow, Configure `singleuser.storage` property. To run jobs on multiple different node, you should use `ReadWriteMany` access mode type storage, 
+such as [nfs-server-provisioner](https://github.com/helm/charts/tree/master/stable/nfs-server-provisioner). 
+If you're unfamiliar with storage access mode, take a look at [Kubernetes persistent volume access mode](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes).
+
+Configuring `singleuser` storage access mode as `ReadWriteOnce` is perfectly fine, but bear in mind that your jobs will be run on only one node that your jupyter notebook is mounted.
+
+```yaml
+# config.yaml
+singleuser:
+  storage:
+    type: dynamic                           # or static
+    dynamic:
+      storageClass: nfs-server              # For example, nfs-server-provisioner
+      storageAccessModes: [ReadWriteMany]   # Make sure your volume supports ReadWriteMany for running distributed jobs.
+    static:
+      pvcName: my-static-pvc                # Static pvc also works fine. 
+                                            # Also static pvc should support ReadWriteMany mode for distributed jobs.
 ```
 
 ## 3. Install Argo Workflow
@@ -68,7 +89,7 @@ Grant the service account used in JupyterHub a role to create Argo Workflow obje
 The simplest way to grant service account is to bind `cluster-admin` role. For example, if you deployed JupyterHub in `jupyterflow` namespace and specify service account as `default`, run
 
 ```bash
-# --serviceaccount=<NAMESPACE>:<SERVICE_ACCOUNT>
+# binding cluster-admin role to jupyterflow:default
 kubectl create clusterrolebinding jupyterflow-admin \
                         --clusterrole=cluster-admin \
                         --serviceaccount=jupyterflow:default
@@ -77,6 +98,8 @@ kubectl create clusterrolebinding jupyterflow-admin \
 ### Options 2)
 
 For more fine-grained RBAC, create Workflow Role in the namespace where JupyterHub is installed.
+
+For example, create Workflow Role in `jupyterflow` namespace with following command.
 
 ```bash
 cat << EOF | kubectl create -n jupyterflow -f -
@@ -120,6 +143,7 @@ EOF
 Then, bind Role with your service account. For example, bind `default` service account with worflow role in `jupyterflow` namespace.
 
 ```bash
+# binding workflow role to jupyterflow:default
 kubectl create rolebinding workflow-rb \
                       --role=workflow-role \
                       --serviceaccount=jupyterflow:default \
@@ -168,7 +192,7 @@ Go to Argo Web UI and check out the output of launched workflow.
 ![](images/intro.png)
 
 
-### by `workflow.yaml`
+### by `workflow.yaml` file
 
 If you want to run more sophisticated workflow, such as DAG (Directed Acyclic Graph), write your own workflow file (for example, `workflow.yaml`, the name doen't matter)
 
