@@ -1,8 +1,6 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  annotations:
-    sidecar.istio.io/inject: "false"
   generateName: {{ workflow['name']  }}-
 spec:
   entrypoint: dag
@@ -12,6 +10,9 @@ spec:
     {%- if workflow['spec']['serviceAccountName'] %}
     serviceAccountName: {{ workflow['spec']['serviceAccountName'] }}
     {%- endif %}
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
     container:
       image: {{ workflow['spec']['image'] }}
       command: {{ job['command'] }}

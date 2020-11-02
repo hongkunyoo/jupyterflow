@@ -64,7 +64,7 @@ In exec mode, the command is more straightforward since there is no shell proces
 
 ## Jupyterflow Configuration
 
-You can override Argo `Workflow` spec by configuring `$HOME/.jupyterflow.yaml` file. This file has to be specifically named `.jupyterflow.yaml` in `$HOME` directory.
+You can override Argo `Workflow` spec by configuring `$HOME/.jupyterflow.yaml` file. This file path can be changed by setting `JUPYTERFLOW_CONFIG_FILE` environment variable. (`export JUPYTERFLOW_CONFIG_FILE=/tmp/myjupyterflow.yaml`)
 
 The following command will create `.jupyterflow.yaml` on `$HOME` directory.
 

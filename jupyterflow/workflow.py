@@ -24,7 +24,6 @@ def load_from_file(f):
 
 
 def build(wf, namespace, runtime, config):
-    # escaped_username = runtime['escaped_username']
     hostname = runtime['HOSTNAME']
     #########################
     # resolve tree
