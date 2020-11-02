@@ -1,12 +1,12 @@
 from jinja2 import Environment, BaseLoader, PackageLoader, Template
 
 
-def workflow(workflow, runtime, username):
+def workflow(workflow, runtime):
 
     template = get_template('workflow.yaml')
     return template.render(workflow=workflow, \
-                            runtime=runtime, \
-                        ).format(username=username, nb_user=runtime['NB_USER'])
+                            runtime=runtime
+                        )
 
 
 def cronworkflow(workflow_yaml, schedule):

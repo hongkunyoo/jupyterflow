@@ -16,10 +16,11 @@ class Runtime(dict):
         dict.__setitem__(self, 'workingDir', None)
         dict.__setitem__(self, 'PATH', os.environ['PATH'])
         dict.__setitem__(self, 'HOME', os.environ['HOME'])
+        dict.__setitem__(self, 'HOSTNAME', os.environ['HOSTNAME'])
         dict.__setitem__(self, 'NB_USER', NB_USER)
         dict.__setitem__(self, 'runAsUser', nb_user_pwd.pw_uid)
         dict.__setitem__(self, 'runAsGroup', nb_user_pwd.pw_gid)
-        dict.__setitem__(self, 'escaped_username', utils.get_escaped_user(os.environ['JUPYTERHUB_USER']))
+        # dict.__setitem__(self, 'escaped_username', utils.get_escaped_user(os.environ['JUPYTERHUB_USER']))
 
 
 runtime = Runtime()
