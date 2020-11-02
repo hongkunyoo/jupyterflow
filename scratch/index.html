@@ -13,7 +13,7 @@
     
     
       
-        <title>Configuration - JupyterFlow - Run your workflow on JupyterHub</title>
+        <title>Set up from scratch - JupyterFlow - Run your workflow on JupyterHub</title>
       
     
     
@@ -64,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#configuration" class="md-skip">
+        <a href="#set-up-from-scratch" class="md-skip">
           Skip to content
         </a>
       
@@ -94,7 +94,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              Configuration
+              Set up from scratch
             
           </span>
         </div>
@@ -278,89 +278,11 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-      
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Configuration
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-    
-    <a href="./" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../configuration/" class="md-nav__link">
       Configuration
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#workflowyaml-configuration" class="md-nav__link">
-    workflow.yaml Configuration
-  </a>
-  
-    <nav class="md-nav" aria-label="workflow.yaml Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#minimum-description" class="md-nav__link">
-    Minimum description
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#full-description" class="md-nav__link">
-    Full description
-  </a>
-  
-    <nav class="md-nav" aria-label="Full description">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#exec-vs-shell" class="md-nav__link">
-    exec vs shell
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#jupyterflow-configuration" class="md-nav__link">
-    Jupyterflow Configuration
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
     
@@ -412,37 +334,24 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#workflowyaml-configuration" class="md-nav__link">
-    workflow.yaml Configuration
+  <a href="#install-jupyterhub" class="md-nav__link">
+    Install JupyterHub
   </a>
   
-    <nav class="md-nav" aria-label="workflow.yaml Configuration">
+    <nav class="md-nav" aria-label="Install JupyterHub">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#minimum-description" class="md-nav__link">
-    Minimum description
+  <a href="#1-specify-serviceaccoutname" class="md-nav__link">
+    1) Specify serviceAccoutName
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#full-description" class="md-nav__link">
-    Full description
+  <a href="#2-configure-storage" class="md-nav__link">
+    2) Configure Storage
   </a>
-  
-    <nav class="md-nav" aria-label="Full description">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#exec-vs-shell" class="md-nav__link">
-    exec vs shell
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -452,8 +361,49 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#jupyterflow-configuration" class="md-nav__link">
-    Jupyterflow Configuration
+  <a href="#install-argo-workflow-engine" class="md-nav__link">
+    Install Argo Workflow Engine
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expose-argo-workflow-ui" class="md-nav__link">
+    Expose Argo Workflow UI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#grant-jupyterhub-service-account-rbac" class="md-nav__link">
+    Grant JupyterHub Service Account RBAC
+  </a>
+  
+    <nav class="md-nav" aria-label="Grant JupyterHub Service Account RBAC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#options-1" class="md-nav__link">
+    Options 1)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#options-2" class="md-nav__link">
+    Options 2)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-jupyterflow" class="md-nav__link">
+    Install jupyterflow
   </a>
   
 </li>
@@ -470,170 +420,143 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/hongkunyoo/jupyterflow/edit/master/docs/configuration.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/hongkunyoo/jupyterflow/edit/master/docs/scratch.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h1>
-<h2 id="workflowyaml-configuration"><code>workflow.yaml</code> Configuration<a class="headerlink" href="#workflowyaml-configuration" title="Permanent link">&para;</a></h2>
-<p><code>workflow.yaml</code> is a description about how to run your jobs. You can asign a dependencies between jobs. The name and the path does not matter as long as you pass to <code>run -f</code> option argument.</p>
-<h3 id="minimum-description">Minimum description<a class="headerlink" href="#minimum-description" title="Permanent link">&para;</a></h3>
-<p>Each job will run in parallel.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># workflow.yaml</span>
-<span class="nt">jobs</span><span class="p">:</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo hello</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo world</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo again</span>
+                <h1 id="set-up-from-scratch">Set up from scratch<a class="headerlink" href="#set-up-from-scratch" title="Permanent link">&para;</a></h1>
+<p>In this method, you will install JupyterHub, Argo Workflow manually.</p>
+<h2 id="install-jupyterhub">Install JupyterHub<a class="headerlink" href="#install-jupyterhub" title="Permanent link">&para;</a></h2>
+<p>Follow the <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub"><code>Zero to JupyterHub</code> instruction to set up JupyterHub</a>. There is two things you should configure while installing jupyterflow.</p>
+<h3 id="1-specify-serviceaccoutname">1) Specify serviceAccoutName<a class="headerlink" href="#1-specify-serviceaccoutname" title="Permanent link">&para;</a></h3>
+<p>Find <code>singleuser</code> property and specify <code>serviceAccoutName</code> in <code>config.yaml</code>. This service account will be used to create  Argo <code>Workflow</code> object on behalf of you.</p>
+<p>For example, use <code>default</code> service account. Later, you should grant this service account a role to create <code>Workflow</code> object.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># config.yaml</span>
+<span class="nt">singleuser</span><span class="p">:</span>
+  <span class="nt">serviceAccountName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
 </code></pre></div>
 
-<div class="codehilite"><pre><span></span><code>jupyterflow run -f workflow.yaml
+<h3 id="2-configure-storage">2) Configure Storage<a class="headerlink" href="#2-configure-storage" title="Permanent link">&para;</a></h3>
+<p>To use the same JupyterHub home directory as in Argo Workflow, Configure <code>singleuser.storage</code> property. To run jobs on multiple different node, you should use <code>ReadWriteMany</code> access mode type storage, 
+such as <a href="https://github.com/helm/charts/tree/master/stable/nfs-server-provisioner">nfs-server-provisioner</a>. 
+If you're unfamiliar with storage access mode, take a look at <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes">Kubernetes persistent volume access mode</a>.</p>
+<p>Configuring <code>singleuser</code> storage access mode as <code>ReadWriteOnce</code> is perfectly fine, but bear in mind that your jobs will be run on the only one node that your jupyter notebook is mounted.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># config.yaml</span>
+<span class="nt">singleuser</span><span class="p">:</span>
+  <span class="nt">storage</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dynamic</span>                           <span class="c1"># or static</span>
+    <span class="nt">dynamic</span><span class="p">:</span>
+      <span class="nt">storageClass</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nfs-server</span>              <span class="c1"># For example, nfs-server-provisioner</span>
+      <span class="nt">storageAccessModes</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">ReadWriteMany</span><span class="p p-Indicator">]</span>   <span class="c1"># Make sure your volume supports ReadWriteMany for running distributed jobs.</span>
+    <span class="nt">static</span><span class="p">:</span>
+      <span class="nt">pvcName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-static-pvc</span>                <span class="c1"># Static pvc also works fine. </span>
+                                            <span class="c1"># Also static pvc should support ReadWriteMany mode for distributed jobs.</span>
 </code></pre></div>
 
-<h3 id="full-description">Full description<a class="headerlink" href="#full-description" title="Permanent link">&para;</a></h3>
-<p>Job dependencies will be resolved based on <code>dags</code> information.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># workflow.yaml</span>
-<span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+<p>The full description of <code>config.yaml</code> file will seem like this.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">proxy</span><span class="p">:</span>
+  <span class="nt">secretToken</span><span class="p">:</span> <span class="s">&quot;&lt;RANDOM_HEX&gt;&quot;</span>
 
-<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">workflow-name</span>
-
-<span class="nt">jobs</span><span class="p">:</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo hello</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo world</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo again</span>
-
-<span class="nt">cmd_mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">exec</span>   <span class="c1"># shell</span>
-
-<span class="nt">dags</span><span class="p">:</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1 &gt;&gt; 2</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1 &gt;&gt; 3</span>
-
-<span class="nt">schedule</span><span class="p">:</span> <span class="s">&#39;*/2</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*&#39;</span>
+<span class="nt">singleuser</span><span class="p">:</span>
+  <span class="nt">serviceAccountName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+  <span class="nt">storage</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dynamic</span>
+    <span class="nt">dynamic</span><span class="p">:</span>
+      <span class="nt">storageClass</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nfs-server</span>
+      <span class="nt">storageAccessModes</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">ReadWriteMany</span><span class="p p-Indicator">]</span>
 </code></pre></div>
 
-<table>
-<thead>
-<tr>
-<th>Property</th>
-<th>Description</th>
-<th>Optional</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>version</code></td>
-<td>Version of <code>workflow.yaml</code> file format.</td>
-<td>Optional</td>
-<td>1</td>
-</tr>
-<tr>
-<td><code>name</code></td>
-<td>Name of the workflow. This name is used for Argo <code>Workflow</code> name.</td>
-<td>Optional</td>
-<td><code>{username}</code> of JupyterHub</td>
-</tr>
-<tr>
-<td><code>jobs</code></td>
-<td>Jobs to run. Any kinds of command works.</td>
-<td>Required</td>
-<td></td>
-</tr>
-<tr>
-<td><code>cmd_mode</code></td>
-<td>Choose to run image in <code>exec</code> or <code>shell</code> form.</td>
-<td>Optional</td>
-<td><code>exec</code></td>
-</tr>
-<tr>
-<td><code>dags</code></td>
-<td>Job dependencies. Index starts at 1. (<code>$PREVIOUS_JOB</code> &gt;&gt; <code>$NEXT_JOB</code>)</td>
-<td>Optional</td>
-<td>All jobs parallel (No dependency)</td>
-</tr>
-<tr>
-<td><code>schedule</code></td>
-<td>When to execute this workflow. Follows cron format.</td>
-<td>Optional</td>
-<td>Run immediately</td>
-</tr>
-</tbody>
-</table>
-<h5 id="exec-vs-shell"><code>exec</code> vs <code>shell</code><a class="headerlink" href="#exec-vs-shell" title="Permanent link">&para;</a></h5>
-<ul>
-<li>In <code>exec</code> mode, your command will be executed as <code>["echo", "hello", "world"]</code>.</li>
-<li>In <code>shell</code> mode, your command will be executed as <code>["/bin/sh", "-c", "echo hello world"]</code>.</li>
-</ul>
-<p>In exec mode, the command is more straightforward since there is no shell process involved and it is being called directly. In shell mode, you can fully utilize the power of shell, such as shell script commands. (<code>&gt;&gt;</code>, <code>&amp;&amp;</code> and so on.)</p>
-<h2 id="jupyterflow-configuration">Jupyterflow Configuration<a class="headerlink" href="#jupyterflow-configuration" title="Permanent link">&para;</a></h2>
-<p>You can override Argo <code>Workflow</code> spec by configuring <code>$HOME/.jupyterflow.yaml</code> file. This file path can be changed by setting <code>JUPYTERFLOW_CONFIG_FILE</code> environment variable. (<code>export JUPYTERFLOW_CONFIG_FILE=/tmp/myjupyterflow.yaml</code>)</p>
-<p>The following command will create <code>.jupyterflow.yaml</code> on <code>$HOME</code> directory.</p>
-<div class="codehilite"><pre><span></span><code>jupyterflow config --generate-config
-<span class="c1"># jupyterflow config file created.</span>
+<p>Install JupyterHub using <code>helm</code> package manager. Following example installs JupyterHub in <code>jupyterflow</code> namespace.</p>
+<div class="codehilite"><pre><span></span><code>helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
+helm repo update
 
-cat <span class="nv">$HOME</span>/.jupyterflow.yaml
-<span class="c1"># spec:</span>
-<span class="c1">#   image: jupyter/datascience-notebook:latest</span>
-<span class="c1">#   imagePullPolicy: Always</span>
-<span class="c1">#   imagePullSecrets:</span>
-<span class="c1">#   -  name: &quot;default&quot;</span>
-<span class="c1">#   env:</span>
-<span class="c1">#   - name: &quot;CUSTOM_KEY&quot;</span>
-<span class="c1">#     value: &quot;CUSTOM_VAL&quot;</span>
-<span class="c1">#   resources:</span>
-<span class="c1">#     requests:</span>
-<span class="c1">#       cpu: 500m</span>
-<span class="c1">#       memory: 500Mi</span>
-<span class="c1">#     limits:</span>
-<span class="c1">#       cpu: 500m</span>
-<span class="c1">#       memory: 500Mi</span>
-<span class="c1">#   nodeSelector: {}</span>
-<span class="c1">#   runAsUser: 1000</span>
-<span class="c1">#   runAsGroup: 100</span>
-<span class="c1">#   serviceAccountName: default</span>
-<span class="c1">#   volumes:</span>
-<span class="c1">#   - name: nas001</span>
-<span class="c1">#     persistentVolumeClaim:</span>
-<span class="c1">#       claimName: nas001</span>
-<span class="c1">#   volumeMounts:</span>
-<span class="c1">#   - name: nas001</span>
-<span class="c1">#     mountPath: /nas001</span>
+<span class="nv">RELEASE</span><span class="o">=</span>jhub
+<span class="nv">NAMESPACE</span><span class="o">=</span>jupyterflow
+
+helm install <span class="nv">$RELEASE</span> jupyterhub/jupyterhub <span class="se">\</span>
+  --namespace <span class="nv">$NAMESPACE</span> <span class="se">\</span>
+  --create-namespace <span class="se">\</span>
+  --values config.yaml
 </code></pre></div>
 
-<p>Umcomment the property you want to override. For example, if you want your workflow jobs to run on GPU nodes, configure <code>spec.resources</code> or <code>spec.nodeSelector</code> property.</p>
-<div class="codehilite"><pre><span></span><code>spec:
-<span class="c1">#   image: jupyter/datascience-notebook:latest</span>
-<span class="c1">#   imagePullPolicy: Always</span>
-<span class="c1">#   imagePullSecrets:</span>
-<span class="c1">#   -  name: &quot;default&quot;</span>
-<span class="c1">#   env:</span>
-<span class="c1">#   - name: &quot;CUSTOM_KEY&quot;</span>
-<span class="c1">#     value: &quot;CUSTOM_VAL&quot;</span>
-  resources:
-    requests:
-      cpu: 500m
-      memory: 500Mi
-      nvidia.com/gpu: <span class="m">1</span>
-    limits:
-      cpu: 500m
-      memory: 500Mi
-      nvidia.com/gpu: <span class="m">1</span>
-  nodeSelector:
-    accelerator: nvidia-node
-<span class="c1">#   runAsUser: 1000</span>
-<span class="c1">#   runAsGroup: 100</span>
-<span class="c1">#   serviceAccountName: default</span>
-<span class="c1">#   volumes:</span>
-<span class="c1">#   - name: nas001</span>
-<span class="c1">#     persistentVolumeClaim:</span>
-<span class="c1">#       claimName: nas001</span>
-<span class="c1">#   volumeMounts:</span>
-<span class="c1">#   - name: nas001</span>
-<span class="c1">#     mountPath: /nas001</span>
+<h2 id="install-argo-workflow-engine">Install Argo Workflow Engine<a class="headerlink" href="#install-argo-workflow-engine" title="Permanent link">&para;</a></h2>
+<p>Install Argo workflow engine with <a href="https://argoproj.github.io/argo/quick-start">Argo Workflow quick start page</a>. 
+You need to install Argo workflow engine in the <strong>same Kubernetes namespace</strong> where JupyterHub is installed.</p>
+<p>For example, using <code>jupyterflow</code> namespace for Argo Workflow engine.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># install argo workflow in jupyterflow</span>
+kubectl apply --namespace jupyterflow -f <span class="se">\</span>
+    https://raw.githubusercontent.com/argoproj/argo/stable/manifests/quick-start-postgres.yaml
 </code></pre></div>
 
-<p>Run <code>jupyterflow</code> and check out the result whether your workflow has run on GPU nodes.</p>
-<div class="codehilite"><pre><span></span><code>jupyterflow run -f workflow.yaml
+<p>If you want to install Argo workflow engine in different namespace, refer to <a href="https://argoproj.github.io/argo/installation/">Argo installation page.</a></p>
+<h2 id="expose-argo-workflow-ui">Expose Argo Workflow UI<a class="headerlink" href="#expose-argo-workflow-ui" title="Permanent link">&para;</a></h2>
+<p>Expose Web UI for Argo Workflow: <a href="https://argoproj.github.io/argo/argo-server/">https://argoproj.github.io/argo/argo-server/</a></p>
+<p>You need to expose Argo Web UI to see the result of <code>jupyterflow</code>.</p>
+<h2 id="grant-jupyterhub-service-account-rbac">Grant JupyterHub Service Account RBAC<a class="headerlink" href="#grant-jupyterhub-service-account-rbac" title="Permanent link">&para;</a></h2>
+<p>Grant the service account used in JupyterHub a role to create Argo Workflow objects.</p>
+<h3 id="options-1">Options 1)<a class="headerlink" href="#options-1" title="Permanent link">&para;</a></h3>
+<p>The simplest way to grant service account is to bind <code>cluster-admin</code> role. For example, if you deployed JupyterHub in <code>jupyterflow</code> namespace and specify service account as <code>default</code>, run</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># binding cluster-admin role to jupyterflow:default</span>
+kubectl create clusterrolebinding jupyterflow-admin <span class="se">\</span>
+                        --clusterrole<span class="o">=</span>cluster-admin <span class="se">\</span>
+                        --serviceaccount<span class="o">=</span>jupyterflow:default
+</code></pre></div>
+
+<h3 id="options-2">Options 2)<a class="headerlink" href="#options-2" title="Permanent link">&para;</a></h3>
+<p>For more fine-grained RBAC, create Workflow Role in the namespace where JupyterHub is installed.</p>
+<p>For example, create Workflow Role in <code>jupyterflow</code> namespace with following command.</p>
+<div class="codehilite"><pre><span></span><code>cat <span class="s">&lt;&lt; EOF | kubectl create -n jupyterflow -f -</span>
+<span class="s">apiVersion: rbac.authorization.k8s.io/v1</span>
+<span class="s">kind: Role</span>
+<span class="s">metadata:</span>
+<span class="s">  name: workflow-role</span>
+<span class="s">rules:</span>
+<span class="s"># pod get/watch is used to identify the container IDs of the current pod</span>
+<span class="s"># pod patch is used to annotate the step&#39;s outputs back to controller (e.g. artifact location)</span>
+<span class="s">- apiGroups:</span>
+<span class="s">  - &quot;&quot;</span>
+<span class="s">  resources:</span>
+<span class="s">  - pods</span>
+<span class="s">  verbs:</span>
+<span class="s">  - get</span>
+<span class="s">  - watch</span>
+<span class="s">  - patch</span>
+<span class="s">  - list</span>
+<span class="s"># logs get/watch are used to get the pods logs for script outputs, and for log archival</span>
+<span class="s">- apiGroups:</span>
+<span class="s">  - &quot;&quot;</span>
+<span class="s">  resources:</span>
+<span class="s">  - pods/log</span>
+<span class="s">  verbs:</span>
+<span class="s">  - get</span>
+<span class="s">  - watch</span>
+<span class="s">- apiGroups:</span>
+<span class="s">  - &quot;argoproj.io&quot;</span>
+<span class="s">  resources:</span>
+<span class="s">  - workflows</span>
+<span class="s">  verbs:</span>
+<span class="s">  - get</span>
+<span class="s">  - watch</span>
+<span class="s">  - patch</span>
+<span class="s">  - list</span>
+<span class="s">  - create</span>
+<span class="s">EOF</span>
+</code></pre></div>
+
+<p>Then, bind Role with your service account. For example, bind <code>default</code> service account with workflow role in <code>jupyterflow</code> namespace.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># binding workflow role to jupyterflow:default</span>
+kubectl create rolebinding workflow-rb <span class="se">\</span>
+                      --role<span class="o">=</span>workflow-role <span class="se">\</span>
+                      --serviceaccount<span class="o">=</span>jupyterflow:default <span class="se">\</span>
+                      --namespace jupyterflow
+</code></pre></div>
+
+<p>You might want to look at <a href="https://argoproj.github.io/argo/service-accounts">https://argoproj.github.io/argo/service-accounts</a>.</p>
+<h2 id="install-jupyterflow">Install jupyterflow<a class="headerlink" href="#install-jupyterflow" title="Permanent link">&para;</a></h2>
+<p>Finally, launch a JupyterHub notebook server and install <code>jupyterflow</code> using pip.</p>
+<p>In jupyter notebook Terminal, run</p>
+<div class="codehilite"><pre><span></span><code>pip install jupyterflow
 </code></pre></div>
                 
               
@@ -649,41 +572,6 @@ cat <span class="nv">$HOME</span>/.jupyterflow.yaml
       
         
 <footer class="md-footer">
-  
-    <div class="md-footer-nav">
-      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
-        
-          <a href="../examples/ml-pipeline/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
-            <div class="md-footer-nav__button md-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-            </div>
-            <div class="md-footer-nav__title">
-              <div class="md-ellipsis">
-                <span class="md-footer-nav__direction">
-                  Previous
-                </span>
-                ML Pipeline
-              </div>
-            </div>
-          </a>
-        
-        
-          <a href="../cli-ref/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-footer-nav__title">
-              <div class="md-ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                CLI Reference
-              </div>
-            </div>
-            <div class="md-footer-nav__button md-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-            </div>
-          </a>
-        
-      </nav>
-    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
