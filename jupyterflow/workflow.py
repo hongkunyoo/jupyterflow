@@ -90,7 +90,7 @@ def build_wf_spec_from(pod):
     spec = {}
 
     spec['serviceAccountName'] = pod['spec'].get('serviceAccountName', None)
-    spec['image'] = runtime['image']
+    spec['image'] = pod['spec']['containers'][0].get('image', 'jupyter/datascience-notebook:latest')
     spec['imagePullPolicy'] = pod['spec']['containers'][0].get('imagePullPolicy', 'Always')
     spec['imagePullSecrets'] = pod['spec'].get('imagePullSecrets', None)
     spec['runAsUser'] = runtime['runAsUser']

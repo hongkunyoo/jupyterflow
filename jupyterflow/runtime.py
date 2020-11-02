@@ -12,7 +12,7 @@ class Runtime(dict):
         
         NB_USER = os.environ['NB_USER']
         nb_user_pwd = pwd.getpwnam(NB_USER)
-        dict.__setitem__(self, 'image', os.environ['JUPYTER_IMAGE_SPEC'])
+        # dict.__setitem__(self, 'image', os.environ['JUPYTER_IMAGE_SPEC'])
         dict.__setitem__(self, 'workingDir', None)
         dict.__setitem__(self, 'PATH', os.environ['PATH'])
         dict.__setitem__(self, 'HOME', os.environ['HOME'])
