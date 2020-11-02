@@ -1,6 +1,8 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
+  annotations:
+    sidecar.istio.io/inject: "false"
   generateName: {{ workflow['name']  }}-
 spec:
   entrypoint: dag
