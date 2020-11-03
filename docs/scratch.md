@@ -5,15 +5,17 @@ In this method, you will install JupyterHub, Argo Workflow manually.
 
 ## Prerequisite
 
-- Kubernetes cluster: `Zero to JupyterHub` has a wonderful [guide for setting up Kubernetes.](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-kubernetes) 
+- Kubernetes cluster
 - Install [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) command
 - Install [`helm`](https://helm.sh/docs/intro/install) command
 
+Any Kubernetes cluster will work. `Zero to JupyterHub` has a wonderful [guide for setting up Kubernetes.](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-kubernetes) 
+
 ## Install JupyterHub
 
-Follow the [`Zero to JupyterHub` instruction to set up JupyterHub](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub). There is two things you should configure while installing jupyterflow.
+Follow the [`Zero to JupyterHub` instruction to set up JupyterHub](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub). There are two things you should configure while installing jupyterflow.
 
-### 1) Specify serviceAccoutName
+#### 1) Specify serviceAccoutName
 
  Specify `singleuser.serviceAccoutName` property in `config.yaml`. This service account will be used to create  Argo `Workflow` object on behalf of you.
 
@@ -25,7 +27,7 @@ singleuser:
   serviceAccountName: default
 ```
 
-### 2) Configure Storage
+#### 2) Configure Storage
 
 To use the same JupyterHub home directory as in Argo Workflow, Configure `singleuser.storage` property. To run jobs on multiple different node, you should use `ReadWriteMany` access mode type storage, 
 such as [nfs-server-provisioner](https://github.com/helm/charts/tree/master/stable/nfs-server-provisioner). 
@@ -82,15 +84,15 @@ helm install $RELEASE jupyterhub/jupyterhub \
 Install Argo workflow engine with [Argo Workflow quick start page](https://argoproj.github.io/argo/quick-start). 
 You need to install Argo workflow engine in the **same Kubernetes namespace** where JupyterHub is installed.
 
-For example, using `jupyterflow` namespace for Argo Workflow engine.
+For example, using `jupyterflow` namespace for installing Argo Workflow engine.
 
 ```bash
-# install argo workflow in jupyterflow
 kubectl apply --namespace jupyterflow -f \
     https://raw.githubusercontent.com/argoproj/argo/stable/manifests/quick-start-postgres.yaml
 ```
 
-If you want to install Argo workflow engine in different namespace, refer to [Argo installation - cluster install](https://argoproj.github.io/argo/installation/) page.
+!!! note
+    If you want to install Argo workflow engine in different namespace, refer to [Argo installation - cluster install](https://argoproj.github.io/argo/installation/) page.
 
 ## Expose Argo Workflow Web UI
 

@@ -18,14 +18,14 @@ You need to expose Argo web UI to see the result of `jupyterflow`. Unfortunately
 
 ## Grant Kubeflow notebook Service Account RBAC
 
-Grant the service account used in Kubeflow notebook a role to create Argo Workflow objects.
+Grant the service account used in Kubeflow notebook a role to create Argo Workflow objects. The default service account name in Kubeflow notebook is `default-editor`.
 
 #### Options 1)
 
-The simplest way to grant service account is to bind `cluster-admin` role. The default service account name in Kubeflow notebook is `default-editor`. Assuming your Kubeflow namespace is `jupyterflow`, run
+The simplest way to grant service account is to bind `cluster-admin` role. Assuming your Kubeflow namespace is `jupyterflow`, run
 
 ```bash
-# binding cluster-admin role to jupyterflow:default
+# binding cluster-admin role to jupyterflow:default-editor
 kubectl create clusterrolebinding jupyterflow-admin \
                         --clusterrole=cluster-admin \
                         --serviceaccount=jupyterflow:default-editor
@@ -79,7 +79,7 @@ EOF
 Then, bind Role with your service account. For example, bind `default-editor` service account with workflow role in `jupyterflow` namespace.
 
 ```bash
-# binding workflow role to jupyterflow:default
+# binding workflow role to jupyterflow:default-editor
 kubectl create rolebinding workflow-rb \
                       --role=workflow-role \
                       --serviceaccount=jupyterflow:default-editor \

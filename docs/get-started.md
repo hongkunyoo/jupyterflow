@@ -47,7 +47,7 @@ Go to Argo Web UI and check out the output of launched workflow.
 
 ### by `workflow.yaml` file
 
-If you want to run more sophisticated workflow, such as DAG (Directed Acyclic Graph), write your own workflow file (for example, `workflow.yaml`, the name doen't matter)
+If you want to run more sophisticated workflow, such as DAG (Directed Acyclic Graph), write your own workflow file (for example, `workflow.yaml`, the name doesn't matter)
 
 For more information, check out [Configuring workflow](configuration.md)
 

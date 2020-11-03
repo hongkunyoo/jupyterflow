@@ -22,6 +22,7 @@ jupyterflow run [flags]
       --dry-run           Only prints Argo Workflow object, without accually sending it.
 ```
 
+---
 
 ## jupyterflow config
 

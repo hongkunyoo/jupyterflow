@@ -47,26 +47,29 @@ schedule: '*/2 * * * *'
 | Property  | Description                                                           | Optional  | Default                           |
 |-----------|-----------------------------------------------------------------------|-----------|-----------------------------------|
 |`version`  | Version of `workflow.yaml` file format.                               | Optional  | 1                                 |
-|`name`     | Name of the workflow. This name is used for Argo `Workflow` name.     | Optional  | `{username}` of JupyterHub        |
+|`name`     | Name of the workflow. This name is used for Argo `Workflow` name.     | Optional  | `HOSTNAME` of notebook            |
 |`jobs`     | Jobs to run. Any kinds of command works.                              | Required  |                                   |
-|`cmd_mode` | Choose to run image in `exec` or `shell` form.                        | Optional  | `exec`                            |
+|`cmd_mode` | Specify command form, whether `exec` or `shell`.                      | Optional  | `exec`                            |
 |`dags`     | Job dependencies. Index starts at 1. (`$PREVIOUS_JOB` >> `$NEXT_JOB`) | Optional  | All jobs parallel (No dependency) |
 |`schedule` | When to execute this workflow. Follows cron format.                   | Optional  | Run immediately                   |
 
 
-##### `exec` vs `shell`
+##### Comparing cmd_mode
 
-- In `exec` mode, your command will be executed as `["echo", "hello", "world"]`.
-- In `shell` mode, your command will be executed as `["/bin/sh", "-c", "echo hello world"]`.
+`exec` vs `shell`
+
+- In `exec` mode, your command will be executed as `["echo", "hello"]`.
+- In `shell` mode, your command will be executed as `["/bin/sh", "-c", "echo hello"]`.
 
 In exec mode, the command is more straightforward since there is no shell process involved and it is being called directly. In shell mode, you can fully utilize the power of shell, such as shell script commands. (`>>`, `&&` and so on.)
+For more detail explanation, [refer to Docker run form](https://docs.docker.com/engine/reference/builder/#run)
 
 
 ## Jupyterflow Configuration (Advanced)
 
-For more detail control of JupyterFlow, you can override Argo `Workflow` spec by configuring `$HOME/.jupyterflow.yaml` file. This file path can be changed by setting `JUPYTERFLOW_CONFIG_FILE` environment variable.(`export JUPYTERFLOW_CONFIG_FILE=/tmp/myjupyterflow.yaml`) Configuring JupyterFlow requires Kubernetes Pod specification knowledge.
+For more detail control of JupyterFlow, you can override Argo `Workflow` spec by configuring JupyterFlow config file(default: `$HOME/.jupyterflow.yaml`). Configuring JupyterFlow requires Kubernetes Pod specification knowledge.
 
-The following command will create `.jupyterflow.yaml` on `$HOME` directory.
+The following command will create `.jupyterflow.yaml` on `$HOME` directory. JupyterFlow configuration file path can be changed by setting `JUPYTERFLOW_CONFIG_FILE` environment variable(`export JUPYTERFLOW_CONFIG_FILE=/tmp/myjupyterflow.yaml`).
 
 ```bash
 jupyterflow config --generate-config
