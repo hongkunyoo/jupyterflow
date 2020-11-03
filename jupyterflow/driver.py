@@ -51,6 +51,7 @@ def run(filename, command, output, dry_run):
 def config(generate_config):
     if generate_config:
         utils.create_config()
+        printer.format('jupyterflow config file created', 'text')
     else:
         conf = utils.load_config()
         printer.format(conf, 'yaml')

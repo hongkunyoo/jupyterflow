@@ -24,12 +24,13 @@ def load_from_file(f):
 
 
 def build(wf, namespace, runtime, config):
-    escaped_username = runtime['escaped_username']
+    hostname = runtime['HOSTNAME']
     #########################
     # resolve tree
     #########################
+
     workflow = {}
-    workflow['name'] = wf.get('name', escaped_username)
+    workflow['name'] = wf.get('name', hostname)
     workflow['jobs'] = []
 
     cmd_mode = wf.get('cmd_mode', 'exec')
@@ -60,7 +61,7 @@ def build(wf, namespace, runtime, config):
             job['dependencies'] = []
         workflow['jobs'].append(job)
     
-    pod = k8s_client.get_notebook_pod(escaped_username, namespace)
+    pod = k8s_client.get_notebook_pod(hostname, namespace)
     workflow['spec'] = build_wf_spec_from(pod)
     override_wf(workflow, config)
 
@@ -69,8 +70,7 @@ def build(wf, namespace, runtime, config):
     ###########################
     rendered_wf = render.workflow(
             workflow=workflow, \
-            runtime=runtime, \
-            username=escaped_username
+            runtime=runtime
     )
     workflow_yaml = yaml.safe_load(rendered_wf)
 
@@ -90,7 +90,7 @@ def build_wf_spec_from(pod):
     spec = {}
 
     spec['serviceAccountName'] = pod['spec'].get('serviceAccountName', None)
-    spec['image'] = runtime['image']
+    spec['image'] = pod['spec']['containers'][0].get('image', 'jupyter/datascience-notebook:latest')
     spec['imagePullPolicy'] = pod['spec']['containers'][0].get('imagePullPolicy', 'Always')
     spec['imagePullSecrets'] = pod['spec'].get('imagePullSecrets', None)
     spec['runAsUser'] = runtime['runAsUser']

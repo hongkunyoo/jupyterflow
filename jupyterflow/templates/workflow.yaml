@@ -10,6 +10,9 @@ spec:
     {%- if workflow['spec']['serviceAccountName'] %}
     serviceAccountName: {{ workflow['spec']['serviceAccountName'] }}
     {%- endif %}
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
     container:
       image: {{ workflow['spec']['image'] }}
       command: {{ job['command'] }}
