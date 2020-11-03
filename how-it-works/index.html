@@ -216,6 +216,56 @@
       
       
 
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Setup
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Setup" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        Setup
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../scratch/" class="md-nav__link">
+      Set up from scratch
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../kubeflow/" class="md-nav__link">
+      Set up on Kubeflow
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
   
 
 
@@ -240,14 +290,14 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
     
-    <label class="md-nav__link" for="nav-4">
+    <label class="md-nav__link" for="nav-5">
       Examples
       <span class="md-nav__icon md-icon"></span>
     </label>
     <nav class="md-nav" aria-label="Examples" data-md-level="1">
-      <label class="md-nav__title" for="nav-4">
+      <label class="md-nav__title" for="nav-5">
         <span class="md-nav__icon md-icon"></span>
         Examples
       </label>
@@ -353,8 +403,8 @@
                 
                 <h1 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h1>
 <p><img alt="" src="../images/architecture.png" /></p>
-<p><code>jupyterflow</code> has a strict constraint that it only works on <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest">JupyterHub for Kubernetes</a>.
-Because of this constraint, <code>jupyterflow</code> can easily collect current environment information (meta data) using given service account.
+<p><code>jupyterflow</code> has a strict constraint that it only works on JupyterHub deployed on Kubernetes.
+Because of this constraint, <code>jupyterflow</code> can easily collect current environment information(metadata) using attached service account.
 With this information, <code>jupyterflow</code> constructs Argo <code>Workflow</code> object on behalf of you.</p>
 <p><code>jupyterflow</code> uses following metadata from jupyter notebook <code>Pod</code>.</p>
 <ul>
@@ -363,7 +413,9 @@ With this information, <code>jupyterflow</code> constructs Argo <code>Workflow</
 <li>Home directory (home <code>PersistentVolumeClaim</code>)</li>
 <li>Extra volume mount points</li>
 <li>Resource management (<code>requests</code>, <code>limits</code>)</li>
+<li>NodeSelector</li>
 <li>UID, GUID</li>
+<li>Etc.</li>
 </ul>
 <p>Following pseudo code might help you understand how <code>jupyterflow</code> works.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># collect meta data of current environment.</span>
@@ -393,7 +445,7 @@ With this information, <code>jupyterflow</code> constructs Argo <code>Workflow</
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../get-started/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../kubeflow/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -402,7 +454,7 @@ With this information, <code>jupyterflow</code> constructs Argo <code>Workflow</
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Get Started
+                Set up on Kubeflow
               </div>
             </div>
           </a>
