@@ -20,6 +20,9 @@ markdown_extensions:
 nav:
   - Overview: README.md
   - get-started.md
+  - Setup:
+    - scratch.md
+    - kubeflow.md
   - how-it-works.md
   - Examples:
     - examples/basic.md

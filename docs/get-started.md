@@ -2,15 +2,7 @@
 
 Although using `jupyterflow` does not require Kubernetes knowledge, Setting up `jupyterflow` requires Kubernetes knowledge(YAML, `helm`, `Service`). If you're familiar with Kubernetes, it will not be too hard. 
 
-> This project only works on [JupyterHub for Kubernetes.](https://zero-to-jupyterhub.readthedocs.io/en/latest)
-
-## Prerequisite
-
-- Kubernetes cluster
-- Install [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) command
-- Install [`helm`](https://helm.sh/docs/intro/install) command
-
-Any Kubernetes distributions will work. `Zero to JupyterHub` has a wonderful [guide for setting up Kubernetes.](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-kubernetes) 
+> This project only works on Kubernetes.
 
 ## Options for setting up JupyterFlow
 
@@ -21,7 +13,7 @@ There are two ways to set up `jupyterflow`
 
 ---
 
-After setup, you can run your workflow with `jupyterflow` on JupyterHub. Launch your jupyter notebook and follow the instruction.
+After the setup, you can run your workflow with `jupyterflow` on JupyterHub. Launch your jupyter notebook and follow the example.
 
 ## Run my first workflow
 

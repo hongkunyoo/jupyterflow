@@ -6,15 +6,18 @@ Run your workflow on JupyterHub!
 
 Run [Argo Workflow](https://argoproj.github.io/argo) on [JupyterHub](https://jupyter.org/hub) with single command.
 
-- No Kubernetes knowledge (YAML) needed to run.
-- No container image build & push or deploy.
+- **No Kubernetes knowledge (YAML) needed to run.**
+- **No container image build & push or deploy.**
 - Just simply run your workflow with single command `jupyterflow`.
 
-`jupyterflow` is a command that helps user utilize Argo Workflow engine without making any YAML files or building containers on JupyterHub.
+`jupyterflow` is a command that helps user utilize Argo workflow engine without making any YAML files or building containers on JupyterHub.
 
-> This project only works on [JupyterHub for Kubernetes](https://zero-to-jupyterhub.readthedocs.io/en/latest).
+This project only works on Kubernetes.
 
-The following `jupyterflow` command will make sequence workflow. That's it!
+- [JupyterHub for Kubernetes](https://zero-to-jupyterhub.readthedocs.io/en/latest)
+- [Kubeflow](https://www.kubeflow.org)
+
+The following `jupyterflow` command in jupyter notebook will make sequence workflow. That's it!
 
 ```bash
 jupyterflow run -c "python hello.py >> python world.py"

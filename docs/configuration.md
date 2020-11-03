@@ -62,9 +62,9 @@ schedule: '*/2 * * * *'
 In exec mode, the command is more straightforward since there is no shell process involved and it is being called directly. In shell mode, you can fully utilize the power of shell, such as shell script commands. (`>>`, `&&` and so on.)
 
 
-## Jupyterflow Configuration
+## Jupyterflow Configuration (Advanced)
 
-You can override Argo `Workflow` spec by configuring `$HOME/.jupyterflow.yaml` file. This file path can be changed by setting `JUPYTERFLOW_CONFIG_FILE` environment variable. (`export JUPYTERFLOW_CONFIG_FILE=/tmp/myjupyterflow.yaml`)
+For more detail control of JupyterFlow, you can override Argo `Workflow` spec by configuring `$HOME/.jupyterflow.yaml` file. This file path can be changed by setting `JUPYTERFLOW_CONFIG_FILE` environment variable.(`export JUPYTERFLOW_CONFIG_FILE=/tmp/myjupyterflow.yaml`) Configuring JupyterFlow requires Kubernetes Pod specification knowledge.
 
 The following command will create `.jupyterflow.yaml` on `$HOME` directory.
 
@@ -72,7 +72,7 @@ The following command will create `.jupyterflow.yaml` on `$HOME` directory.
 jupyterflow config --generate-config
 # jupyterflow config file created.
 
-cat $HOME/.jupyterflow.yaml
+cat $HOME/.jupyterflow.yaml   # or run, `jupyterflow config` to view config
 # spec:
 #   image: jupyter/datascience-notebook:latest
 #   imagePullPolicy: Always
@@ -140,3 +140,6 @@ Run `jupyterflow` and check out the result whether your workflow has run on GPU 
 ```bash
 jupyterflow run -f workflow.yaml
 ```
+
+!!! note
+    `env`, `volumes`, `volumeMounts` property will be appended to the original `Pod` spec, others will override the original `Pod` spec.

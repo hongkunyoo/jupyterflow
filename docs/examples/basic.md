@@ -23,7 +23,7 @@ ls -alh
 echo "Hello $1"
 ```
 
-Run `jupyterflow` with `-c` option for simple execution.
+Run `jupyterflow` with `-c` option for simple command.
 
 ```bash
 jupyterflow run -c "bash hello.sh world >> echo 'good bye'"

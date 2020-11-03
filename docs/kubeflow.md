@@ -10,17 +10,17 @@ In this method, you will install JupyterFlow on existing Kubeflow platform.
 
 Refer to [kubeflow getting started page](https://www.kubeflow.org/docs/started/getting-started/) for installation.
 
-## Expose Argo Workflow UI
+## Expose Argo Workflow Web UI
 
-Expose Web UI for Argo Workflow: [https://argoproj.github.io/argo/argo-server/](https://argoproj.github.io/argo/argo-server/)
+Expose web UI for Argo Workflow: [https://argoproj.github.io/argo/argo-server/](https://argoproj.github.io/argo/argo-server/)
 
-You need to expose Argo Web UI to see the result of `jupyterflow`. Unfortunately, JupyterFlow currently does not support Kubeflow Pipelines, so the result of `juypterflow` Workflow does not appear in Kubeflow Pipelines Web pages. You need to manually expose Argo Workflow Web UI to check the result.
+You need to expose Argo web UI to see the result of `jupyterflow`. Unfortunately, JupyterFlow currently does not support Kubeflow Pipelines, so the result of `juypterflow` workflow does not appear in Kubeflow Pipelines web pages. You need to manually expose Argo Workflow web UI to check the result.
 
 ## Grant Kubeflow notebook Service Account RBAC
 
 Grant the service account used in Kubeflow notebook a role to create Argo Workflow objects.
 
-### Options 1)
+#### Options 1)
 
 The simplest way to grant service account is to bind `cluster-admin` role. The default service account name in Kubeflow notebook is `default-editor`. Assuming your Kubeflow namespace is `jupyterflow`, run
 
@@ -31,7 +31,7 @@ kubectl create clusterrolebinding jupyterflow-admin \
                         --serviceaccount=jupyterflow:default-editor
 ```
 
-### Options 2)
+#### Options 2)
 
 For more fine-grained RBAC, create Workflow Role in the namespace where Kubeflow is installed.
 
