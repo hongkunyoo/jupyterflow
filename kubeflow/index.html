@@ -553,10 +553,10 @@
 <p>Expose web UI for Argo Workflow: <a href="https://argoproj.github.io/argo/argo-server/">https://argoproj.github.io/argo/argo-server/</a></p>
 <p>You need to expose Argo web UI to see the result of <code>jupyterflow</code>. Unfortunately, JupyterFlow currently does not support Kubeflow Pipelines, so the result of <code>juypterflow</code> workflow does not appear in Kubeflow Pipelines web pages. You need to manually expose Argo Workflow web UI to check the result.</p>
 <h2 id="grant-kubeflow-notebook-service-account-rbac">Grant Kubeflow notebook Service Account RBAC<a class="headerlink" href="#grant-kubeflow-notebook-service-account-rbac" title="Permanent link">&para;</a></h2>
-<p>Grant the service account used in Kubeflow notebook a role to create Argo Workflow objects.</p>
+<p>Grant the service account used in Kubeflow notebook a role to create Argo Workflow objects. The default service account name in Kubeflow notebook is <code>default-editor</code>.</p>
 <h4 id="options-1">Options 1)<a class="headerlink" href="#options-1" title="Permanent link">&para;</a></h4>
-<p>The simplest way to grant service account is to bind <code>cluster-admin</code> role. The default service account name in Kubeflow notebook is <code>default-editor</code>. Assuming your Kubeflow namespace is <code>jupyterflow</code>, run</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># binding cluster-admin role to jupyterflow:default</span>
+<p>The simplest way to grant service account is to bind <code>cluster-admin</code> role. Assuming your Kubeflow namespace is <code>jupyterflow</code>, run</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># binding cluster-admin role to jupyterflow:default-editor</span>
 kubectl create clusterrolebinding jupyterflow-admin <span class="se">\</span>
                         --clusterrole<span class="o">=</span>cluster-admin <span class="se">\</span>
                         --serviceaccount<span class="o">=</span>jupyterflow:default-editor
@@ -604,7 +604,7 @@ kubectl create clusterrolebinding jupyterflow-admin <span class="se">\</span>
 </code></pre></div>
 
 <p>Then, bind Role with your service account. For example, bind <code>default-editor</code> service account with workflow role in <code>jupyterflow</code> namespace.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># binding workflow role to jupyterflow:default</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># binding workflow role to jupyterflow:default-editor</span>
 kubectl create rolebinding workflow-rb <span class="se">\</span>
                       --role<span class="o">=</span>workflow-role <span class="se">\</span>
                       --serviceaccount<span class="o">=</span>jupyterflow:default-editor <span class="se">\</span>

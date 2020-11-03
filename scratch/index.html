@@ -601,13 +601,14 @@
 <p>In this method, you will install JupyterHub, Argo Workflow manually.</p>
 <h2 id="prerequisite">Prerequisite<a class="headerlink" href="#prerequisite" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Kubernetes cluster: <code>Zero to JupyterHub</code> has a wonderful <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-kubernetes">guide for setting up Kubernetes.</a> </li>
+<li>Kubernetes cluster</li>
 <li>Install <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl"><code>kubectl</code></a> command</li>
 <li>Install <a href="https://helm.sh/docs/intro/install"><code>helm</code></a> command</li>
 </ul>
+<p>Any Kubernetes cluster will work. <code>Zero to JupyterHub</code> has a wonderful <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-kubernetes">guide for setting up Kubernetes.</a> </p>
 <h2 id="install-jupyterhub">Install JupyterHub<a class="headerlink" href="#install-jupyterhub" title="Permanent link">&para;</a></h2>
-<p>Follow the <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub"><code>Zero to JupyterHub</code> instruction to set up JupyterHub</a>. There is two things you should configure while installing jupyterflow.</p>
-<h3 id="1-specify-serviceaccoutname">1) Specify serviceAccoutName<a class="headerlink" href="#1-specify-serviceaccoutname" title="Permanent link">&para;</a></h3>
+<p>Follow the <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub"><code>Zero to JupyterHub</code> instruction to set up JupyterHub</a>. There are two things you should configure while installing jupyterflow.</p>
+<h4 id="1-specify-serviceaccoutname">1) Specify serviceAccoutName<a class="headerlink" href="#1-specify-serviceaccoutname" title="Permanent link">&para;</a></h4>
 <p>Specify <code>singleuser.serviceAccoutName</code> property in <code>config.yaml</code>. This service account will be used to create  Argo <code>Workflow</code> object on behalf of you.</p>
 <p>For example, following configuration uses <code>default</code> service account. Later, you should grant this service account a role to create <code>Workflow</code> object.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># config.yaml</span>
@@ -615,7 +616,7 @@
   <span class="nt">serviceAccountName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
 </code></pre></div>
 
-<h3 id="2-configure-storage">2) Configure Storage<a class="headerlink" href="#2-configure-storage" title="Permanent link">&para;</a></h3>
+<h4 id="2-configure-storage">2) Configure Storage<a class="headerlink" href="#2-configure-storage" title="Permanent link">&para;</a></h4>
 <p>To use the same JupyterHub home directory as in Argo Workflow, Configure <code>singleuser.storage</code> property. To run jobs on multiple different node, you should use <code>ReadWriteMany</code> access mode type storage, 
 such as <a href="https://github.com/helm/charts/tree/master/stable/nfs-server-provisioner">nfs-server-provisioner</a>. 
 If you're unfamiliar with storage access mode, take a look at <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes">Kubernetes persistent volume access mode</a>.</p>
@@ -662,13 +663,15 @@ helm install <span class="nv">$RELEASE</span> jupyterhub/jupyterhub <span class=
 <h2 id="install-argo-workflow-engine">Install Argo Workflow Engine<a class="headerlink" href="#install-argo-workflow-engine" title="Permanent link">&para;</a></h2>
 <p>Install Argo workflow engine with <a href="https://argoproj.github.io/argo/quick-start">Argo Workflow quick start page</a>. 
 You need to install Argo workflow engine in the <strong>same Kubernetes namespace</strong> where JupyterHub is installed.</p>
-<p>For example, using <code>jupyterflow</code> namespace for Argo Workflow engine.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># install argo workflow in jupyterflow</span>
-kubectl apply --namespace jupyterflow -f <span class="se">\</span>
+<p>For example, using <code>jupyterflow</code> namespace for installing Argo Workflow engine.</p>
+<div class="codehilite"><pre><span></span><code>kubectl apply --namespace jupyterflow -f <span class="se">\</span>
     https://raw.githubusercontent.com/argoproj/argo/stable/manifests/quick-start-postgres.yaml
 </code></pre></div>
 
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>If you want to install Argo workflow engine in different namespace, refer to <a href="https://argoproj.github.io/argo/installation/">Argo installation - cluster install</a> page.</p>
+</div>
 <h2 id="expose-argo-workflow-web-ui">Expose Argo Workflow Web UI<a class="headerlink" href="#expose-argo-workflow-web-ui" title="Permanent link">&para;</a></h2>
 <p>Expose web UI for Argo Workflow: <a href="https://argoproj.github.io/argo/argo-server/">https://argoproj.github.io/argo/argo-server/</a></p>
 <p>You need to expose Argo web UI to see the result of <code>jupyterflow</code>.</p>
