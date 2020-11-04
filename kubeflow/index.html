@@ -9,7 +9,7 @@
       
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.0">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.2">
     
     
       
@@ -17,10 +17,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.bc7e593a.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.19190aaf.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab28b872.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.24b84193.min.css">
         
           
           
@@ -298,6 +298,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#configure-storage" class="md-nav__link">
+    Configure Storage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#expose-argo-workflow-web-ui" class="md-nav__link">
     Expose Argo Workflow Web UI
   </a>
@@ -486,6 +493,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#configure-storage" class="md-nav__link">
+    Configure Storage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#expose-argo-workflow-web-ui" class="md-nav__link">
     Expose Argo Workflow Web UI
   </a>
@@ -549,9 +563,31 @@
 <p>In this method, you will install JupyterFlow on existing Kubeflow platform.</p>
 <h2 id="install-kubeflow">Install Kubeflow<a class="headerlink" href="#install-kubeflow" title="Permanent link">&para;</a></h2>
 <p>Refer to <a href="https://www.kubeflow.org/docs/started/getting-started/">kubeflow getting started page</a> for installation.</p>
+<h2 id="configure-storage">Configure Storage<a class="headerlink" href="#configure-storage" title="Permanent link">&para;</a></h2>
+<p>To run jobs on multiple different node, you should use <code>ReadWriteMany</code> access mode type storage, such as <a href="https://github.com/helm/charts/tree/master/stable/nfs-server-provisioner">nfs-server-provisioner</a>. 
+If you're unfamiliar with storage access mode, take a look at <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes">Kubernetes persistent volume access mode</a>.</p>
+<p>The simplest way to have a <code>ReadWriteMany</code> type storage, install nfs-server-provisioner in <code>stable</code> helm repository.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># StorageClass name will be nfs-server</span>
+helm install nfs-server stable/nfs-server-provisioner
+</code></pre></div>
+
+<p>Using <code>ReadWriteOnce</code> access mode is also fine, but bear in mind that your jobs will be run on the only single node that your jupyter notebook is mounted.</p>
+<p>Provision <code>PersistentVolumeClaim</code> of your notebook server in advance using <code>ReadWriteMany</code> type storage, and use it when you launch your notebook server. (Select <code>Existing</code> type on setting Workspace Volume in launching new notebook server.)</p>
 <h2 id="expose-argo-workflow-web-ui">Expose Argo Workflow Web UI<a class="headerlink" href="#expose-argo-workflow-web-ui" title="Permanent link">&para;</a></h2>
-<p>Expose web UI for Argo Workflow: <a href="https://argoproj.github.io/argo/argo-server/">https://argoproj.github.io/argo/argo-server/</a></p>
 <p>You need to expose Argo web UI to see the result of <code>jupyterflow</code>. Unfortunately, JupyterFlow currently does not support Kubeflow Pipelines, so the result of <code>juypterflow</code> workflow does not appear in Kubeflow Pipelines web pages. You need to manually expose Argo Workflow web UI to check the result.</p>
+<p>The simplest way to expose Argo Workflow web UI is changing <code>argo-ui</code> Service to <code>LoadBalancer</code> type.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Expose argo-ui Service as LoadBalancer type</span>
+kubectl patch svc argo-ui -p <span class="s1">&#39;{&quot;spec&quot;: {&quot;type&quot;: &quot;LoadBalancer&quot;}}&#39;</span> -n kubeflow
+<span class="c1"># service/argo-ui patched</span>
+</code></pre></div>
+
+<p>And then change Argo UI deployment environment variable. To find out the reason, take a look at <a href="https://github.com/argoproj/argo/issues/1215">Argo issue#1215</a></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Change BASE_HREF env to /</span>
+kubectl <span class="nb">set</span> env deployment/argo-ui <span class="nv">BASE_HREF</span><span class="o">=</span>/ -n kubeflow
+<span class="c1"># deployment.apps/argo-ui env updated</span>
+</code></pre></div>
+
+<p>Browse <code>&lt;LOAD_BALANCER_IP&gt;:2746</code> to see Argo Workflow web UI is available. For detail configuration, refer to <a href="https://argoproj.github.io/argo/argo-server">https://argoproj.github.io/argo/argo-server/</a></p>
 <h2 id="grant-kubeflow-notebook-service-account-rbac">Grant Kubeflow notebook Service Account RBAC<a class="headerlink" href="#grant-kubeflow-notebook-service-account-rbac" title="Permanent link">&para;</a></h2>
 <p>Grant the service account used in Kubeflow notebook a role to create Argo Workflow objects. The default service account name in Kubeflow notebook is <code>default-editor</code>.</p>
 <h4 id="options-1">Options 1)<a class="headerlink" href="#options-1" title="Permanent link">&para;</a></h4>
@@ -683,8 +719,8 @@ kubectl create rolebinding workflow-rb <span class="se">\</span>
       
     </div>
     
-      <script src="../assets/javascripts/vendor.6a3d08fc.min.js"></script>
-      <script src="../assets/javascripts/bundle.71201edf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      <script src="../assets/javascripts/vendor.7e0ee788.min.js"></script>
+      <script src="../assets/javascripts/bundle.c1ccee15.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
       
       <script>
         app = initialize({
