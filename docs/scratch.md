@@ -33,6 +33,13 @@ To use the same JupyterHub home directory as in Argo Workflow, Configure `single
 such as [nfs-server-provisioner](https://github.com/helm/charts/tree/master/stable/nfs-server-provisioner). 
 If you're unfamiliar with storage access mode, take a look at [Kubernetes persistent volume access mode](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes).
 
+The simplest way to have a `ReadWriteMany` type storage, install nfs-server-provisioner in `stable` helm repository.
+
+```bash
+# StorageClass name will be nfs-server
+helm install nfs-server stable/nfs-server-provisioner
+```
+
 Configuring `singleuser` storage access mode as `ReadWriteOnce` is also fine, but bear in mind that your jobs will be run on the only single node that your jupyter notebook is mounted.
 
 ```yaml
@@ -92,13 +99,19 @@ kubectl apply --namespace jupyterflow -f \
 ```
 
 !!! note
-    If you want to install Argo workflow engine in different namespace, refer to [Argo installation - cluster install](https://argoproj.github.io/argo/installation/) page.
+    If you want to install Argo workflow engine in different namespace, refer to [Argo installation - cluster install](https://argoproj.github.io/argo/installation) page.
 
 ## Expose Argo Workflow Web UI
 
-Expose web UI for Argo Workflow: [https://argoproj.github.io/argo/argo-server/](https://argoproj.github.io/argo/argo-server/)
+You need to expose Argo web UI to see the result of `jupyterflow`. The simplest way is to expose `argo-server` Service as `LoadBalancer` type. For example, if your Argo workflow engine is deployed in `jupyterflow` namespace, run
 
-You need to expose Argo web UI to see the result of `jupyterflow`.
+```bash
+# Expose argo-server Service as LoadBalancer type
+kubectl patch svc argo-server -p '{"spec": {"type": "LoadBalancer"}}' -n jupyterflow
+# service/argo-server patched
+```
+
+Browse `<LOAD_BALANCER_IP>:2746` to see Argo Workflow web UI is available. For detail configuration, refer to [https://argoproj.github.io/argo/argo-server/](https://argoproj.github.io/argo/argo-server)
 
 ## Grant JupyterHub Service Account RBAC
 

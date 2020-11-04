@@ -10,11 +10,44 @@ In this method, you will install JupyterFlow on existing Kubeflow platform.
 
 Refer to [kubeflow getting started page](https://www.kubeflow.org/docs/started/getting-started/) for installation.
 
+## Configure Storage
+
+To run jobs on multiple different node, you should use `ReadWriteMany` access mode type storage, such as [nfs-server-provisioner](https://github.com/helm/charts/tree/master/stable/nfs-server-provisioner). 
+If you're unfamiliar with storage access mode, take a look at [Kubernetes persistent volume access mode](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes).
+
+The simplest way to have a `ReadWriteMany` type storage, install nfs-server-provisioner in `stable` helm repository.
+
+```bash
+# StorageClass name will be nfs-server
+helm install nfs-server stable/nfs-server-provisioner
+```
+
+Using `ReadWriteOnce` access mode is also fine, but bear in mind that your jobs will be run on the only single node that your jupyter notebook is mounted.
+
+Provision `PersistentVolumeClaim` of your notebook server in advance using `ReadWriteMany` type storage, and use it when you launch your notebook server. (Select `Existing` type on setting Workspace Volume in launching new notebook server.)
+
 ## Expose Argo Workflow Web UI
 
-Expose web UI for Argo Workflow: [https://argoproj.github.io/argo/argo-server/](https://argoproj.github.io/argo/argo-server/)
-
 You need to expose Argo web UI to see the result of `jupyterflow`. Unfortunately, JupyterFlow currently does not support Kubeflow Pipelines, so the result of `juypterflow` workflow does not appear in Kubeflow Pipelines web pages. You need to manually expose Argo Workflow web UI to check the result.
+
+The simplest way to expose Argo Workflow web UI is changing `argo-ui` Service to `LoadBalancer` type.
+
+```bash
+# Expose argo-ui Service as LoadBalancer type
+kubectl patch svc argo-ui -p '{"spec": {"type": "LoadBalancer"}}' -n kubeflow
+# service/argo-ui patched
+```
+
+And then change Argo UI deployment environment variable. To find out the reason, take a look at [Argo issue#1215](https://github.com/argoproj/argo/issues/1215)
+
+```bash
+# Change BASE_HREF env to /
+kubectl set env deployment/argo-ui BASE_HREF=/ -n kubeflow
+# deployment.apps/argo-ui env updated
+```
+
+Browse `<LOAD_BALANCER_IP>:2746` to see Argo Workflow web UI is available. For detail configuration, refer to [https://argoproj.github.io/argo/argo-server/](https://argoproj.github.io/argo/argo-server)
+
 
 ## Grant Kubeflow notebook Service Account RBAC
 
