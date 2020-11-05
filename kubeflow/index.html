@@ -587,7 +587,7 @@ kubectl <span class="nb">set</span> env deployment/argo-ui <span class="nv">BASE
 <span class="c1"># deployment.apps/argo-ui env updated</span>
 </code></pre></div>
 
-<p>Browse <code>&lt;LOAD_BALANCER_IP&gt;:2746</code> to see Argo Workflow web UI is available. For detail configuration, refer to <a href="https://argoproj.github.io/argo/argo-server">https://argoproj.github.io/argo/argo-server/</a></p>
+<p>Browse <code>&lt;LOAD_BALANCER_IP&gt;:80</code> to see Argo Workflow web UI is available. For detail configuration, refer to <a href="https://argoproj.github.io/argo/argo-server">https://argoproj.github.io/argo/argo-server/</a></p>
 <h2 id="grant-kubeflow-notebook-service-account-rbac">Grant Kubeflow notebook Service Account RBAC<a class="headerlink" href="#grant-kubeflow-notebook-service-account-rbac" title="Permanent link">&para;</a></h2>
 <p>Grant the service account used in Kubeflow notebook a role to create Argo Workflow objects. The default service account name in Kubeflow notebook is <code>default-editor</code>.</p>
 <h4 id="options-1">Options 1)<a class="headerlink" href="#options-1" title="Permanent link">&para;</a></h4>

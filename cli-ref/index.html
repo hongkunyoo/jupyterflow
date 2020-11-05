@@ -394,6 +394,40 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jupyterflow-delete" class="md-nav__link">
+    jupyterflow delete
+  </a>
+  
+    <nav class="md-nav" aria-label="jupyterflow delete">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#synopsis_1" class="md-nav__link">
+    Synopsis
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -408,7 +442,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#synopsis_1" class="md-nav__link">
+  <a href="#synopsis_2" class="md-nav__link">
     Synopsis
   </a>
   
@@ -417,6 +451,13 @@
           <li class="md-nav__item">
   <a href="#options_1" class="md-nav__link">
     Options
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_2" class="md-nav__link">
+    Example
   </a>
   
 </li>
@@ -490,6 +531,40 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jupyterflow-delete" class="md-nav__link">
+    jupyterflow delete
+  </a>
+  
+    <nav class="md-nav" aria-label="jupyterflow delete">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#synopsis_1" class="md-nav__link">
+    Synopsis
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -504,7 +579,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#synopsis_1" class="md-nav__link">
+  <a href="#synopsis_2" class="md-nav__link">
     Synopsis
   </a>
   
@@ -513,6 +588,13 @@
           <li class="md-nav__item">
   <a href="#options_1" class="md-nav__link">
     Options
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_2" class="md-nav__link">
+    Example
   </a>
   
 </li>
@@ -555,17 +637,36 @@
 <span class="err">      --dry-run           Only prints Argo Workflow object, without accually sending it.</span>
 </code></pre></div>
 
+<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>jupyterflow run -f workflow.yaml
+</code></pre></div>
+
+<hr />
+<h2 id="jupyterflow-delete">jupyterflow delete<a class="headerlink" href="#jupyterflow-delete" title="Permanent link">&para;</a></h2>
+<p>Delete the given name of Argo Workflow.</p>
+<h3 id="synopsis_1">Synopsis<a class="headerlink" href="#synopsis_1" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="err">jupyterflow delete WORKFLOW_NAME</span>
+</code></pre></div>
+
+<h3 id="example_1">Example<a class="headerlink" href="#example_1" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>jupyterflow delete myworkflow-3f9c8
+</code></pre></div>
+
 <hr />
 <h2 id="jupyterflow-config">jupyterflow config<a class="headerlink" href="#jupyterflow-config" title="Permanent link">&para;</a></h2>
 <p>View or create JupyterFlow configuration file to override Argo <code>Workflow</code> object specification.
 For detail information, refer to <a href="../configuration/#jupyterflow-configuration">JupyterFlow Configuration</a></p>
-<h3 id="synopsis_1">Synopsis<a class="headerlink" href="#synopsis_1" title="Permanent link">&para;</a></h3>
+<h3 id="synopsis_2">Synopsis<a class="headerlink" href="#synopsis_2" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><code><span class="n">jupyterflow</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">[</span><span class="n">flags</span><span class="o">]</span><span class="w"></span>
 </code></pre></div>
 
 <h3 id="options_1">Options<a class="headerlink" href="#options_1" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><code><span class="err">  -h, --help              help for list</span>
 <span class="err">      --generate-config   Generates default `$HOME/.jupyterflow.yaml` configuration file.</span>
+</code></pre></div>
+
+<h3 id="example_2">Example<a class="headerlink" href="#example_2" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>jupyterflow config --generate-config
 </code></pre></div>
                 
               

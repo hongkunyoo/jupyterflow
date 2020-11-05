@@ -239,6 +239,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#limitation" class="md-nav__link">
+    Limitation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#getting-started" class="md-nav__link">
     Getting Started
   </a>
@@ -478,6 +485,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#limitation" class="md-nav__link">
+    Limitation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#getting-started" class="md-nav__link">
     Getting Started
   </a>
@@ -538,13 +552,7 @@
 <li><strong>No container image build &amp; push or deploy.</strong></li>
 <li>Just simply run your workflow with single command <code>jupyterflow</code>.</li>
 </ul>
-<p><code>jupyterflow</code> is a command that helps user utilize Argo workflow engine without making any YAML files or building containers on JupyterHub.</p>
-<p>This project only works on Kubernetes.</p>
-<ul>
-<li><a href="https://zero-to-jupyterhub.readthedocs.io/en/latest">JupyterHub for Kubernetes</a></li>
-<li><a href="https://www.kubeflow.org">Kubeflow</a></li>
-</ul>
-<p>The following <code>jupyterflow</code> command in jupyter notebook will make sequence workflow. That's it!</p>
+<p><code>jupyterflow</code> is a single command that helps user utilize Argo workflow engine without making any YAML files or building containers on JupyterHub. The following <code>jupyterflow</code> command will make sequence workflow for you. That's it!</p>
 <div class="codehilite"><pre><span></span><code>jupyterflow run -c <span class="s2">&quot;python hello.py &gt;&gt; python world.py&quot;</span>
 </code></pre></div>
 
@@ -567,7 +575,14 @@
 </ul>
 </li>
 </ul>
-<p><code>jupyterflow</code> aims to solve this problem. Run your workflow  on JupyterHub with single command without Kubernetes &amp; container troublesome task.</p>
+<p>JupyterFlow aims to solve this problem. Run your workflow  on JupyterHub with single command without Kubernetes &amp; container troublesome task.</p>
+<h2 id="limitation">Limitation<a class="headerlink" href="#limitation" title="Permanent link">&para;</a></h2>
+<p>JupyterFlow only works on JupyterHub deployed on Kubernetes.</p>
+<ul>
+<li><a href="https://zero-to-jupyterhub.readthedocs.io/en/latest">JupyterHub for Kubernetes</a></li>
+<li><a href="https://www.kubeflow.org">Kubeflow</a></li>
+</ul>
+<p>Therefore, although using JupyterFlow does not require Kubernetes knowledge, Setting up JupyterFlow requires Kubernetes understandings(YAML, <code>helm</code>, <code>Service</code>). If you're familiar with Kubernetes, it will not be too hard.</p>
 <h2 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
 <p>To set up <code>jupyterflow</code> and start running your first workflow, follow the <a href="https://hongkunyoo.github.io/jupyterflow/get-started">Getting Started</a> guide.</p>
 <h2 id="how-does-it-work">How does it work<a class="headerlink" href="#how-does-it-work" title="Permanent link">&para;</a></h2>
