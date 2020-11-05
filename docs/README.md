@@ -10,14 +10,7 @@ Run [Argo Workflow](https://argoproj.github.io/argo) on [JupyterHub](https://jup
 - **No container image build & push or deploy.**
 - Just simply run your workflow with single command `jupyterflow`.
 
-`jupyterflow` is a command that helps user utilize Argo workflow engine without making any YAML files or building containers on JupyterHub.
-
-This project only works on Kubernetes.
-
-- [JupyterHub for Kubernetes](https://zero-to-jupyterhub.readthedocs.io/en/latest)
-- [Kubeflow](https://www.kubeflow.org)
-
-The following `jupyterflow` command in jupyter notebook will make sequence workflow. That's it!
+`jupyterflow` is a single command that helps user utilize Argo workflow engine without making any YAML files or building containers on JupyterHub. The following `jupyterflow` command will make sequence workflow for you. That's it!
 
 ```bash
 jupyterflow run -c "python hello.py >> python world.py"
@@ -41,7 +34,16 @@ To make parallel workflow, write your own [`workflow.yaml`](https://hongkunyoo.g
     - I needed to re-build & re-push image everytime I updated my model. This was painful.
     - People who were not familiar with k8s had a hard time using this method.
 
-`jupyterflow` aims to solve this problem. Run your workflow  on JupyterHub with single command without Kubernetes & container troublesome task.
+JupyterFlow aims to solve this problem. Run your workflow  on JupyterHub with single command without Kubernetes & container troublesome task.
+
+## Limitation
+
+JupyterFlow only works on JupyterHub deployed on Kubernetes.
+
+- [JupyterHub for Kubernetes](https://zero-to-jupyterhub.readthedocs.io/en/latest)
+- [Kubeflow](https://www.kubeflow.org)
+
+Therefore, although using JupyterFlow does not require Kubernetes knowledge, Setting up JupyterFlow requires Kubernetes understandings(YAML, `helm`, `Service`). If you're familiar with Kubernetes, it will not be too hard.
 
 ## Getting Started
 

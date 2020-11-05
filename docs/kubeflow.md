@@ -46,7 +46,7 @@ kubectl set env deployment/argo-ui BASE_HREF=/ -n kubeflow
 # deployment.apps/argo-ui env updated
 ```
 
-Browse `<LOAD_BALANCER_IP>:2746` to see Argo Workflow web UI is available. For detail configuration, refer to [https://argoproj.github.io/argo/argo-server/](https://argoproj.github.io/argo/argo-server)
+Browse `<LOAD_BALANCER_IP>:80` to see Argo Workflow web UI is available. For detail configuration, refer to [https://argoproj.github.io/argo/argo-server/](https://argoproj.github.io/argo/argo-server)
 
 
 ## Grant Kubeflow notebook Service Account RBAC

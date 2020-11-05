@@ -47,6 +47,13 @@ def run(filename, command, output, dry_run):
 
 
 @main.command()
+@click.argument('name')
+def delete(name):
+    response = workflow.delete(name, runtime['namespace'])
+    printer.format(response, 'text')
+
+
+@main.command()
 @click.option('--generate-config', help='Generate config file', default=False, is_flag=True)
 def config(generate_config):
     if generate_config:
