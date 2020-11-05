@@ -29,11 +29,11 @@ singleuser:
 
 #### 2) Configure Storage
 
-To use the same JupyterHub home directory as in Argo Workflow, Configure `singleuser.storage` property. To run jobs on multiple different node, you should use `ReadWriteMany` access mode type storage, 
+To use the same JupyterHub home directory as in Argo Workflow, configure `singleuser.storage` property. To run jobs on multiple different node, you should use `ReadWriteMany` access mode type storage, 
 such as [nfs-server-provisioner](https://github.com/helm/charts/tree/master/stable/nfs-server-provisioner). 
 If you're unfamiliar with storage access mode, take a look at [Kubernetes persistent volume access mode](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes).
 
-The simplest way to have a `ReadWriteMany` type storage, install nfs-server-provisioner in `stable` helm repository.
+The simplest way to have a `ReadWriteMany` type storage is installing nfs-server-provisioner.
 
 ```bash
 # StorageClass name will be nfs-server

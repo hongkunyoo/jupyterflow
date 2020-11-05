@@ -2,8 +2,8 @@
 
 ![](images/architecture.png)
 
-`jupyterflow` has a strict constraint that it only works on JupyterHub deployed on Kubernetes.
-Because of this constraint, `jupyterflow` can easily collect current environment information(metadata) using attached service account.
+JupyterFlow has a strict constraint that it only works on JupyterHub deployed on Kubernetes.
+Because of this constraint, JupyterFlow can easily collect current environment information(metadata) using attached service account.
 With this information, `jupyterflow` constructs Argo `Workflow` object on behalf of you.
 
 `jupyterflow` uses following metadata from jupyter notebook `Pod`.

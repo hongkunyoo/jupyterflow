@@ -43,7 +43,7 @@ JupyterFlow only works on JupyterHub deployed on Kubernetes.
 - [JupyterHub for Kubernetes](https://zero-to-jupyterhub.readthedocs.io/en/latest)
 - [Kubeflow](https://www.kubeflow.org)
 
-Therefore, although using JupyterFlow does not require Kubernetes knowledge, Setting up JupyterFlow requires Kubernetes understandings(YAML, `helm`, `Service`). If you're familiar with Kubernetes, it will not be too hard.
+Therefore, although using JupyterFlow does not require Kubernetes knowledge, setting up JupyterFlow requires Kubernetes understandings(YAML, `helm`, `Service`). If you're familiar with Kubernetes, it will not be too hard.
 
 ## Getting Started
 

@@ -1,8 +1,8 @@
 # Get Started
 
-Although using JupyterFlow does not require Kubernetes knowledge, Setting up JupyterFlow requires Kubernetes understandings(YAML, `helm`, `Service`). If you're familiar with Kubernetes, it will not be too hard. 
+Although using JupyterFlow does not require Kubernetes knowledge, setting up JupyterFlow requires Kubernetes understandings(YAML, `helm`, `Service`). If you're familiar with Kubernetes, it will not be too hard. 
 
-> This project only works on Kubernetes.
+> This project only works on JupyterHub deployed on Kubernetes.
 
 ## Options for setting up JupyterFlow
 
