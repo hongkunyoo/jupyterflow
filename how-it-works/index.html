@@ -403,8 +403,8 @@
                 
                 <h1 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h1>
 <p><img alt="" src="../images/architecture.png" /></p>
-<p><code>jupyterflow</code> has a strict constraint that it only works on JupyterHub deployed on Kubernetes.
-Because of this constraint, <code>jupyterflow</code> can easily collect current environment information(metadata) using attached service account.
+<p>JupyterFlow has a strict constraint that it only works on JupyterHub deployed on Kubernetes.
+Because of this constraint, JupyterFlow can easily collect current environment information(metadata) using attached service account.
 With this information, <code>jupyterflow</code> constructs Argo <code>Workflow</code> object on behalf of you.</p>
 <p><code>jupyterflow</code> uses following metadata from jupyter notebook <code>Pod</code>.</p>
 <ul>

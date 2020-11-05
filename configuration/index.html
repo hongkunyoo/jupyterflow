@@ -616,9 +616,9 @@
 <li>In <code>shell</code> mode, your command will be executed as <code>["/bin/sh", "-c", "echo hello"]</code>.</li>
 </ul>
 <p>In exec mode, the command is more straightforward since there is no shell process involved and it is being called directly. In shell mode, you can fully utilize the power of shell, such as shell script commands. (<code>&gt;&gt;</code>, <code>&amp;&amp;</code> and so on.)
-For more detail explanation, <a href="https://docs.docker.com/engine/reference/builder/#run">refer to Docker run form</a></p>
+For more detail explanation, refer to <a href="https://docs.docker.com/engine/reference/builder/#run">Docker run form</a></p>
 <h2 id="jupyterflow-configuration-advanced">Jupyterflow Configuration (Advanced)<a class="headerlink" href="#jupyterflow-configuration-advanced" title="Permanent link">&para;</a></h2>
-<p>For more detail control of JupyterFlow, you can override Argo <code>Workflow</code> spec by configuring JupyterFlow config file(default: <code>$HOME/.jupyterflow.yaml</code>). Configuring JupyterFlow requires Kubernetes Pod specification knowledge.</p>
+<p>For more detail control of JupyterFlow, you can override Argo <code>Workflow</code> spec by configuring JupyterFlow config file(default: <code>$HOME/.jupyterflow.yaml</code>). Configuring JupyterFlow requires Kubernetes Pod specification understandings.</p>
 <p>The following command will create <code>.jupyterflow.yaml</code> on <code>$HOME</code> directory. JupyterFlow configuration file path can be changed by setting <code>JUPYTERFLOW_CONFIG_FILE</code> environment variable(<code>export JUPYTERFLOW_CONFIG_FILE=/tmp/myjupyterflow.yaml</code>).</p>
 <div class="codehilite"><pre><span></span><code>jupyterflow config --generate-config
 <span class="c1"># jupyterflow config file created.</span>

@@ -566,15 +566,15 @@
 <h2 id="configure-storage">Configure Storage<a class="headerlink" href="#configure-storage" title="Permanent link">&para;</a></h2>
 <p>To run jobs on multiple different node, you should use <code>ReadWriteMany</code> access mode type storage, such as <a href="https://github.com/helm/charts/tree/master/stable/nfs-server-provisioner">nfs-server-provisioner</a>. 
 If you're unfamiliar with storage access mode, take a look at <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes">Kubernetes persistent volume access mode</a>.</p>
-<p>The simplest way to have a <code>ReadWriteMany</code> type storage, install nfs-server-provisioner in <code>stable</code> helm repository.</p>
+<p>The simplest way to have a <code>ReadWriteMany</code> type storage is installing nfs-server-provisioner.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># StorageClass name will be nfs-server</span>
 helm install nfs-server stable/nfs-server-provisioner
 </code></pre></div>
 
 <p>Using <code>ReadWriteOnce</code> access mode is also fine, but bear in mind that your jobs will be run on the only single node that your jupyter notebook is mounted.</p>
-<p>Provision <code>PersistentVolumeClaim</code> of your notebook server in advance using <code>ReadWriteMany</code> type storage, and use it when you launch your notebook server. (Select <code>Existing</code> type on setting Workspace Volume in launching new notebook server.)</p>
+<p>Provision <code>PersistentVolumeClaim</code> for your notebook server home directory in advance using <code>ReadWriteMany</code> type storage, and use it when you launch your notebook server. (Select <code>Existing</code> type on setting Workspace Volume in launching new notebook server.)</p>
 <h2 id="expose-argo-workflow-web-ui">Expose Argo Workflow Web UI<a class="headerlink" href="#expose-argo-workflow-web-ui" title="Permanent link">&para;</a></h2>
-<p>You need to expose Argo web UI to see the result of <code>jupyterflow</code>. Unfortunately, JupyterFlow currently does not support Kubeflow Pipelines, so the result of <code>juypterflow</code> workflow does not appear in Kubeflow Pipelines web pages. You need to manually expose Argo Workflow web UI to check the result.</p>
+<p>You need to expose Argo web UI to see the result of <code>jupyterflow</code>. Unfortunately, JupyterFlow currently does not support Kubeflow Pipelines, so the result of <code>juypterflow</code> workflow does not appear in Kubeflow Pipelines web pages. You need to manually expose Argo Workflow web UI to check out the result.</p>
 <p>The simplest way to expose Argo Workflow web UI is changing <code>argo-ui</code> Service to <code>LoadBalancer</code> type.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Expose argo-ui Service as LoadBalancer type</span>
 kubectl patch svc argo-ui -p <span class="s1">&#39;{&quot;spec&quot;: {&quot;type&quot;: &quot;LoadBalancer&quot;}}&#39;</span> -n kubeflow
