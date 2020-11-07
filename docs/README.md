@@ -4,6 +4,8 @@ Run your workflow on JupyterHub!
 
 ## What is JupyterFlow?
 
+![](https://raw.githubusercontent.com/hongkunyoo/jupyterflow/main/docs/images/architecture.png)
+
 Run [Argo Workflow](https://argoproj.github.io/argo) on [JupyterHub](https://jupyter.org/hub) with single command.
 
 - **No Kubernetes knowledge (YAML) needed to run.**

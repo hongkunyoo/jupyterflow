@@ -71,7 +71,7 @@ For more fine-grained RBAC, create Workflow Role in the namespace where Kubeflow
 For example, create Workflow Role in `jupyterflow` namespace with following command.
 
 ```bash
-cat << EOF | kubectl create -n jupyterflow -f -
+cat << EOF | kubectl apply -n jupyterflow -f -
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
