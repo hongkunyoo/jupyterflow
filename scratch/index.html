@@ -8,8 +8,9 @@
       
       
       
+      
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.2">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.4">
     
     
       
@@ -17,10 +18,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.19190aaf.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.358818c7.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.24b84193.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f0267088.min.css">
         
           
           
@@ -698,7 +699,7 @@ kubectl create clusterrolebinding jupyterflow-admin <span class="se">\</span>
 <h4 id="options-2">Options 2)<a class="headerlink" href="#options-2" title="Permanent link">&para;</a></h4>
 <p>For more fine-grained RBAC, create Workflow Role in the namespace where JupyterHub is installed.</p>
 <p>For example, create Workflow Role in <code>jupyterflow</code> namespace with following command.</p>
-<div class="codehilite"><pre><span></span><code>cat <span class="s">&lt;&lt; EOF | kubectl create -n jupyterflow -f -</span>
+<div class="codehilite"><pre><span></span><code>cat <span class="s">&lt;&lt; EOF | kubectl apply -n jupyterflow -f -</span>
 <span class="s">apiVersion: rbac.authorization.k8s.io/v1</span>
 <span class="s">kind: Role</span>
 <span class="s">metadata:</span>
@@ -817,7 +818,7 @@ kubectl create rolebinding workflow-rb <span class="se">\</span>
     </div>
     
       <script src="../assets/javascripts/vendor.7e0ee788.min.js"></script>
-      <script src="../assets/javascripts/bundle.c1ccee15.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      <script src="../assets/javascripts/bundle.b3a72adc.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
       
       <script>
         app = initialize({
