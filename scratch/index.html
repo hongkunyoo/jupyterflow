@@ -618,7 +618,7 @@
 </code></pre></div>
 
 <h4 id="2-configure-storage">2) Configure Storage<a class="headerlink" href="#2-configure-storage" title="Permanent link">&para;</a></h4>
-<p>To use the same JupyterHub home directory as in Argo Workflow, configure <code>singleuser.storage</code> property. To run jobs on multiple different node, you should use <code>ReadWriteMany</code> access mode type storage, 
+<p>To use the same JupyterHub home directory as in Argo Workflow, configure <code>singleuser.storage</code> property. To run jobs on multiple different node, you should use <code>ReadWriteMany</code> access mode storage, 
 such as <a href="https://github.com/helm/charts/tree/master/stable/nfs-server-provisioner">nfs-server-provisioner</a>. 
 If you're unfamiliar with storage access mode, take a look at <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes">Kubernetes persistent volume access mode</a>.</p>
 <p>The simplest way to have a <code>ReadWriteMany</code> type storage is installing nfs-server-provisioner.</p>
@@ -626,7 +626,7 @@ If you're unfamiliar with storage access mode, take a look at <a href="https://k
 helm install nfs-server stable/nfs-server-provisioner
 </code></pre></div>
 
-<p>Configuring <code>singleuser</code> storage access mode as <code>ReadWriteOnce</code> is also fine, but bear in mind that your jobs will be run on the only single node that your jupyter notebook is mounted.</p>
+<p>And then use the <code>nfs-server</code> StorageClass for <code>ReadWriteMany</code> access mode storage in <code>config.yaml</code> file.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># config.yaml</span>
 <span class="nt">singleuser</span><span class="p">:</span>
   <span class="nt">storage</span><span class="p">:</span>
