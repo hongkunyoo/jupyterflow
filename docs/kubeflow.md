@@ -12,7 +12,7 @@ Refer to [kubeflow getting started page](https://www.kubeflow.org/docs/started/g
 
 ## Configure Storage
 
-To run jobs on multiple different node, you should use `ReadWriteMany` access mode type storage, such as [nfs-server-provisioner](https://github.com/helm/charts/tree/master/stable/nfs-server-provisioner). 
+To run jobs on multiple different node, you should use `ReadWriteMany` access mode storage, such as [nfs-server-provisioner](https://github.com/helm/charts/tree/master/stable/nfs-server-provisioner). 
 If you're unfamiliar with storage access mode, take a look at [Kubernetes persistent volume access mode](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes).
 
 The simplest way to have a `ReadWriteMany` type storage is installing nfs-server-provisioner.
@@ -21,8 +21,6 @@ The simplest way to have a `ReadWriteMany` type storage is installing nfs-server
 # StorageClass name will be nfs-server
 helm install nfs-server stable/nfs-server-provisioner
 ```
-
-Using `ReadWriteOnce` access mode is also fine, but bear in mind that your jobs will be run on the only single node that your jupyter notebook is mounted.
 
 Provision `PersistentVolumeClaim` for your notebook server home directory in advance using `ReadWriteMany` type storage, and use it when you launch your notebook server. (Select `Existing` type on setting Workspace Volume in launching new notebook server.)
 
