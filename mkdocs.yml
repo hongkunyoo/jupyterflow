@@ -3,6 +3,7 @@ repo_url: https://github.com/hongkunyoo/jupyterflow
 strict: true
 theme:
   name: material
+  logo: images/logo.png
   palette:
     primary: blue
   font:
