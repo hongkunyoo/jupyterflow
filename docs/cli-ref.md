@@ -22,6 +22,30 @@ jupyterflow run [flags]
       --dry-run           Only prints Argo Workflow object, without accually sending it.
 ```
 
+### Example
+
+```bash
+jupyterflow run -f workflow.yaml
+```
+
+---
+
+## jupyterflow delete
+
+Delete the given name of Argo Workflow.
+
+### Synopsis
+
+```
+jupyterflow delete WORKFLOW_NAME
+```
+
+### Example
+
+```bash
+jupyterflow delete myworkflow-3f9c8
+```
+
 ---
 
 ## jupyterflow config
@@ -40,4 +64,10 @@ jupyterflow config [flags]
 ```
   -h, --help              help for list
       --generate-config   Generates default `$HOME/.jupyterflow.yaml` configuration file.
+```
+
+### Example
+
+```bash
+jupyterflow config --generate-config
 ```

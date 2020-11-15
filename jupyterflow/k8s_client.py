@@ -16,13 +16,18 @@ def create_object(body, namespace):
     return response
 
 
+def delete_object(name, apiVersion, plural, namespace):
+    group, version = apiVersion.split('/')
+    config.load_incluster_config()
+    api_instance = client.CustomObjectsApi()
+    response = api_instance.delete_namespaced_custom_object(group, version, namespace, plural, name)
+        
+    return response
+    
+
 def get_notebook_pod(hostname, namespace):
     config.load_incluster_config()
     api_instance = client.CoreV1Api()
     response = api_instance.read_namespaced_pod(hostname, namespace, _preload_content=False)
     
     return json.loads(response.data)
-
-
-
-

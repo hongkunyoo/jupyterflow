@@ -82,8 +82,7 @@ def build(wf, namespace, runtime, config):
 
 
 def run(wf, namespace):
-    response = k8s_client.create_object(wf, namespace)
-    return response
+    return k8s_client.create_object(wf, namespace)
     
 
 def build_wf_spec_from(pod):
@@ -130,3 +129,7 @@ def override_wf(workflow, config):
     if 'volumeMounts' not in wf_spec:
         wf_spec['volumeMounts'] = []
     wf_spec['volumeMounts'].extend(wf_volMount)
+
+
+def delete(name, namespace):
+    return k8s_client.delete_object(name, 'argoproj.io/v1alpha1', 'workflows', namespace)

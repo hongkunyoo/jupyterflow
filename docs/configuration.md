@@ -62,12 +62,12 @@ schedule: '*/2 * * * *'
 - In `shell` mode, your command will be executed as `["/bin/sh", "-c", "echo hello"]`.
 
 In exec mode, the command is more straightforward since there is no shell process involved and it is being called directly. In shell mode, you can fully utilize the power of shell, such as shell script commands. (`>>`, `&&` and so on.)
-For more detail explanation, [refer to Docker run form](https://docs.docker.com/engine/reference/builder/#run)
+For more detail explanation, refer to [Docker run form](https://docs.docker.com/engine/reference/builder/#run)
 
 
 ## Jupyterflow Configuration (Advanced)
 
-For more detail control of JupyterFlow, you can override Argo `Workflow` spec by configuring JupyterFlow config file(default: `$HOME/.jupyterflow.yaml`). Configuring JupyterFlow requires Kubernetes Pod specification knowledge.
+For more detail control of JupyterFlow, you can override Argo `Workflow` spec by configuring JupyterFlow config file(default: `$HOME/.jupyterflow.yaml`). Configuring JupyterFlow requires Kubernetes Pod specification understandings.
 
 The following command will create `.jupyterflow.yaml` on `$HOME` directory. JupyterFlow configuration file path can be changed by setting `JUPYTERFLOW_CONFIG_FILE` environment variable(`export JUPYTERFLOW_CONFIG_FILE=/tmp/myjupyterflow.yaml`).
 
