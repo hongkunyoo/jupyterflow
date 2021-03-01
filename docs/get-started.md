@@ -2,24 +2,24 @@
 
 Although using JupyterFlow does not require Kubernetes knowledge, setting up JupyterFlow requires Kubernetes understandings(YAML, `helm`, `Service`). If you're familiar with Kubernetes, it will not be too hard. 
 
-> This project only works on JupyterHub deployed on Kubernetes.
+> This project only works on JupyterHub for Kubernetes and Kubeflow.
 
 ## Options for setting up JupyterFlow
 
 There are two ways to set up `jupyterflow`
 
-- [Set up JupyterFlow from scratch.](scratch.md)
-- [Set up JupyterFlow on Kubeflow](kubeflow.md)
+- [Set up JupyterFlow on JupyterHub.](jupyterhub.md)
+- [Set up JupyterFlow on Kubeflow.](kubeflow.md)
 
 ---
 
-After the setup, you can run your workflow with `jupyterflow` on JupyterHub. Launch your jupyter notebook and follow the example.
+After the setup, you can run your workflow with `jupyterflow` on Kubernetes. Launch your jupyter notebook and follow the example.
 
 ## Run my first workflow
 
 Refer to [examples/get-started](https://github.com/hongkunyoo/jupyterflow/tree/main/examples/get-started) to get the example scripts.
 
-### by command
+### By command
 
 Write your own code in notebook server.
 
@@ -45,11 +45,16 @@ Go to Argo Web UI and check out the output of launched workflow.
 ![](images/intro.png)
 
 
-### by `workflow.yaml` file
+### By `workflow.yaml` file
 
 If you want to run more sophisticated workflow, such as DAG (Directed Acyclic Graph), write your own workflow file (for example, `workflow.yaml`, the name doesn't matter)
 
 For more information, check out [Configuring workflow](configuration.md)
+
+```python
+# job3.py
+print('again!')
+```
 
 ```yaml
 # workflow.yaml
@@ -65,11 +70,6 @@ dags:
 - 1 >> 3
 - 2 >> 4
 - 3 >> 4
-```
-
-```python
-# job3.py
-print('again!')
 ```
 
 Run `jupyteflow` with `-f` option.

@@ -62,16 +62,3 @@ def config(generate_config):
     else:
         conf = utils.load_config()
         printer.format(conf, 'yaml')
-        
-
-
-# @main.command()
-# # @click.option('--generate-config/--no', help='Generate config', default=False)
-# def test():
-#     escaped_username = utils.get_escaped_user(os.environ['JUPYTERHUB_USER'])
-#     with open('/var/run/secrets/kubernetes.io/serviceaccount/namespace') as f:
-#         ns = f.read()
-#     pod = k8s_client.get_notebook_pod(escaped_username, ns)
-#     pod = pod.to_dict()
-#     pod['metadata']['name']
-#     pod['metadata']['namespace']

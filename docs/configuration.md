@@ -44,14 +44,14 @@ dags:
 schedule: '*/2 * * * *'
 ```
 
-| Property  | Description                                                           | Optional  | Default                           |
-|-----------|-----------------------------------------------------------------------|-----------|-----------------------------------|
-|`version`  | Version of `workflow.yaml` file format.                               | Optional  | 1                                 |
-|`name`     | Name of the workflow. This name is used for Argo `Workflow` name.     | Optional  | `HOSTNAME` of notebook            |
-|`jobs`     | Jobs to run. Any kinds of command works.                              | Required  |                                   |
-|`cmd_mode` | Specify command form, whether `exec` or `shell`.                      | Optional  | `exec`                            |
-|`dags`     | Job dependencies. Index starts at 1. (`$PREVIOUS_JOB` >> `$NEXT_JOB`) | Optional  | All jobs parallel (No dependency) |
-|`schedule` | When to execute this workflow. Follows cron format.                   | Optional  | Run immediately                   |
+| Property  | Description                                                                    | Optional  | Default                           |
+|-----------|--------------------------------------------------------------------------------|-----------|-----------------------------------|
+|`version`  | Version of `workflow.yaml` file format.                                        | Optional  | 1                                 |
+|`name`     | Name of the workflow. This name is used for Argo `Workflow` name.              | Optional  | `HOSTNAME` of notebook            |
+|`jobs`     | Jobs to run. Any kinds of command works.                                       | Required  |                                   |
+|`cmd_mode` | Specify command form, whether `exec` or `shell`.                               | Optional  | `exec`                            |
+|`dags`     | Defining job dependencies. Index starts at 1. (`$PREVIOUS_JOB` >> `$NEXT_JOB`) | Optional  | All jobs parallel (No dependency) |
+|`schedule` | When to execute this workflow. Follows cron format.                            | Optional  | Run immediately                   |
 
 
 ##### Comparing cmd_mode

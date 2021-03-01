@@ -22,7 +22,7 @@ nav:
   - Overview: README.md
   - get-started.md
   - Setup:
-    - scratch.md
+    - jupyterhub.md
     - kubeflow.md
   - how-it-works.md
   - Examples:

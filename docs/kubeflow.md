@@ -12,7 +12,7 @@ Refer to [kubeflow getting started page](https://www.kubeflow.org/docs/started/g
 
 ## Configure Storage
 
-To run jobs on multiple different node, you should use `ReadWriteMany` access mode storage, such as [nfs-server-provisioner](https://github.com/helm/charts/tree/master/stable/nfs-server-provisioner). 
+You need a shared storage volume, such as NFS server(`ReadWriteMany` access mode), to make JupyterFlow get the same ML code written in Jupyter notebook. To do this, configure `singleuser.storage` property.
 If you're unfamiliar with storage access mode, take a look at [Kubernetes persistent volume access mode](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes).
 
 The simplest way to have a `ReadWriteMany` type storage is installing nfs-server-provisioner.
@@ -22,7 +22,7 @@ The simplest way to have a `ReadWriteMany` type storage is installing nfs-server
 helm install nfs-server stable/nfs-server-provisioner
 ```
 
-Provision `PersistentVolumeClaim` for your notebook server home directory in advance using `ReadWriteMany` type storage, and use it when you launch your notebook server. (Select `Existing` type on setting Workspace Volume in launching new notebook server.)
+Select `ReadWriteMany` access mode storage when launching your notebook server on Kubeflow Notebook Server.
 
 ## Expose Argo Workflow Web UI
 
@@ -36,7 +36,7 @@ kubectl patch svc argo-ui -p '{"spec": {"type": "LoadBalancer"}}' -n kubeflow
 # service/argo-ui patched
 ```
 
-And then change Argo UI deployment environment variable. To find out the reason, take a look at [Argo issue#1215](https://github.com/argoproj/argo/issues/1215)
+And then change Argo UI deployment environment variable. To find out the reason, take a look at [Argo issue#1215](https://github.com/argoproj/argo-workflows/issues/1215)
 
 ```bash
 # Change BASE_HREF env to /
@@ -44,7 +44,7 @@ kubectl set env deployment/argo-ui BASE_HREF=/ -n kubeflow
 # deployment.apps/argo-ui env updated
 ```
 
-Browse `<LOAD_BALANCER_IP>:80` to see Argo Workflow web UI is available. For detail configuration, refer to [https://argoproj.github.io/argo/argo-server/](https://argoproj.github.io/argo/argo-server)
+Browse `<LOAD_BALANCER_IP>:80` to see Argo Workflow web UI is available. For detail configuration, refer to [https://argoproj.github.io/argo-workflows/argo-server/](https://argoproj.github.io/argo-workflows/argo-server)
 
 
 ## Grant Kubeflow notebook Service Account RBAC
@@ -64,7 +64,7 @@ kubectl create clusterrolebinding jupyterflow-admin \
 
 #### Options 2)
 
-For more fine-grained RBAC, create Workflow Role in the namespace where Kubeflow is installed.
+For more fine-grained Access Control, create Workflow Role in the namespace where Kubeflow is installed.
 
 For example, create Workflow Role in `jupyterflow` namespace with following command.
 
@@ -107,7 +107,7 @@ rules:
 EOF
 ```
 
-Then, bind Role with your service account. For example, bind `default-editor` service account with workflow role in `jupyterflow` namespace.
+Then, bind the Role with your service account. For example, bind `default-editor` service account with workflow role in `jupyterflow` namespace.
 
 ```bash
 # binding workflow role to jupyterflow:default-editor
@@ -117,7 +117,7 @@ kubectl create rolebinding workflow-rb \
                       --namespace jupyterflow
 ```
 
-You might want to look at [https://argoproj.github.io/argo/service-accounts](https://argoproj.github.io/argo/service-accounts).
+You might want to look at [https://argoproj.github.io/argo-workflows/service-accounts](https://argoproj.github.io/argo-workflows/service-accounts) for granting permissions.
 
 ## Install jupyterflow
 

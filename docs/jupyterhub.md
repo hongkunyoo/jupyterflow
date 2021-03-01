@@ -1,25 +1,24 @@
-# Set up from scratch
+# Set up on JupyterHub
 
 In this method, you will install JupyterHub, Argo Workflow manually.
 
-
 ## Prerequisite
 
-- Kubernetes cluster
-- Install [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) command
-- Install [`helm`](https://helm.sh/docs/intro/install) command
+- Create Kubernetes cluster.
+- Install [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) command.
+- Install [`helm`](https://helm.sh/docs/intro/install) command.
 
 Any Kubernetes cluster will work. `Zero to JupyterHub` has a wonderful [guide for setting up Kubernetes.](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-kubernetes) 
 
 ## Install JupyterHub
 
-Follow the [`Zero to JupyterHub` instruction to set up JupyterHub](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub). There are two things you should configure while installing jupyterflow.
+Follow the [`Zero to JupyterHub` instruction to set up JupyterHub](https://zero-to-jupyterhub.readthedocs.io/en/latest/#setup-jupyterhub). There are two things you should configure to use `jupyterflow`.
 
 #### 1) Specify serviceAccoutName
 
  Specify `singleuser.serviceAccoutName` property in `config.yaml`. This service account will be used to create  Argo `Workflow` object on behalf of you.
 
-For example, following configuration uses `default` service account. Later, you should grant this service account a role to create `Workflow` object.
+For example, following configuration uses `default` service account. Later, you should grant this service account a proper role to create `Workflow` object.
 
 ```yaml
 # config.yaml
@@ -29,8 +28,7 @@ singleuser:
 
 #### 2) Configure Storage
 
-To use the same JupyterHub home directory as in Argo Workflow, configure `singleuser.storage` property. To run jobs on multiple different node, you should use `ReadWriteMany` access mode storage, 
-such as [nfs-server-provisioner](https://github.com/helm/charts/tree/master/stable/nfs-server-provisioner). 
+You need a shared storage volume, such as NFS server(`ReadWriteMany` access mode), to make JupyterFlow get the same ML code written in Jupyter notebook. To do this, configure `singleuser.storage` property.
 If you're unfamiliar with storage access mode, take a look at [Kubernetes persistent volume access mode](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes).
 
 The simplest way to have a `ReadWriteMany` type storage is installing nfs-server-provisioner.
@@ -46,13 +44,14 @@ And then use the `nfs-server` StorageClass for `ReadWriteMany` access mode stora
 # config.yaml
 singleuser:
   storage:
-    type: dynamic                           # or static
+    type: dynamic                           # dynamic or static
+
     dynamic:
       storageClass: nfs-server              # For example, nfs-server-provisioner
-      storageAccessModes: [ReadWriteMany]   # Make sure your volume supports ReadWriteMany for running distributed jobs.
+      storageAccessModes: [ReadWriteMany]   # Make sure your volume supports ReadWriteMany.
 
     static:                                 # Static pvc also works fine. 
-      pvcName: my-static-pvc                # Static pvc should support ReadWriteMany mode for distributed jobs.
+      pvcName: my-static-pvc                # Static pvc should support ReadWriteMany mode.
 ```
 
 The full description of `config.yaml` file will seem like this.
@@ -60,7 +59,7 @@ The full description of `config.yaml` file will seem like this.
 ```yaml
 # config.yaml
 proxy:
-  secretToken: "<RANDOM_HEX>"
+  secretToken: "<RANDOM_HEX>"   # openssl rand -hex 32
 
 singleuser:
   serviceAccountName: default
@@ -88,10 +87,10 @@ helm install $RELEASE jupyterhub/jupyterhub \
 
 ## Install Argo Workflow Engine
 
-Install Argo workflow engine with [Argo Workflow quick start page](https://argoproj.github.io/argo/quick-start). 
+Install Argo workflow engine with [Argo Workflow quick start page](https://argoproj.github.io/argo-workflows/quick-start). 
 You need to install Argo workflow engine in the **same Kubernetes namespace** where JupyterHub is installed.
 
-For example, using `jupyterflow` namespace for installing Argo Workflow engine.
+For example, use `jupyterflow` namespace for installing Argo Workflow engine.
 
 ```bash
 kubectl apply --namespace jupyterflow -f \
@@ -99,7 +98,7 @@ kubectl apply --namespace jupyterflow -f \
 ```
 
 !!! note
-    If you want to install Argo workflow engine in different namespace, refer to [Argo installation - cluster install](https://argoproj.github.io/argo/installation) page.
+    If you want to install Argo workflow engine in different namespace, refer to [Argo installation - cluster install](https://argoproj.github.io/argo-workflows/installation) page.
 
 ## Expose Argo Workflow Web UI
 
@@ -111,7 +110,7 @@ kubectl patch svc argo-server -p '{"spec": {"type": "LoadBalancer"}}' -n jupyter
 # service/argo-server patched
 ```
 
-Browse `<LOAD_BALANCER_IP>:2746` to see Argo Workflow web UI is available. For detail configuration, refer to [https://argoproj.github.io/argo/argo-server/](https://argoproj.github.io/argo/argo-server)
+Browse `<LOAD_BALANCER_IP>:2746` to see Argo Workflow web UI is available. For detail configuration, refer to [https://argoproj.github.io/argo-workflows/argo-server/](https://argoproj.github.io/argo-workflows/argo-server)
 
 ## Grant JupyterHub Service Account RBAC
 
@@ -130,7 +129,7 @@ kubectl create clusterrolebinding jupyterflow-admin \
 
 #### Options 2)
 
-For more fine-grained RBAC, create Workflow Role in the namespace where JupyterHub is installed.
+For more fine-grained Access Control, create Workflow Role in the namespace where JupyterHub is installed.
 
 For example, create Workflow Role in `jupyterflow` namespace with following command.
 
@@ -173,7 +172,7 @@ rules:
 EOF
 ```
 
-Then, bind Role with your service account. For example, bind `default` service account with workflow role in `jupyterflow` namespace.
+Then, bind the Role with your service account. For example, bind `default` service account with workflow role in `jupyterflow` namespace.
 
 ```bash
 # binding workflow role to jupyterflow:default
@@ -183,7 +182,7 @@ kubectl create rolebinding workflow-rb \
                       --namespace jupyterflow
 ```
 
-You might want to look at [https://argoproj.github.io/argo/service-accounts](https://argoproj.github.io/argo/service-accounts).
+You might want to look at [https://argoproj.github.io/argo-workflows/service-accounts](https://argoproj.github.io/argo-workflows/service-accounts) for granting permissions.
 
 ## Install jupyterflow
 
