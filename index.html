@@ -231,8 +231,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#problem-to-solve" class="md-nav__link">
-    Problem to solve
+  <a href="#motivation" class="md-nav__link">
+    Motivation
   </a>
   
 </li>
@@ -252,8 +252,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-does-it-work" class="md-nav__link">
-    How does it work
+  <a href="#how-it-works" class="md-nav__link">
+    How it works
   </a>
   
 </li>
@@ -325,8 +325,8 @@
 
 
   <li class="md-nav__item">
-    <a href="scratch/" class="md-nav__link">
-      Set up from scratch
+    <a href="jupyterhub/" class="md-nav__link">
+      Set up on JupyterHub
     </a>
   </li>
 
@@ -477,8 +477,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#problem-to-solve" class="md-nav__link">
-    Problem to solve
+  <a href="#motivation" class="md-nav__link">
+    Motivation
   </a>
   
 </li>
@@ -498,8 +498,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-does-it-work" class="md-nav__link">
-    How does it work
+  <a href="#how-it-works" class="md-nav__link">
+    How it works
   </a>
   
 </li>
@@ -545,47 +545,63 @@
                 <h1 id="jupyterflow">JupyterFlow<a class="headerlink" href="#jupyterflow" title="Permanent link">&para;</a></h1>
 <p>Run your workflow on JupyterHub!</p>
 <h2 id="what-is-jupyterflow">What is JupyterFlow?<a class="headerlink" href="#what-is-jupyterflow" title="Permanent link">&para;</a></h2>
-<p><img alt="" src="https://raw.githubusercontent.com/hongkunyoo/jupyterflow/main/docs/images/architecture.png" /></p>
-<p>Run <a href="https://argoproj.github.io/argo">Argo Workflow</a> on <a href="https://jupyter.org/hub">JupyterHub</a> with single command.</p>
+<p><img alt="" src="https://raw.githubusercontent.com/hongkunyoo/jupyterflow/main/docs/images/side.png" /></p>
+<p>Run your ML job right away on Kubernetes with <code>jupyterflow</code>.</p>
 <ul>
-<li><strong>No Kubernetes knowledge (YAML) needed to run.</strong></li>
-<li><strong>No container image build &amp; push or deploy.</strong></li>
-<li>Just simply run your workflow with single command <code>jupyterflow</code>.</li>
+<li><strong>No container image build &amp; push</strong></li>
+<li><strong>No Kubernetes manifest (YAML)</strong></li>
+<li>Just simply run your ML code with single command <code>jupyterflow</code>.</li>
 </ul>
-<p><code>jupyterflow</code> is a single command that helps user utilize Argo workflow engine without making any YAML files or building containers on JupyterHub. The following <code>jupyterflow</code> command will make sequence workflow for you. That's it!</p>
-<div class="codehilite"><pre><span></span><code>jupyterflow run -c <span class="s2">&quot;python hello.py &gt;&gt; python world.py&quot;</span>
+<p><code>jupyterflow</code> is a ML tool for Data Scientist to help run ML code on Kubernetes without any <strong>containerization process</strong>.</p>
+<ol>
+<li>Launch your jupyter notebook</li>
+<li>Write your ML code</li>
+<li>Run your ML model on Kubernetes through <code>jupyterflow</code></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Write your code.</span>
+<span class="nb">echo</span> <span class="s2">&quot;print(&#39;hello&#39;)&quot;</span> &gt; hello.py
+<span class="nb">echo</span> <span class="s2">&quot;print(&#39;world&#39;)&quot;</span> &gt; world.py
+
+<span class="c1"># Install jupyterflow.</span>
+pip install jupyterflow
+
+<span class="c1"># in jupyterflow `&gt;&gt;` directive expresses container dependencies similar to Airflow.</span>
+jupyterflow run -c <span class="s2">&quot;python hello.py &gt;&gt; python world.py&quot;</span>
 </code></pre></div>
 
 <p><img alt="" src="https://raw.githubusercontent.com/hongkunyoo/jupyterflow/main/docs/images/intro.png" /></p>
-<p>To make parallel workflow, write your own <a href="https://hongkunyoo.github.io/jupyterflow/configuration/"><code>workflow.yaml</code></a> file.</p>
-<p><img alt="" src="https://raw.githubusercontent.com/hongkunyoo/jupyterflow/main/docs/images/dag.png" /></p>
-<h2 id="problem-to-solve">Problem to solve<a class="headerlink" href="#problem-to-solve" title="Permanent link">&para;</a></h2>
+<!-- To make parallel workflow, write your own [`workflow.yaml`](https://hongkunyoo.github.io/jupyterflow/configuration/) file.
+
+![](https://raw.githubusercontent.com/hongkunyoo/jupyterflow/main/docs/images/dag.png) -->
+
+<h2 id="motivation">Motivation<a class="headerlink" href="#motivation" title="Permanent link">&para;</a></h2>
 <ul>
-<li>I wanted to train multiple ML models efficiently.</li>
+<li>I wanted to run ML models across multiple training server efficiently.</li>
 <li>Using Kubernetes was a good idea, since<ul>
-<li>it is easy to make distributed jobs.</li>
-<li>it is easy to schedule ML jobs on multiple training server.</li>
+<li>it is easy to run jobs distributedly.</li>
+<li>it is easy to schedule jobs on multiple training server.</li>
 <li>it has native resource management mechanism.</li>
 <li>it has good monitoring system.</li>
 </ul>
 </li>
 <li>But there were some drawbacks.<ul>
 <li>I needed to re-build &amp; re-push image everytime I updated my model. This was painful.</li>
-<li>People who were not familiar with k8s had a hard time using this method.</li>
+<li>People who were not familiar with k8s had a hard time writing K8s manifest file.</li>
 </ul>
 </li>
 </ul>
-<p>JupyterFlow aims to solve this problem. Run your workflow  on JupyterHub with single command without Kubernetes &amp; container troublesome task.</p>
+<p>JupyterFlow aims to solve this problem. Run your workflow on JupyterHub with single command without containerization &amp; k8s troublesome task. For more details, <a href="https://coffeewhale.com/kubernetes/mlops/2021/03/02/mlops-jupyterflow-en">read this article.</a></p>
 <h2 id="limitation">Limitation<a class="headerlink" href="#limitation" title="Permanent link">&para;</a></h2>
-<p>JupyterFlow only works on JupyterHub deployed on Kubernetes.</p>
+<p>JupyterFlow only works on following platforms:</p>
 <ul>
 <li><a href="https://zero-to-jupyterhub.readthedocs.io/en/latest">JupyterHub for Kubernetes</a></li>
 <li><a href="https://www.kubeflow.org">Kubeflow</a></li>
 </ul>
-<p>Therefore, although using JupyterFlow does not require Kubernetes knowledge, setting up JupyterFlow requires Kubernetes understandings(YAML, <code>helm</code>, <code>Service</code>). If you're familiar with Kubernetes, it will not be too hard.</p>
+<p>Therefore, although using JupyterFlow does not require Kubernetes manifest, setting up JupyterFlow requires Kubernetes understandings(YAML, <code>helm</code>, <code>Service</code>). If you're familiar with Kubernetes, it will not be too hard.</p>
+<p>If you want to know why there is such limitation, refer to <a href="https://hongkunyoo.github.io/jupyterflow/how-it-works">How it works</a> guide.</p>
 <h2 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
 <p>To set up <code>jupyterflow</code> and start running your first workflow, follow the <a href="https://hongkunyoo.github.io/jupyterflow/get-started">Getting Started</a> guide.</p>
-<h2 id="how-does-it-work">How does it work<a class="headerlink" href="#how-does-it-work" title="Permanent link">&para;</a></h2>
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
 <p>To learn how it works, go to <a href="https://hongkunyoo.github.io/jupyterflow/how-it-works">How it works</a> guide.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <p>For examples how to use, please see <a href="https://hongkunyoo.github.io/jupyterflow/examples">Examples</a> page.</p>

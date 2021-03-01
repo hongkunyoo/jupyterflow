@@ -238,8 +238,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../scratch/" class="md-nav__link">
-      Set up from scratch
+    <a href="../jupyterhub/" class="md-nav__link">
+      Set up on JupyterHub
     </a>
   </li>
 
@@ -402,30 +402,42 @@
                 
                 <h1 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h1>
 <p><img alt="" src="../images/architecture.png" /></p>
-<p>JupyterFlow has a strict constraint that it only works on JupyterHub deployed on Kubernetes.
-Because of this constraint, JupyterFlow can easily collect current environment information(metadata) using attached service account.
-With this information, <code>jupyterflow</code> constructs Argo <code>Workflow</code> object on behalf of you.</p>
-<p><code>jupyterflow</code> uses following metadata from jupyter notebook <code>Pod</code>.</p>
+<p>JupyterFlow has a strict constraint that it only works on Kubernetes(<code>JupyterHub for Kubernetes</code> or <code>Kubeflow</code>).
+This is because JupyterFlow collects user's execution environment information from <code>Pod</code> metadata and the source code from Kubernetes storage volume. JupyterFlow uses these information to construct a new Kubernetes manifest(Argo <code>Workflow</code>) for ML job without any containerization on behalf of you.</p>
+<p><code>jupyterflow</code> collects following metadata from jupyter notebook <code>Pod</code>.</p>
 <ul>
 <li>Container image</li>
 <li>Environment variables</li>
-<li>Home directory (home <code>PersistentVolumeClaim</code>)</li>
+<li>Home directory volume (home <code>PersistentVolumeClaim</code>)</li>
 <li>Extra volume mount points</li>
 <li>Resource management (<code>requests</code>, <code>limits</code>)</li>
-<li>NodeSelector</li>
+<li><code>NodeSelector</code> label</li>
 <li>UID, GUID</li>
 <li>Etc.</li>
 </ul>
 <p>Following pseudo code might help you understand how <code>jupyterflow</code> works.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># collect meta data of current environment.</span>
-<span class="n">notebook_pod_spec</span> <span class="o">=</span> <span class="n">get_current_pod_spec_from_k8s</span><span class="p">(</span><span class="n">pod_name</span><span class="p">,</span> <span class="n">service_account</span><span class="p">)</span>
+<ul>
+<li>JupyterFlow main logic</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="n">jupyterflow</span> <span class="n">run</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;python hello.py &gt;&gt; python world.py&quot;</span>
+<span class="c1"># ...</span>
+<span class="c1"># inside jupyterflow</span>
+<span class="c1"># ...</span>
 
-<span class="c1"># build workflow based on meta data and user workflow information.</span>
-<span class="n">workflow_spec</span> <span class="o">=</span> <span class="n">build_workflow</span><span class="p">(</span><span class="n">notebook_pod_spec</span><span class="p">,</span> <span class="n">user_workflow_file</span><span class="p">)</span>
+<span class="c1"># get user workflow(DAG) information.</span>
+<span class="n">user_workflow_data</span> <span class="o">=</span> <span class="n">get_user_workflow</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
 
-<span class="c1"># create Argo workflow.</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">request_for_new_workflow_to_k8s</span><span class="p">(</span><span class="n">workflow_spec</span><span class="p">,</span> <span class="n">service_account</span><span class="p">)</span>
+<span class="c1"># collect metadata of current environment(jupyter notebook Pod).</span>
+<span class="n">nb_pod_spec</span> <span class="o">=</span> <span class="n">get_current_pod_spec_from_k8s</span><span class="p">(</span><span class="n">jupyter_notebook_pod_name</span><span class="p">,</span> <span class="n">service_account</span><span class="p">)</span>
+
+<span class="c1"># build Workflow manifest based on meta data and user workflow information.</span>
+<span class="n">argo_workflow_spec</span> <span class="o">=</span> <span class="n">build_workflow</span><span class="p">(</span><span class="n">nb_pod_spec</span><span class="p">,</span> <span class="n">user_workflow_data</span><span class="p">)</span>
+
+<span class="c1"># request new Argo workflow.</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">request_for_new_workflow_to_k8s</span><span class="p">(</span><span class="n">K8S_MASTER</span><span class="p">,</span> <span class="n">argo_workflow_spec</span><span class="p">,</span> <span class="n">service_account</span><span class="p">)</span>
 </code></pre></div>
+
+<p>For more details, please <a href="https://coffeewhale.com/kubernetes/mlops/2021/03/02/mlops-jupyterflow-en">read this article.</a></p>
                 
               
               
