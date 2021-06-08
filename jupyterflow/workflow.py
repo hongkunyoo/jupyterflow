@@ -23,14 +23,16 @@ def load_from_file(f):
         return yaml.safe_load(yaml_file)
 
 
-def build(wf, namespace, runtime, config):
+def build(wf, runtime_namespace, runtime, config):
     hostname = runtime['HOSTNAME']
     #########################
     # resolve tree
     #########################
 
     workflow = {}
-    workflow['name'] = wf.get('name', hostname)
+    workflow['metadata'] = {}
+    workflow['metadata']['name'] = wf.get('name', hostname)
+    workflow['metadata']['namespace'] = wf.get('namespace', runtime_namespace)
     workflow['jobs'] = []
 
     cmd_mode = wf.get('cmd_mode', 'exec')
@@ -61,7 +63,7 @@ def build(wf, namespace, runtime, config):
             job['dependencies'] = []
         workflow['jobs'].append(job)
     
-    pod = k8s_client.get_notebook_pod(hostname, namespace)
+    pod = k8s_client.get_notebook_pod(hostname, runtime_namespace)
     workflow['spec'] = build_wf_spec_from(pod)
     override_wf(workflow, config)
 
@@ -78,12 +80,7 @@ def build(wf, namespace, runtime, config):
         rendered_wf = render.cronworkflow(workflow_yaml, wf['schedule'])
         workflow_yaml = yaml.safe_load(rendered_wf)
     return workflow_yaml
-        
 
-
-def run(wf, namespace):
-    return k8s_client.create_object(wf, namespace)
-    
 
 def build_wf_spec_from(pod):
     spec = {}
@@ -106,6 +103,13 @@ def build_wf_spec_from(pod):
 
 def override_wf(workflow, config):
     spec = config.get('spec', {})
+    generate_name = workflow['metadata']['name']
+    namespace = workflow['metadata']['namespace']
+    workflow['metadata'] = config.get('metadata', {})
+    workflow['metadata']['generateName'] = generate_name
+    workflow['metadata']['namespace'] = namespace
+
+
     wf_spec = workflow['spec']
     
     wf_env = wf_spec['env']
@@ -130,6 +134,10 @@ def override_wf(workflow, config):
         wf_spec['volumeMounts'] = []
     wf_spec['volumeMounts'].extend(wf_volMount)
 
+
+def run(wf):
+    return k8s_client.create_object(wf, wf['metadata']['namespace'])
+    
 
 def delete(name, namespace):
     return k8s_client.delete_object(name, 'argoproj.io/v1alpha1', 'workflows', namespace)

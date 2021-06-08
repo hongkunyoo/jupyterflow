@@ -41,15 +41,18 @@ def run(filename, command, output, dry_run):
         response = wf
         output = 'yaml'
     else:
-        response = workflow.run(wf, namespace)
+        response = workflow.run(wf)
 
     printer.format(response, output)
 
 
 @main.command()
 @click.argument('name')
-def delete(name):
-    response = workflow.delete(name, runtime['namespace'])
+@click.option('-n', '--namespace', help='namespace', default=None)
+def delete(name, namespace):
+    if namespace is None:
+        namespace = runtime['namespace']
+    response = workflow.delete(name, namespace)
     printer.format(response, 'text')
 
 
